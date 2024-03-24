@@ -16,7 +16,7 @@ trait HasToggle
     /**
      * Set the content of the toggle button.
      *
-     * @param ToggleInterface|string $value The content of the toggle button.
+     * @param string|ToggleInterface $value The content of the toggle button.
      *
      * @return static A new instance of the current class with the specified toggle button content.
      */

@@ -10,7 +10,7 @@ namespace UIAwesome\Html\Core\Component\Concern;
 trait HasLink
 {
     protected string $link = '';
-    
+
     /**
      * Set the link of the menu item.
      *

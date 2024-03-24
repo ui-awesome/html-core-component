@@ -70,8 +70,8 @@ abstract class AbstractDropdown extends Element implements RenderInterface
     use HasTag;
     use HasTemplate;
     use HasTemplateLinkItem;
-    use HasType;
     use HasToggle;
+    use HasType;
 
     protected string $ariaCurrent = 'true';
     protected array $attributes = [];

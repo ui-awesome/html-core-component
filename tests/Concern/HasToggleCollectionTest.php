@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace UIAwesome\Html\Core\Component\Test\Concern;
 
-use UIAwesome\Html\Core\Component\Concern\HasToggle;
 use UIAwesome\Html\Core\Component\Concern\HasToggleCollection;
 
 final class HasToggleCollectionTest extends \PHPUnit\Framework\TestCase

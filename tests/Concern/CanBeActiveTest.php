@@ -22,7 +22,6 @@ final class CanBeActiveTest extends \PHPUnit\Framework\TestCase
         $instance = new class () {
             use CanBeActive;
 
-
             public function isActive(): bool
             {
                 return $this->active;

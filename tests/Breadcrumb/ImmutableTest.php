@@ -6,7 +6,6 @@ namespace UIAwesome\Html\Core\Component\Tests\Breadcrumb;
 
 use UIAwesome\Html\Core\Component\Tests\Support\Breadcrumb;
 
-
 /**
  * Test the immutability of the Breadcrumb component.
  *

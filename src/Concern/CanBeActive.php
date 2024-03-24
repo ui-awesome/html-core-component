@@ -10,7 +10,7 @@ namespace UIAwesome\Html\Core\Component\Concern;
 trait CanBeActive
 {
     protected bool $active = false;
-    
+
     /**
      * Set the active state.
      *

@@ -49,6 +49,8 @@ use function implode;
 class Menu extends Element implements RenderInterface
 {
     use CanBeActivateItems;
+    use CanBeLinkAreaCurrent;
+    use CanBeListItemAreaCurrent;
     use HasAttributes;
     use HasClass;
     use HasCurrentPath;
@@ -59,13 +61,11 @@ class Menu extends Element implements RenderInterface
     use HasLastLinkClass;
     use HasLinkActiveClass;
     use HasLinkActiveTag;
-    use CanBeLinkAreaCurrent;
     use HasLinkCollection;
     use HasLinkContainerCollection;
     use HasLinkDisableClass;
     use HasListCollection;
     use HasListItemActiveClass;
-    use CanBeListItemAreaCurrent;
     use HasListItemCollection;
     use HasListItemDisableClass;
     use HasPrefixCollection;
