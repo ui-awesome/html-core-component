@@ -186,6 +186,16 @@ final class ComponentTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testDataCollapseToggleWithTrueValue(): void
+    {
+        Assert::equalsWithoutLE(
+            <<<HTML
+            <button type="button" data-collapse-toggle="value"></button>
+            HTML,
+            Toggle::widget()->dataCollapseToggle(true)->dataValue('value')->render()
+        );
+    }
+
     public function testDataDismissTarget(): void
     {
         Assert::equalsWithoutLE(
