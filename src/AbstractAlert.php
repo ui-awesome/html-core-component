@@ -17,7 +17,7 @@ use UIAwesome\Html\{
     Concern\HasSuffixCollection,
     Concern\HasTemplate,
     Core\Component\Concern\HasToggle,
-    Helper\HTMLBuilder,
+    Core\HTMLBuilder,
     Helper\Template,
     Helper\Utils,
     Interop\RenderInterface

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace UIAwesome\Html\Core\Component\Concern;
 
-use UIAwesome\Html\Helper\HTMLBuilder;
+use UIAwesome\Html\Core\HTMLBuilder;
 
 /**
  * Is used by widgets that implement the divider method.

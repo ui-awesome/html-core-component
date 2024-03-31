@@ -33,8 +33,8 @@ use UIAwesome\Html\{
     Core\Component\Concern\HasIconCollection,
     Core\Component\Concern\HasToggleCollection,
     Core\Component\Interop\ToggleInterface,
+    Core\HTMLBuilder,
     Graphic\Svg,
-    Helper\HTMLBuilder,
     Helper\Template
 };
 

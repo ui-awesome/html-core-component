@@ -21,9 +21,9 @@ use UIAwesome\Html\{
     Core\Component\Concern\HasLinkContainerCollection,
     Core\Component\Concern\HasListItemCollection,
     Core\Component\Concern\HasTemplateLinkItem,
+    Core\HTMLBuilder,
     Graphic\Svg,
     Helper\Encode,
-    Helper\HTMLBuilder,
     Helper\Template,
     Interop\RenderInterface
 };

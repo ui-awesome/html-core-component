@@ -38,7 +38,7 @@ use UIAwesome\Html\{
     Core\Component\Concern\HasTemplateItem,
     Core\Component\Concern\HasTemplateLinkItem,
     Core\Component\Concern\HasToggle,
-    Helper\HTMLBuilder,
+    Core\HTMLBuilder,
     Helper\Template,
     Interop\RenderInterface
 };
