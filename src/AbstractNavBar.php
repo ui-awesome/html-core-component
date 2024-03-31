@@ -16,8 +16,8 @@ use UIAwesome\Html\{
     Concern\HasSuffixCollection,
     Concern\HasTag,
     Concern\HasTemplate,
+    Core\HTMLBuilder,
     Helper\CssClass,
-    Helper\HTMLBuilder,
     Helper\Sanitize,
     Helper\Template,
     Interop\RenderInterface
