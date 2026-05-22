@@ -4,194 +4,272 @@ declare(strict_types=1);
 
 namespace UIAwesome\Html\Core\Component;
 
-use PHPForge\Widget\Element;
-use PHPForge\Widget\Factory\SimpleFactory;
-use UIAwesome\Html\{
-    Attribute\HasClass,
-    Attribute\HasId,
-    Attribute\HasStyle,
-    Concern\HasAttributes,
-    Concern\HasPrefixCollection,
-    Concern\HasSeparator,
-    Concern\HasSuffixCollection,
-    Concern\HasTag,
-    Concern\HasTemplate,
-    Core\Component\Concern\CanBeActivateItems,
-    Core\Component\Concern\CanBeLinkAreaCurrent,
-    Core\Component\Concern\CanBeListItemAreaCurrent,
-    Core\Component\Concern\HasCurrentPath,
-    Core\Component\Concern\HasFirstItemClass,
-    Core\Component\Concern\HasFirstLinkClass,
-    Core\Component\Concern\HasLastItemClass,
-    Core\Component\Concern\HasLastLinkClass,
-    Core\Component\Concern\HasLinkActiveClass,
-    Core\Component\Concern\HasLinkActiveTag,
-    Core\Component\Concern\HasLinkCollection,
-    Core\Component\Concern\HasLinkContainerCollection,
-    Core\Component\Concern\HasLinkDisableClass,
-    Core\Component\Concern\HasListCollection,
-    Core\Component\Concern\HasListItemActiveClass,
-    Core\Component\Concern\HasListItemCollection,
-    Core\Component\Concern\HasListItemDisableClass,
-    Core\Component\Concern\HasPrefixItems,
-    Core\Component\Concern\HasSuffixItems,
-    Core\Component\Concern\HasTemplateItem,
-    Core\Component\Concern\HasTemplateLinkItem,
-    Core\Component\Concern\HasToggle,
-    Core\HTMLBuilder,
-    Helper\Template,
-    Interop\RenderInterface
+use BackedEnum;
+use Stringable;
+use UIAwesome\Html\Contracts\RenderableInterface;
+use UIAwesome\Html\Core\Component\Attribute\{
+    HasFirstItemClass,
+    HasFirstLinkClass,
+    HasLastItemClass,
+    HasLastLinkClass,
+    HasLinkActiveClass,
+    HasLinkCollection,
+    HasLinkContainerCollection,
+    HasLinkDisabledClass,
+    HasListCollection,
+    HasListItemActiveClass,
+    HasListItemCollection,
+    HasListItemDisabledClass,
 };
+use UIAwesome\Html\Core\Component\Base\BaseDropdown;
+use UIAwesome\Html\Core\Component\Mixin\{
+    CanBeActivateItems,
+    CanBeLinkAreaCurrent,
+    CanBeListItemAreaCurrent,
+    HasCurrentPath,
+    HasLinkActiveTag,
+    HasPrefixItems,
+    HasSuffixItems,
+    HasTemplateLinkItem,
+    HasToggle,
+};
+use UIAwesome\Html\Core\Element\BaseBlock;
+use UIAwesome\Html\Core\Factory\SimpleFactory;
+use UIAwesome\Html\Core\Html;
+use UIAwesome\Html\Helper\Template;
+use UIAwesome\Html\Interop\{Block, Inline, Lists};
+use UIAwesome\Html\Mixin\{HasPrefixCollection, HasSuffixCollection, HasTemplate};
 
+use function array_values;
 use function count;
 use function implode;
+use function is_string;
 
-class Menu extends Element implements RenderInterface
+/**
+ * Represents a collection of menu items rendered as a list of links.
+ *
+ * Drives breadcrumb, dropdown, and navigation menu rendering with active-path matching, dividers, prefix/suffix items,
+ * and link wrappers.
+ *
+ * Usage example:
+ * ```php
+ * echo \UIAwesome\Html\Core\Component\Menu::tag()
+ *     ->items(
+ *         \UIAwesome\Html\Core\Component\Item::tag()->label('Home')->link('/'),
+ *         \UIAwesome\Html\Core\Component\Item::tag()->label('Reports')->link('/reports'),
+ *     )
+ *     ->currentPath('/reports')
+ *     ->render();
+ * ```
+ *
+ * @copyright Copyright (C) 2026 Terabytesoftw.
+ * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
+ */
+class Menu extends BaseBlock implements RenderableInterface
 {
     use CanBeActivateItems;
     use CanBeLinkAreaCurrent;
     use CanBeListItemAreaCurrent;
-    use HasAttributes;
-    use HasClass;
     use HasCurrentPath;
     use HasFirstItemClass;
     use HasFirstLinkClass;
-    use HasId;
     use HasLastItemClass;
     use HasLastLinkClass;
     use HasLinkActiveClass;
     use HasLinkActiveTag;
     use HasLinkCollection;
     use HasLinkContainerCollection;
-    use HasLinkDisableClass;
+    use HasLinkDisabledClass;
     use HasListCollection;
     use HasListItemActiveClass;
     use HasListItemCollection;
-    use HasListItemDisableClass;
+    use HasListItemDisabledClass;
     use HasPrefixCollection;
     use HasPrefixItems;
-    use HasSeparator;
-    use HasStyle;
     use HasSuffixCollection;
     use HasSuffixItems;
-    use HasTag;
     use HasTemplate;
-    use HasTemplateItem;
     use HasTemplateLinkItem;
     use HasToggle;
 
-    protected string $ariaCurrent = 'page';
-    protected array $attributes = [];
     /**
-     * @psalm-var array<string, mixed>
+     * Value of the `aria-current` attribute applied to the active item.
+     */
+    protected string $ariaCurrent = 'page';
+    /**
+     * @var array<string, mixed> Default configuration applied to nested {@see BaseDropdown} items via
+     * {@see SimpleFactory::configure()}.
      */
     protected array $dropdownDefaultDefinitions = [];
+    /**
+     * @var list<Item|RenderableInterface|BaseDropdown> Items rendered in order inside the menu.
+     */
     protected array $items = [];
+    /**
+     * CSS class assigned to the list item that wraps a nested dropdown menu.
+     */
     protected string $listDropdownItemClass = '';
+    /**
+     * Content rendered between consecutive items when {@see $type} is `breadcrumb`.
+     */
+    protected string $separator = '';
+    /**
+     * Template composing `{prefixItems}/{items}/{suffixItems}` inside the rendered menu body.
+     */
+    protected string $templateItem = '';
+    /**
+     * Menu type controlling the wrapper tag (`menu`, `breadcrumb`, `dropdown`, `nav`, ...).
+     */
     protected string $type = '';
 
     /**
-     * Set the aria-current attribute of the menu item.
+     * Sets the `aria-current` attribute applied to the active item.
      *
-     * @param string $value The aria-current attribute of the menu item.
+     * @param string $value Value for the `aria-current` attribute.
      *
-     * @return static A new instance of the current class with the specified aria-current attribute of the menu item.
+     * @return static New instance with the updated `ariaCurrent` value.
      */
     public function ariaCurrent(string $value): static
     {
         $new = clone $this;
+
         $new->ariaCurrent = $value;
 
         return $new;
     }
 
     /**
-     * Set the default definitions for the dropdown menu.
+     * Sets the default definitions applied to nested {@see BaseDropdown} items via {@see SimpleFactory::configure()}.
      *
-     * @param array $values The default definitions for the dropdown menu.
+     * @param array<string, mixed> $values Cookbook-style associative array of method names and arguments.
      *
-     * @return static A new instance of the current class with the specified default definitions for the dropdown menu.
-     *
-     * @psalm-param array<string, mixed> $values
+     * @return static New instance with the updated `dropdownDefaultDefinitions` value.
      */
     public function dropdownDefaultDefinitions(array $values): static
     {
         $new = clone $this;
+
         $new->dropdownDefaultDefinitions = $values;
 
         return $new;
     }
 
     /**
-     * Set the menu items.
+     * Sets the menu items.
      *
-     * @param Item|RenderInterface ...$values The list of menu items to be rendered. The items can be of type
-     * `Item` or `RenderInterface`.
+     * @param Item|RenderableInterface ...$values Items to render in order inside the menu.
      *
-     * @return static A new instance of the current class with the specified items.
+     * @return static New instance with the updated `items` value.
      */
-    public function items(Item|RenderInterface ...$values): static
+    public function items(Item|RenderableInterface ...$values): static
     {
         $new = clone $this;
-        $new->items = $values;
+
+        $new->items = array_values($values);
 
         return $new;
     }
 
     /**
-     * Set the class of the list item of the dropdown menu.
+     * Sets the CSS class assigned to the list item that wraps a nested dropdown menu.
      *
-     * @param string $value The class of the list item of the dropdown menu.
+     * @param string $value CSS class for the dropdown list item wrapper.
      *
-     * @return static A new instance of the current class with the specified class of the list item of the dropdown
-     * menu.
+     * @return static New instance with the updated `listDropdownItemClass` value.
      */
     public function listDropdownItemClass(string $value): static
     {
         $new = clone $this;
+
         $new->listDropdownItemClass = $value;
 
         return $new;
     }
 
     /**
-     * Set the type of the menu.
+     * Sets the separator rendered between consecutive items when {@see $type} is `breadcrumb`.
      *
-     * @param string $value The type of the menu.
+     * @param string|Stringable $value Content for the separator.
      *
-     * @return static A new instance of the current class with the specified type of the menu.
+     * @return static New instance with the updated `separator` value.
+     */
+    public function separator(string|Stringable $value): static
+    {
+        $new = clone $this;
+
+        $new->separator = (string) $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the template composing the rendered items block (`{prefixItems}/{items}/{suffixItems}`).
+     *
+     * @param string $value Template for the items block.
+     *
+     * @return static New instance with the updated `templateItem` value.
+     */
+    public function templateItem(string $value): static
+    {
+        $new = clone $this;
+
+        $new->templateItem = $value;
+
+        return $new;
+    }
+
+    /**
+     * Sets the menu type controlling the wrapper tag.
+     *
+     * @param string $value Menu type, for example `menu`, `breadcrumb`, `dropdown`, `nav`.
+     *
+     * @return static New instance with the updated `type` value.
      */
     public function type(string $value): static
     {
         $new = clone $this;
+
         $new->type = $value;
 
         return $new;
     }
 
     /**
-     * This method is used to configure the widget with the provided default definitions.
+     * Returns the tag instance representing the menu wrapper.
+     *
+     * @return Block Tag `<nav>` for the `breadcrumb` type and `<div>` otherwise. Subclasses can override to provide a
+     * different wrapper.
      */
-    protected function loadDefaultDefinitions(): array
+    protected function getTag(): BackedEnum
+    {
+        return match ($this->type) {
+            'breadcrumb', 'nav', 'navigation' => Block::NAV,
+            default => Block::DIV,
+        };
+    }
+
+    /**
+     * Loads the default definitions for the menu component.
+     *
+     * @return array<string, mixed> Default attribute values for the menu component.
+     */
+    protected function loadDefault(): array
     {
         return [
-            'linkActiveTag()' => ['a'],
-            'linkContainerTag()' => [false],
-            'linkTag()' => [],
-            'tag()' => ['div'],
-            'template()' => ['{toggle}\n{prefix}\n{menu}\n{suffix}'],
-            'templateItem()' => ['{prefixItems}\n{items}\n{suffixItems}'],
-            'templateLinkItem()' => ['{icon}\n{label}\n{content}'],
-            'type()' => ['menu'],
+            'linkActiveTag' => ['a'],
+            'linkContainerTag' => [false],
+            'linkTag' => ['a'],
+            'template' => ['{toggle}\n{prefix}\n{menu}\n{suffix}'],
+            'templateItem' => ['{prefixItems}\n{items}\n{suffixItems}'],
+            'templateLinkItem' => ['{icon}\n{label}\n{content}'],
+            'type' => ['menu'],
         ];
     }
 
     /**
-     * Run the menu widget.
+     * Renders the menu.
      *
-     * It generates the menu with the specified items and attributes.
-     *
-     * @return string The rendered menu widget.
+     * @return string Rendered HTML for the menu, or an empty string if the menu has no items.
      */
     protected function run(): string
     {
@@ -203,27 +281,31 @@ class Menu extends Element implements RenderInterface
     }
 
     /**
-     * Render the menu items.
+     * Renders each item in {@see $items}, applying active/disabled/separator/first-last decoration, then wraps the
+     * resulting lines with the configured list tag.
      *
-     * @return string The rendered menu items as a string.
+     * @return string Rendered HTML for the items block, or an empty string if there are no items to render.
      */
     private function renderItems(): string
     {
-        /** @psalm-var list<AbstractDropdown>|list<Item>|list<string> $items */
-        $items = $this->items;
         $lines = [];
-        $n = count($items);
 
-        foreach ($items as $i => $item) {
-            if ($item instanceof AbstractDropdown) {
-                /** @var AbstractDropdown $item */
+        $n = count($this->items);
+
+        foreach ($this->items as $i => $item) {
+            if ($item instanceof BaseDropdown) {
                 $item = SimpleFactory::configure($item, $this->dropdownDefaultDefinitions);
+
                 $lines[] = $this->renderTag(
                     ['class' => $this->listDropdownItemClass],
                     $item->render(),
-                    $this->listItemTag
+                    $this->listItemTag,
                 );
-            } elseif ($item instanceof Item) {
+
+                continue;
+            }
+
+            if ($item instanceof Item) {
                 $item = $item
                     ->activateItems($this->activateItems)
                     ->currentPath($this->currentPath)
@@ -234,29 +316,33 @@ class Menu extends Element implements RenderInterface
                     ->listItemTag($this->listItemTag)
                     ->templateLinkItem($this->templateLinkItem);
 
-                if ($this->type === 'breadcrumb') {
-                    $item = $i > 0 ? $item->separator($this->separator) : $item;
+                if ($this->type === 'breadcrumb' && $i > 0) {
+                    $item = $item->separator($this->separator);
                 }
 
-                $item = $this->setActiveAndDisableClass($item);
-                $item = $this->setAriaCurrent($item);
+                $isDisabledd = $item->isDisabled();
+                $isActive = $isDisabledd === false && $item->isActive();
+
+                $item = $this->setActiveAndDisableClass($item, $isActive, $isDisabledd);
+                $item = $this->setAriaCurrent($item, $isActive);
                 $item = $this->setFirstAndLastClass($item, $i, $n);
                 $item = $this->setLinkContainerTag($item);
-
 
                 $lines[] = $item->render();
             }
         }
 
-        $content = implode(PHP_EOL, $lines);
+        $content = implode("\n", $lines);
 
         return $this->renderTag($this->listAttributes, $content, $this->listType);
     }
 
     /**
-     * Render the menu.
+     * Renders the menu body by composing prefix/items/suffix through {@see $templateItem}, wrapping the result with the
+     * menu tag returned by {@see getTag()}, then applying the outer {@see $template} that includes the toggle and
+     * prefix/suffix sections.
      *
-     * @return string The rendered menu as a string.
+     * @return string Rendered HTML for the menu body, or an empty string if there are no items to render.
      */
     private function renderMenu(): string
     {
@@ -269,50 +355,71 @@ class Menu extends Element implements RenderInterface
             ],
         );
 
-        $containerTag = $this->renderTag($this->attributes, $items, $this->tag);
+        $containerTag = $this->renderTag($this->getAttributes(), $items, $this->getTag());
 
         return Template::render(
             $this->template,
             [
                 '{toggle}' => $this->renderToggle(),
-                '{prefix}' => $this->renderTag($this->prefixAttributes, $this->prefix, $this->prefixTag),
+                '{prefix}' => $this->renderTag(
+                    $this->prefixAttributes,
+                    $this->prefix,
+                    $this->prefixTag,
+                ),
                 '{menu}' => $containerTag,
-                '{suffix}' => $this->renderTag($this->suffixAttributes, $this->suffix, $this->suffixTag),
+                '{suffix}' => $this->renderTag(
+                    $this->suffixAttributes,
+                    $this->suffix,
+                    $this->suffixTag,
+                ),
             ],
         );
     }
 
-    private function renderTag(array $attributes, string $content, false|string $tag): string
+    /**
+     * Wraps content with the resolved tag, or returns it unwrapped when the tag is `false` or the content is empty.
+     * String tags are resolved against {@see Lists}, {@see Inline}, and {@see Block} enums, falling back to
+     * {@see Block::DIV}.
+     *
+     * @param mixed[] $attributes HTML attributes for the wrapping tag.
+     * @param string $content Content to wrap.
+     * @param BackedEnum|false|string $tag Tag enum, tag name, or `false` to skip wrapping.
+     *
+     * @return string Wrapped content when a tag is provided and content is not empty, or the original content
+     * otherwise.
+     */
+    private function renderTag(array $attributes, string $content, BackedEnum|false|string $tag): string
     {
         if ($content === '' || $tag === false) {
             return $content;
         }
 
-        return HTMLBuilder::createTag($tag, $content, $attributes);
-    }
-
-    private function setAriaCurrent(Item $item): Item
-    {
-        if ($item->isActive() && $this->isLinkAriaCurrent()) {
-            return $item->linkAttributes(['aria-current' => $this->ariaCurrent]);
+        if (is_string($tag)) {
+            $tag = Lists::tryFrom($tag) ?? Inline::tryFrom($tag) ?? Block::tryFrom($tag) ?? Block::DIV;
         }
 
-        if ($item->isActive() && $this->isListItemAriaCurrent()) {
-            return $item->listItemAttributes(['aria-current' => $this->ariaCurrent]);
-        }
-
-        return $item;
+        return Html::element($tag, $content, $attributes);
     }
 
-    private function setActiveAndDisableClass(Item $item): Item
+    /**
+     * Returns the item decorated with the active or disabled CSS classes based on its state, or unchanged when
+     * neither flag applies.
+     *
+     * @param Item $item Item to decorate.
+     * @param bool $isActive Whether the item is active.
+     * @param bool $isDisabledd Whether the item is disabled.
+     *
+     * @return Item Decorated item with the active or disabled classes when applicable.
+     */
+    private function setActiveAndDisableClass(Item $item, bool $isActive, bool $isDisabledd): Item
     {
-        if ($item->isDisable()) {
+        if ($isDisabledd) {
             return $item
-                ->linkClass($this->linkDisableClass, $this->overrideLinkDisableClass)
-                ->listItemClass($this->listItemDisableClass, $this->overrideListItemDisableClass);
+                ->linkClass($this->linkDisabledClass, $this->overrideLinkDisabledClass)
+                ->listItemClass($this->listItemDisabledClass, $this->overrideListItemDisabledClass);
         }
 
-        if ($item->isActive()) {
+        if ($isActive) {
             return $item
                 ->active()
                 ->linkClass($this->linkActiveClass, $this->overrideLinkActiveClass)
@@ -324,13 +431,40 @@ class Menu extends Element implements RenderInterface
     }
 
     /**
-     * Set the first and last class of the menu item.
+     * Returns the item with the `aria-current` attribute applied to its link or list item when active and the
+     * corresponding aria-current flag is enabled.
      *
-     * @param Item $item The menu item to be rendered.
-     * @param int $i The index of the menu item.
-     * @param int $n The total number of menu items.
+     * @param Item $item Item to decorate.
+     * @param bool $isActive Whether the item is active.
      *
-     * @return Item The menu item with the first and last class set.
+     * @return Item Decorated item with the `aria-current` attribute when applicable.
+     */
+    private function setAriaCurrent(Item $item, bool $isActive): Item
+    {
+        if ($isActive === false) {
+            return $item;
+        }
+
+        if ($this->isLinkAriaCurrent()) {
+            return $item->linkAttributes(['aria-current' => $this->ariaCurrent]);
+        }
+
+        if ($this->isListItemAriaCurrent()) {
+            return $item->listItemAttributes(['aria-current' => $this->ariaCurrent]);
+        }
+
+        return $item;
+    }
+
+    /**
+     * Returns the item decorated with the first or last CSS classes when its index matches the boundary of the items
+     * collection.
+     *
+     * @param Item $item Item to decorate.
+     * @param int $i Index of the current item (zero-based).
+     * @param int $n Total number of items.
+     *
+     * @return Item Decorated item with the first or last classes when applicable.
      */
     private function setFirstAndLastClass(Item $item, int $i, int $n): Item
     {
@@ -349,23 +483,19 @@ class Menu extends Element implements RenderInterface
         return $item;
     }
 
+    /**
+     * Returns the item with the configured link container tag applied when the item does not already declare one.
+     *
+     * @param Item $item Item to decorate.
+     *
+     * @return Item Decorated item with the link container tag applied when it does not already declare one.
+     */
     private function setLinkContainerTag(Item $item): Item
     {
-        if ($item->isLinkContainerTag() === false) {
+        if ($item->isLinkContainer() === false) {
             return $item->linkContainerTag($this->linkContainerTag);
         }
 
         return $item;
-    }
-
-    private function renderToggle(): string
-    {
-        if (is_string($this->toggle)) {
-            return $this->toggle;
-        }
-
-        $id = $this->getId() ?? '';
-
-        return $this->toggle->dataValue($id)->render();
     }
 }

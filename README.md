@@ -1,106 +1,171 @@
+<!-- markdownlint-disable MD041 -->
 <p align="center">
-    <a href="https://github.com/ui-awesome/html-core-component" target="_blank">
-        <img src="https://avatars.githubusercontent.com/u/121752654?s=200&v=4" height="100px">
-    </a>
-    <h1 align="center">UI Awesome HTML Core Component for PHP.</h1>
+    <picture>
+        <img src="https://raw.githubusercontent.com/ui-awesome/.github/refs/heads/main/logo/ui_awesome.png" alt="UI Awesome" width="25%">
+    </picture>
+    <h1 align="center">Html Core Component</h1>
     <br>
 </p>
+<!-- markdownlint-enable MD041 -->
 
 <p align="center">
     <a href="https://github.com/ui-awesome/html-core-component/actions/workflows/build.yml" target="_blank">
-        <img src="https://github.com/ui-awesome/html-core-component/actions/workflows/build.yml/badge.svg" alt="PHPUnit">
-    </a>
-    <a href="https://codecov.io/gh/ui-awesome/html-core-component" target="_blank">
-        <img src="https://codecov.io/gh/ui-awesome/html-core-component/branch/main/graph/badge.svg?token=MF0XUGVLYC" alt="Codecov">
+        <img src="https://img.shields.io/github/actions/workflow/status/ui-awesome/html-core-component/build.yml?style=for-the-badge&label=PHPUnit&logo=github" alt="PHPUnit">
     </a>
     <a href="https://dashboard.stryker-mutator.io/reports/github.com/ui-awesome/html-core-component/main" target="_blank">
-        <img src="https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fui-awesome%2Fhtml-core-component%2Fmain" alt="Infection">
+        <img src="https://img.shields.io/endpoint?style=for-the-badge&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fui-awesome%2Fhtml-core-component%2Fmain" alt="Mutation Testing">
     </a>
     <a href="https://github.com/ui-awesome/html-core-component/actions/workflows/static.yml" target="_blank">
-        <img src="https://github.com/ui-awesome/html-core-component/actions/workflows/static.yml/badge.svg" alt="Psalm">
+        <img src="https://img.shields.io/github/actions/workflow/status/ui-awesome/html-core-component/static.yml?style=for-the-badge&label=PHPStan&logo=github" alt="PHPStan">
     </a>
-    <a href="https://shepherd.dev/github/ui-awesome/html-core-component" target="_blank">
-        <img src="https://shepherd.dev/github/ui-awesome/html-core-component/coverage.svg" alt="Psalm Coverage">
-    </a>
-    <a href="https://github.styleci.io/repos/776381948?branch=main">
-        <img src="https://github.styleci.io/repos/776381948/shield?branch=main" alt="Style ci">
-    </a>        
 </p>
 
-These abstract classes serve as foundational building blocks for creating diverse UI components in HTML applications.
+<p align="center">
+    <strong>Composable, immutable PHP primitives for building UI components: alerts, breadcrumbs, dropdowns, navbars, toggles, and menu items.</strong><br>
+    <em>Accessible by default, fluent API, framework-friendly data hooks, and rendering powered by html-core.</em>
+</p>
 
-They provide a structured approach to developing reusable components with customizable configurations and default
-settings. 
+## Features
 
-By extending these classes, you can quickly implement and customize various UI elements, such as breadcrumbs,
-dropdowns, navigation bars, and toggles, to enhance your application's user interface.
+<picture>
+    <source media="(min-width: 768px)" srcset="./docs/svgs/features.svg">
+    <img src="./docs/svgs/features-mobile.svg" alt="Feature Overview" style="width: 100%;">
+</picture>
 
-- AbstractBreadcrumb: Extend this class to implement breadcrumb navigation components. It simplifies the management of
-breadcrumb items and offers customizable configurations for rendering breadcrumb elements.
+### Installation
 
-- AbstractDropdown: Extend this class to effortlessly implement dropdown components. It simplifies the management of
-menu items and offers customizable configurations for rendering dropdown elements.
-
-- AbstractNavBar: Use this class as a basis for crafting navigation bar components. It provides flexibility in rendering
-brand elements, menus, and additional content, with customizable attributes and default configurations.
-
-- AbstractToggle: Extend this class to create toggle components with ease. It supports various types (e.g., button, link)
-and offers functionality for rendering toggle elements using customizable templates, attributes, and content.
-
-- Item: This class represents individual items within a menu or breadcrumb. It allows for easy management of item attributes
-and content.
-
-- Menu: This class represents a collection of menu items. It facilitates the organization and rendering of menu items within
-dropdowns, navigation bars, or other menu-based components.
-
-Simply extend these abstract classes and apply their default configurations to swiftly integrate and customize UI components
-tailored to your application's requirements.
-
-## Installation
-
-The preferred way to install this extension is through [composer](https://getcomposer.org/download/).
-
-Either run
-
-```shell
-composer require --prefer-dist ui-awesome/html-core-component:^0.1
+```bash
+composer require ui-awesome/html-core-component:^0.2
 ```
 
-or add
+### Quick start
 
-```json
-"ui-awesome/html-core-component": "^0.1"
-```
+This package ships both abstract base classes (for subclassing) and ready-to-use concrete classes (`Alert`, `Breadcrumb`, `Dropdown`, `NavBar`, `Toggle`, `Item`, `Menu`). The concrete classes can be used directly via `::tag()` without any subclassing.
 
-to the require-dev section of your `composer.json` file. 
+The exposed abstractions are:
 
-## Usage
+- `BaseAlert` / `Alert` dismissible alerts with prefix/suffix containers and an optional toggle.
+- `BaseBreadcrumb` / `Breadcrumb` accessible breadcrumb navigation with active-path detection.
+- `BaseDropdown` / `Dropdown` dropdown menus with toggles, dividers, and active-link wiring.
+- `BaseNavBar` / `NavBar` navigation bars with brand, menu, and collapsible toggle.
+- `BaseToggle` / `Toggle` button or link toggles with full data-attribute coverage (Bootstrap, Flowbite, Tailwind UI).
 
-To use the classes in your project, you need to extend them in your custom components.
-
-For example, to create a custom breadcrumb component, you can extend the `AbstractBreadcrumb` class:
+#### Custom breadcrumb
 
 ```php
-use UIAwesome\Html\Core\Component\AbstractBreadcrumb;
+use UIAwesome\Html\Core\Component\{BaseBreadcrumb, Item};
 
-class CustomBreadcrumb extends AbstractBreadcrumb
-{
-    // Custom implementation
-}
+final class Breadcrumb extends BaseBreadcrumb {}
+
+echo Breadcrumb::tag()
+    ->items(
+        Item::tag()->label('Home')->link('/'),
+        Item::tag()->label('Library')->link('/library'),
+        Item::tag()->label('Data')->active(true),
+    )
+    ->currentPath('/library')
+    ->render();
 ```
 
-## Testing
+#### Custom dropdown
 
-[Check the documentation testing](docs/testing.md) to learn about testing.
+```php
+use UIAwesome\Html\Core\Component\{BaseDropdown, Item};
 
-## Support versions
+final class Dropdown extends BaseDropdown {}
 
-[![PHP81](https://img.shields.io/badge/PHP-%3E%3D8.1-787CB5)](https://www.php.net/releases/8.1/en.php)
+echo Dropdown::tag()
+    ->items(
+        Item::tag()->label('Profile')->link('/profile'),
+        Item::tag()->label('Settings')->link('/settings'),
+        Item::tag()->divider('<hr>'),
+        Item::tag()->label('Sign out')->link('/logout'),
+    )
+    ->render();
+```
 
-## License
+#### Custom navbar with toggle
 
-The MIT License (MIT). Please see [License File](LICENSE) for more information.
+```php
+use UIAwesome\Html\Core\Component\{BaseNavBar, BaseToggle, Item};
+
+final class NavBar extends BaseNavBar {}
+final class Toggle extends BaseToggle {}
+
+echo NavBar::tag()
+    ->brandText('My App')
+    ->brandLink('/')
+    ->menu(
+        Item::tag()->label('Home')->link('/'),
+        Item::tag()->label('About')->link('/about'),
+    )
+    ->render();
+```
+
+### Cookbooks (Bootstrap5, Flowbite)
+
+The core ships preconfigured cookbooks for popular CSS frameworks under `src/Cookbook/`. Each cookbook implements one of the provider interfaces shipped by `ui-awesome/html-core`:
+
+- `DefaultsProviderInterface::getDefaults(BaseTag $tag): array`; applied via `addDefaultProvider(ProviderClass::class)`. Used for cookbooks without variants.
+- `ThemeProviderInterface::apply(BaseTag $tag, string $theme): array`; applied via `addThemeProvider('variant', ProviderClass::class)`. Used for cookbooks with multiple variants (`danger`, `info`, `warning`, ...).
+
+```php
+use UIAwesome\Html\Core\Component\Alert;
+use UIAwesome\Html\Core\Component\Cookbook\Bootstrap5\Alert\Defaults as BootstrapAlert;
+use UIAwesome\Html\Core\Component\Cookbook\Flowbite\Alert\Defaults as FlowbiteAlert;
+
+// 1. Bootstrap5 danger alert (theme provider variant is the theme name)
+echo Alert::tag()
+    ->addThemeProvider('danger', BootstrapAlert::class)
+    ->content('Watch out!')
+    ->render();
+
+// 2. Flowbite info alert
+echo Alert::tag()
+    ->addThemeProvider('info', FlowbiteAlert::class)
+    ->content('Heads up!')
+    ->render();
+
+// 3. Single-variant cookbook (default provider)
+use UIAwesome\Html\Core\Component\Cookbook\Bootstrap5\Breadcrumb\Defaults as BreadcrumbDefaults;
+
+echo Breadcrumb::tag()
+    ->addDefaultProvider(BreadcrumbDefaults::class)
+    ->items(/* ... */)
+    ->render();
+```
+
+Available cookbooks (all under `UIAwesome\Html\Core\Component\Cookbook`):
+
+- **Bootstrap5** `Alert\{Defaults, Dismissible}` (8 themes each), `Breadcrumb\Defaults`, `Dropdown\{Defaults, Language}`, `NavBar\{Defaults, AlignRight}`, `Toggle\{Alert, Dropdown, Menu, MenuDropdown, SelectorLanguage, SelectorTheme}`.
+- **Flowbite** `Alert\{Defaults, Dismissible}` (5 themes each), `Breadcrumb\Defaults`, `Dropdown\{Defaults, Language}` (5 themes each), `NavBar\Defaults`, `Toggle\{Alert, Dropdown, Menu, MenuDropdown, SelectorLanguage, SelectorTheme}`.
+
+Authoring a new cookbook is a `final class` implementing `DefaultsProviderInterface` (single variant) or `ThemeProviderInterface` (multiple variants); both return a cookbook-style associative array of fluent method names mapped to their arguments.
+
+## Documentation
+
+For detailed configuration options and advanced usage.
+
+- 🧪 [Testing Guide](docs/testing.md)
+- ⬆️ [Upgrade Guide](UPGRADE.md)
+
+## Package information
+
+[![PHP](https://img.shields.io/badge/%3E%3D8.3-777BB4.svg?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/releases/8.3/en.php)
+[![Latest Stable Version](https://img.shields.io/packagist/v/ui-awesome/html-core-component.svg?style=for-the-badge&logo=packagist&logoColor=white&label=Stable)](https://packagist.org/packages/ui-awesome/html-core-component)
+[![Total Downloads](https://img.shields.io/packagist/dt/ui-awesome/html-core-component.svg?style=for-the-badge&logo=composer&logoColor=white&label=Downloads)](https://packagist.org/packages/ui-awesome/html-core-component)
+
+## Quality code
+
+[![Codecov](https://img.shields.io/codecov/c/github/ui-awesome/html-core-component.svg?style=for-the-badge&logo=codecov&logoColor=white&label=Coverage)](https://codecov.io/github/ui-awesome/html-core-component)
+[![PHPStan Level Max](https://img.shields.io/badge/PHPStan-Level%20Max-4F5D95.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ui-awesome/html-core-component/actions/workflows/static.yml)
+[![Super-Linter](https://img.shields.io/github/actions/workflow/status/ui-awesome/html-core-component/linter.yml?style=for-the-badge&label=Super-Linter&logo=github)](https://github.com/ui-awesome/html-core-component/actions/workflows/linter.yml)
+[![StyleCI](https://img.shields.io/badge/StyleCI-Passed-44CC11.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.styleci.io/repos/776381948?branch=main)
 
 ## Our social networks
 
-[![Twitter](https://img.shields.io/badge/twitter-follow-1DA1F2?logo=twitter&logoColor=1DA1F2&labelColor=555555?style=flat)](https://twitter.com/Terabytesoftw)
+[![Follow on X](https://img.shields.io/badge/-Follow%20on%20X-1DA1F2.svg?style=for-the-badge&logo=x&logoColor=white&labelColor=000000)](https://x.com/Terabytesoftw)
+
+## License
+
+[![License](https://img.shields.io/badge/License-MIT-brightgreen.svg?style=for-the-badge&logo=opensourceinitiative&logoColor=white&labelColor=555555)](LICENSE)
