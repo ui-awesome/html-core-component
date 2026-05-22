@@ -10,11 +10,17 @@ use UIAwesome\Html\Core\Provider\DefaultsProviderInterface;
 /**
  * Bootstrap5 toggle defaults for the navbar collapse button (hamburger).
  *
+ * The `data-bs-target` and `aria-controls` attributes must be supplied by the caller to reference the collapsible
+ * navbar ID, as Bootstrap collapse plugin uses them to locate the target element to expand or collapse.
+ *
  * Usage example:
  * ```php
- * echo \UIAwesome\Html\Core\Component\Toggle::tag()
+ * $navId = 'navbarSupportedContent';
+ *
+ * \UIAwesome\Html\Core\Component\Toggle::tag()
  *     ->addDefaultProvider(\UIAwesome\Html\Core\Component\Cookbook\Bootstrap5\Toggle\Menu::class)
- *     ->render();
+ *     ->addAriaAttribute('controls', $navId)
+ *     ->addDataAttribute('bs-target', '#' . $navId);
  * ```
  *
  * @link https://getbootstrap.com/docs/5.3/components/navbar/#toggler

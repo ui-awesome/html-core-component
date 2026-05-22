@@ -5,13 +5,18 @@ declare(strict_types=1);
 namespace UIAwesome\Html\Core\Component\Cookbook\Bootstrap5\NavBar;
 
 use UIAwesome\Html\Core\Base\BaseTag;
-use UIAwesome\Html\Core\Component\Cookbook\Bootstrap5\Toggle\{Menu, MenuDropdown};
+use UIAwesome\Html\Core\Component\Cookbook\Bootstrap5\Toggle\MenuDropdown;
 use UIAwesome\Html\Core\Component\Toggle;
 use UIAwesome\Html\Core\Provider\DefaultsProviderInterface;
 use UIAwesome\Html\Interop\Block;
 
 /**
  * Bootstrap5 navbar defaults providing the default expand-on-large layout.
+ *
+ * The cookbook does not provide a collapse toggle.
+ *
+ * See {@see \UIAwesome\Html\Core\Component\Cookbook\Bootstrap5\Toggle\Menu} for the explicit wiring required to make
+ * Bootstrap collapse plugin locate the target.
  *
  * Usage example:
  * ```php
@@ -52,7 +57,6 @@ final class Defaults implements DefaultsProviderInterface
                     'listClass' => 'navbar-nav me-auto mb-2 mb-lg-0',
                     'listDropdownItemClass' => 'nav-item dropdown',
                     'listItemClass' => 'nav-item',
-                    'toggle' => Toggle::tag()->addDefaultProvider(Menu::class),
                 ],
             ],
         ];
