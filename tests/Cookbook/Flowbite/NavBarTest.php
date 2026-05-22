@@ -127,6 +127,7 @@ final class NavBarTest extends TestCase
             'Nested dropdown must inherit Flowbite dropdown class set and toggle button styling.',
         );
     }
+
     public function testApplyDefaultsRendersResponsiveNavbar(): void
     {
         self::assertSame(

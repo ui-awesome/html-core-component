@@ -74,6 +74,7 @@ final class NavBarTest extends TestCase
             'AlignRight provider must apply the same dropdown classes as Defaults.',
         );
     }
+
     public function testApplyAlignRightUsesFixedContainer(): void
     {
         self::assertSame(
