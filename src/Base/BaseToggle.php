@@ -136,7 +136,7 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
     /**
      * Sets the markup rendered inside the toggle decoration tag.
      *
-     * @param string|Stringable|RenderableInterface ...$values Content joined to form the toggle decoration markup.
+     * @param RenderableInterface|string|Stringable ...$values Content joined to form the toggle decoration markup.
      *
      * @return static New instance with the updated `toggleContent` value.
      */

@@ -122,7 +122,7 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     /**
      * Sets the brand image markup.
      *
-     * @param string|Stringable|RenderableInterface ...$value Content joined to form the brand image markup.
+     * @param RenderableInterface|string|Stringable ...$value Content joined to form the brand image markup.
      *
      * @return static New instance with the updated `brandImage` value.
      */
@@ -203,7 +203,7 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     /**
      * Sets the tag wrapping the brand block, or `false` to skip wrapping.
      *
-     * @param false|BackedEnum $value Tag enum, or `false` to skip wrapping (defaults to `Block::DIV`).
+     * @param BackedEnum|false $value Tag enum, or `false` to skip wrapping (defaults to `Block::DIV`).
      *
      * @return static New instance with the updated `brandTag` value.
      */
@@ -235,7 +235,7 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     /**
      * Sets the brand text content.
      *
-     * @param string|Stringable|RenderableInterface ...$value Content joined to form the brand text.
+     * @param RenderableInterface|string|Stringable ...$value Content joined to form the brand text.
      *
      * @return static New instance with the updated `brandText` value.
      */
@@ -251,7 +251,7 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     /**
      * Sets the markup of the brand-side toggle rendered alongside the brand link.
      *
-     * @param string|Stringable|RenderableInterface ...$value Content joined to form the brand toggle markup.
+     * @param RenderableInterface|string|Stringable ...$value Content joined to form the brand toggle markup.
      *
      * @return static New instance with the updated `brandToggle` value.
      */
@@ -300,7 +300,7 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     /**
      * Sets the tag wrapping the menu block, or `false` to skip wrapping.
      *
-     * @param false|BackedEnum $value Tag enum, or `false` to skip wrapping (defaults to `Block::DIV`).
+     * @param BackedEnum|false $value Tag enum, or `false` to skip wrapping (defaults to `Block::DIV`).
      *
      * @return static New instance with the updated `containerMenuTag` value.
      */
@@ -473,7 +473,7 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
      *
      * @param mixed[] $attributes HTML attributes for the wrapping tag.
      * @param string $content Content to wrap.
-     * @param false|BackedEnum $tag Tag enum, or `false` to skip wrapping.
+     * @param BackedEnum|false $tag Tag enum, or `false` to skip wrapping.
      *
      * @return string Wrapped content when a tag is provided and content is not empty, or the original content
      * otherwise.

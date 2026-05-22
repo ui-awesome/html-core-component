@@ -137,7 +137,7 @@ trait HasIconCollection
      * $component->iconContent('<path d="M0 0L10 10"/>');
      * ```
      *
-     * @param string|Stringable|RenderableInterface ...$values Content fragments concatenated into the icon body.
+     * @param RenderableInterface|string|Stringable ...$values Content fragments concatenated into the icon body.
      *
      * @return static New instance with the updated `iconContent`.
      */
@@ -229,7 +229,7 @@ trait HasIconCollection
      * $component->iconTag(false);
      * ```
      *
-     * @param false|string|BackedEnum $value One of `i`, `span`, `svg`, or `false` to disable the icon.
+     * @param BackedEnum|false|string $value One of `i`, `span`, `svg`, or `false` to disable the icon.
      *
      * @throws InvalidArgumentException When the value is not a supported icon tag.
      *

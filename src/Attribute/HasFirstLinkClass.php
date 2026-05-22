@@ -41,7 +41,7 @@ trait HasFirstLinkClass
      * $menu->firstLinkClass('first-link', false);
      * ```
      *
-     * @param string|Stringable|UnitEnum|array<string|Stringable|UnitEnum> $value CSS class applied to the first link.
+     * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class applied to the first link.
      * @param bool $override Whether to replace existing classes (`true`) or merge (`false`).
      *
      * @return static New instance with the updated `firstLinkClass` value.

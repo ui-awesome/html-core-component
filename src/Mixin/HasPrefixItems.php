@@ -31,7 +31,7 @@ trait HasPrefixItems
      * $menu->prefixItems('<span class="badge">New</span>');
      * ```
      *
-     * @param string|Stringable|RenderableInterface ...$values Content fragments concatenated into the prefix block.
+     * @param RenderableInterface|string|Stringable ...$values Content fragments concatenated into the prefix block.
      *
      * @return static New instance with the updated `prefixItems` value.
      */

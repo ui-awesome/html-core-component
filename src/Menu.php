@@ -102,7 +102,7 @@ class Menu extends BaseBlock implements RenderableInterface
      */
     protected array $dropdownDefaultDefinitions = [];
     /**
-     * @var list<Item|RenderableInterface|BaseDropdown> Items rendered in order inside the menu.
+     * @var list<BaseDropdown|Item|RenderableInterface> Items rendered in order inside the menu.
      */
     protected array $items = [];
     /**

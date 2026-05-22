@@ -170,7 +170,7 @@ trait HasListItemCollection
      * $component->listItemTag(false);
      * ```
      *
-     * @param false|string|BackedEnum $value Currently must be `li`, or `false` to skip the wrapper.
+     * @param BackedEnum|false|string $value Currently must be `li`, or `false` to skip the wrapper.
      *
      * @throws InvalidArgumentException When the value is not `li` or `false`.
      *

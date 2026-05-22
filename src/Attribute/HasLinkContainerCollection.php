@@ -111,7 +111,7 @@ trait HasLinkContainerCollection
      * $component->linkContainerClass('wrapper', true);
      * ```
      *
-     * @param string|Stringable|UnitEnum|array<string|Stringable|UnitEnum> $value CSS class (or class list) to add.
+     * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class (or class list) to add.
      * @param bool $override Whether to replace existing classes (`true`) or merge (`false`).
      *
      * @return static New instance with the updated container `class` attribute.

@@ -31,7 +31,7 @@ trait HasSuffixItems
      * $menu->suffixItems('<a href="/all">View all</a>');
      * ```
      *
-     * @param string|Stringable|RenderableInterface ...$values Content fragments concatenated into the suffix block.
+     * @param RenderableInterface|string|Stringable ...$values Content fragments concatenated into the suffix block.
      *
      * @return static New instance with the updated `suffixItems` value.
      */
