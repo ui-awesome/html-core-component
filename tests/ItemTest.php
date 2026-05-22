@@ -211,22 +211,6 @@ final class ItemTest extends TestCase
         );
     }
 
-    public function testReturnNewInstanceWhenSettingAttribute(): void
-    {
-        $instance = Item::tag();
-
-        self::assertNotSame(
-            $instance,
-            $instance->items(),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->label(''),
-            'New instance must be returned (immutability).',
-        );
-    }
-
     public function testIsActiveWithEmptyLink(): void
     {
         self::assertFalse(
@@ -542,6 +526,22 @@ final class ItemTest extends TestCase
         self::assertEmpty(
             Item::tag()->render(),
             'Empty item must render an empty string.',
+        );
+    }
+
+    public function testReturnNewInstanceWhenSettingAttribute(): void
+    {
+        $instance = Item::tag();
+
+        self::assertNotSame(
+            $instance,
+            $instance->items(),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->label(''),
+            'New instance must be returned (immutability).',
         );
     }
 

@@ -1318,92 +1318,6 @@ final class NavBarTest extends TestCase
         );
     }
 
-    public function testReturnNewInstanceWhenSettingAttribute(): void
-    {
-        $instance = NavBar::tag();
-
-        self::assertNotSame(
-            $instance,
-            $instance->brandAttributes([]),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->brandClass(''),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->brandImage(''),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->brandLink(''),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->brandLinkAttributes([]),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->brandLinkClass(''),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->brandLinkTemplate(''),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->brandTag(false),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->brandTemplate(''),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->brandText(''),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->brandToggle(''),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->containerMenuAttributes([]),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->containerMenuClass(''),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->containerMenuTag(),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->menu(Menu::tag()),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->menuDefaultDefinitions([]),
-            'New instance must be returned (immutability).',
-        );
-    }
-
     public function testPrefix(): void
     {
         self::assertSame(
@@ -1670,6 +1584,92 @@ final class NavBarTest extends TestCase
         self::assertEmpty(
             NavBar::tag()->render(),
             'Empty navbar must render an empty string.',
+        );
+    }
+
+    public function testReturnNewInstanceWhenSettingAttribute(): void
+    {
+        $instance = NavBar::tag();
+
+        self::assertNotSame(
+            $instance,
+            $instance->brandAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->brandClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->brandImage(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->brandLink(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->brandLinkAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->brandLinkClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->brandLinkTemplate(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->brandTag(false),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->brandTemplate(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->brandText(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->brandToggle(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->containerMenuAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->containerMenuClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->containerMenuTag(),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->menu(Menu::tag()),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->menuDefaultDefinitions([]),
+            'New instance must be returned (immutability).',
         );
     }
 

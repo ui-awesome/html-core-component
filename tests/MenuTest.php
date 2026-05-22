@@ -343,37 +343,6 @@ final class MenuTest extends TestCase
         );
     }
 
-    public function testReturnNewInstanceWhenSettingAttribute(): void
-    {
-        $instance = Menu::tag();
-
-        self::assertNotSame(
-            $instance,
-            $instance->ariaCurrent(''),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->dropdownDefaultDefinitions([]),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->items(),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->listDropdownItemClass(''),
-            'New instance must be returned (immutability).',
-        );
-        self::assertNotSame(
-            $instance,
-            $instance->type(''),
-            'New instance must be returned (immutability).',
-        );
-    }
-
     public function testIsLinkAriaCurrent(): void
     {
         self::assertTrue(
@@ -1455,6 +1424,37 @@ final class MenuTest extends TestCase
         self::assertEmpty(
             Menu::tag()->render(),
             'Empty menu must render an empty string.',
+        );
+    }
+
+    public function testReturnNewInstanceWhenSettingAttribute(): void
+    {
+        $instance = Menu::tag();
+
+        self::assertNotSame(
+            $instance,
+            $instance->ariaCurrent(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->dropdownDefaultDefinitions([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->items(),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listDropdownItemClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->type(''),
+            'New instance must be returned (immutability).',
         );
     }
 
