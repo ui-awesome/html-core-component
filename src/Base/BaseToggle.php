@@ -218,7 +218,7 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
             ],
         );
 
-        $content = $content !== '' ? PHP_EOL . $content . PHP_EOL : '';
+        $content = $content !== '' ? "\n{$content}\n" : '';
 
         return Html::element($this->getTag(), $content, $attributes);
     }
@@ -235,12 +235,31 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
             return $this->toggleContent;
         }
 
-        $tag = Inline::tryFrom($this->toggleTag) ?? Block::tryFrom($this->toggleTag);
+        $tag = self::resolveToggleTag($this->toggleTag);
 
         if ($tag === null) {
             return $this->toggleContent;
         }
 
         return Html::element($tag, $this->toggleContent, $this->toggleAttributes);
+    }
+
+    /**
+     * Resolves a string tag name against {@see Inline} and {@see Block} enums in order, returning the first matching
+     * case or `null` when neither enum recognizes the value.
+     *
+     * @param string $name Tag name to resolve.
+     *
+     * @return BackedEnum|null Resolved enum case, or `null` when the name is not recognized.
+     */
+    private static function resolveToggleTag(string $name): BackedEnum|null
+    {
+        $tag = Inline::tryFrom($name);
+
+        if ($tag !== null) {
+            return $tag;
+        }
+
+        return Block::tryFrom($name);
     }
 }

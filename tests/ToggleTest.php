@@ -387,8 +387,68 @@ final class ToggleTest extends TestCase
 
         self::assertNotSame(
             $instance,
+            $instance->dataValue(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->iconAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->iconClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->iconContent(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->iconFilePath(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->iconRemoveAttribute('key'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->iconSetAttribute('key', 'value'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->iconTag(false),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
             $instance->link(),
-            "'link' must return a new instance.",
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->toggleAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->toggleClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->toggleContent(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->toggleTag(false),
+            'New instance must be returned (immutability).',
         );
     }
 
@@ -534,6 +594,26 @@ final class ToggleTest extends TestCase
                 ->toggleClass('value')
                 ->render(),
             'Attribute map must decorate the toggle decoration.',
+        );
+    }
+
+    public function testToggleAttributesMergesAcrossCalls(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <button type="button">
+            <span class="first" data-x="value">
+            content
+            </span>
+            </button>
+            HTML,
+            Toggle::tag()
+                ->toggleAttributes(['class' => 'first'])
+                ->toggleAttributes(['data-x' => 'value'])
+                ->toggleContent('content')
+                ->toggleTag('span')
+                ->render(),
+            "Repeated 'toggleAttributes()' calls must merge values from prior invocations.",
         );
     }
 

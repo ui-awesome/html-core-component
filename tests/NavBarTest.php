@@ -1587,6 +1587,14 @@ final class NavBarTest extends TestCase
         );
     }
 
+    public function testRenderReturnsEmptyEvenWithBrandWhenMenuIsEmpty(): void
+    {
+        self::assertEmpty(
+            NavBar::tag()->brandText('My App')->brandLink('/')->render(),
+            "Empty 'menu' must short-circuit before rendering brand or other slots.",
+        );
+    }
+
     public function testReturnNewInstanceWhenSettingAttribute(): void
     {
         $instance = NavBar::tag();

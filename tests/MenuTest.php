@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\{Dropdown, Item, Menu, Toggle};
+use UIAwesome\Html\Core\Component\Tests\Support\RenderToggleOverride;
 use UIAwesome\Html\Interop\Inline;
 
 /**
@@ -44,7 +45,7 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->activateItems(true)
+                ->activateItems()
                 ->currentPath('/')
                 ->items(
                     Item::tag()->label('Home')->link('/'),
@@ -53,7 +54,7 @@ final class MenuTest extends TestCase
                 )
                 ->linkActiveClass('active')
                 ->render(),
-            'Active item must carry the active class.',
+            "Default 'activateItems' argument must enable activation.",
         );
     }
 
@@ -271,6 +272,37 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testFirstItemClassOverridesBaseClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li class="value">
+            <a href="/">
+            Home
+            </a>
+            </li>
+            <li class="base">
+            <a href="/about">
+            About
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->firstItemClass('value')
+                ->items(
+                    Item::tag()->label('Home')->link('/'),
+                    Item::tag()->label('About')->link('/about'),
+                )
+                ->listItemAttributes(['class' => 'base'])
+                ->render(),
+            "Default 'firstItemClass' override must replace the base list-item class.",
+        );
+    }
+
     public function testFirstLinkClass(): void
     {
         self::assertSame(
@@ -395,6 +427,37 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testLastItemClassOverridesBaseClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li class="base">
+            <a href="/">
+            Home
+            </a>
+            </li>
+            <li class="value">
+            <a href="/about">
+            About
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(
+                    Item::tag()->label('Home')->link('/'),
+                    Item::tag()->label('About')->link('/about'),
+                )
+                ->lastItemClass('value')
+                ->listItemAttributes(['class' => 'base'])
+                ->render(),
+            "Default 'lastItemClass' override must replace the base list-item class.",
+        );
+    }
+
     public function testLastLinkClass(): void
     {
         self::assertSame(
@@ -428,6 +491,37 @@ final class MenuTest extends TestCase
                 ->lastLinkClass('value')
                 ->render(),
             'Last link must carry the configured class.',
+        );
+    }
+
+    public function testLastLinkClassOverridesBaseClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <a class="base" href="/">
+            Home
+            </a>
+            </li>
+            <li>
+            <a class="value" href="/about">
+            About
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(
+                    Item::tag()->label('Home')->link('/'),
+                    Item::tag()->label('About')->link('/about'),
+                )
+                ->lastLinkClass('value')
+                ->linkAttributes(['class' => 'base'])
+                ->render(),
+            "Default 'lastLinkClass' override must replace the base link class.",
         );
     }
 
@@ -533,9 +627,9 @@ final class MenuTest extends TestCase
                     Item::tag()->label('About')->link('/about'),
                     Item::tag()->label('Contact')->link('/contact'),
                 )
-                ->linkAriaCurrent(true)
+                ->linkAriaCurrent()
                 ->render(),
-            "Active link must carry the 'aria-current' attribute.",
+            "Default 'linkAriaCurrent' argument must carry the 'aria-current' attribute on the active link.",
         );
     }
 
@@ -611,6 +705,29 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testLinkClassMergesWithBaseLinkAttributeClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <a class="base value" href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->linkAttributes(['class' => 'base'])
+                ->linkClass('value')
+                ->render(),
+            "Default 'linkClass' merge must append to existing link class.",
+        );
+    }
+
     public function testLinkContainerAttributes(): void
     {
         self::assertSame(
@@ -654,6 +771,32 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testLinkContainerAttributesMergesAcrossCalls(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <span class="first" data-x="value">
+            <a href="/">
+            Home
+            </a>
+            </span>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->linkContainerAttributes(['class' => 'first'])
+                ->linkContainerAttributes(['data-x' => 'value'])
+                ->linkContainerTag('span')
+                ->render(),
+            "Repeated 'linkContainerAttributes()' calls must merge values from prior invocations.",
+        );
+    }
+
     public function testLinkContainerClass(): void
     {
         self::assertSame(
@@ -694,6 +837,83 @@ final class MenuTest extends TestCase
                 ->linkContainerTag()
                 ->render(),
             'CSS class must be applied to every link container.',
+        );
+    }
+
+    public function testLinkContainerClassMergesWithBaseLinkContainerAttributeClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <span class="base value">
+            <a href="/">
+            Home
+            </a>
+            </span>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->linkContainerAttributes(['class' => 'base'])
+                ->linkContainerClass('value')
+                ->linkContainerTag('span')
+                ->render(),
+            "Default 'linkContainerClass' merge must append to existing link-container class.",
+        );
+    }
+
+    public function testLinkContainerRemoveAttribute(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <span>
+            <a href="/">
+            Home
+            </a>
+            </span>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->linkContainerAttributes(['data-x' => 'value'])
+                ->linkContainerRemoveAttribute('data-x')
+                ->linkContainerTag('span')
+                ->render(),
+            'Removed link-container attribute must not appear on the rendered wrapper.',
+        );
+    }
+
+    public function testLinkContainerSetAttribute(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <span data-x="value">
+            <a href="/">
+            Home
+            </a>
+            </span>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->linkContainerSetAttribute('data-x', 'value')
+                ->linkContainerTag('span')
+                ->render(),
+            'Set link-container attribute must appear on the rendered wrapper.',
         );
     }
 
@@ -895,6 +1115,120 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testLinkDisabledClassMergesWithBaseLinkAttributeClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <a class="base value" href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/')->disabled())
+                ->linkAttributes(['class' => 'base'])
+                ->linkDisabledClass('value')
+                ->render(),
+            "Default 'linkDisabledClass' merge must append to existing link class for disabled items.",
+        );
+    }
+
+    public function testLinkRemoveAttribute(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->linkAttributes(['rel' => 'nofollow'])
+                ->linkRemoveAttribute('rel')
+                ->render(),
+            'Removed link attribute must not appear on the rendered link.',
+        );
+    }
+
+    public function testLinkSetAttribute(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <a href="/" rel="nofollow">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->linkSetAttribute('rel', 'nofollow')
+                ->render(),
+            'Set link attribute must appear on the rendered link.',
+        );
+    }
+
+    public function testListAttributesMergesAcrossCalls(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul class="first" data-x="value">
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->listAttributes(['class' => 'first'])
+                ->listAttributes(['data-x' => 'value'])
+                ->render(),
+            "Repeated 'listAttributes()' calls must merge values from prior invocations.",
+        );
+    }
+
+    public function testListClassMergesWithBaseListAttributeClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul class="base value">
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->listAttributes(['class' => 'base'])
+                ->listClass('value')
+                ->render(),
+            "Default 'listClass' merge must append to existing list class.",
+        );
+    }
+
     public function testListDropdownItemClass(): void
     {
         self::assertSame(
@@ -1086,6 +1420,97 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testListItemClassMergesWithBaseListItemAttributeClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li class="base value">
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->listItemAttributes(['class' => 'base'])
+                ->listItemClass('value')
+                ->render(),
+            "Default 'listItemClass' merge must append to existing list-item class.",
+        );
+    }
+
+    public function testListItemDisabledClassMergesWithBaseListItemAttributeClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li class="base value">
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/')->disabled())
+                ->listItemAttributes(['class' => 'base'])
+                ->listItemDisabledClass('value')
+                ->render(),
+            "Default 'listItemDisabledClass' merge must append to existing list-item class for disabled items.",
+        );
+    }
+
+    public function testListItemRemoveAttribute(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->listItemAttributes(['data-x' => 'value'])
+                ->listItemRemoveAttribute('data-x')
+                ->render(),
+            "Removed list-item attribute must not appear on the rendered '<li>'.",
+        );
+    }
+
+    public function testListItemSetAttribute(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li data-x="value">
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->listItemSetAttribute('data-x', 'value')
+                ->render(),
+            "Set list-item attribute must appear on the rendered '<li>'.",
+        );
+    }
+
     public function testListItemTag(): void
     {
         self::assertSame(
@@ -1149,6 +1574,51 @@ final class MenuTest extends TestCase
                 ->listItemTag(false)
                 ->render(),
             "'false' list item tag must drop the wrapper.",
+        );
+    }
+
+    public function testListRemoveAttribute(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->listAttributes(['data-x' => 'value'])
+                ->listRemoveAttribute('data-x')
+                ->render(),
+            "Removed list attribute must not appear on the rendered '<ul>'.",
+        );
+    }
+
+    public function testListSetAttribute(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul data-x="value">
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->listSetAttribute('data-x', 'value')
+                ->render(),
+            "Set list attribute must appear on the rendered '<ul>'.",
         );
     }
 
@@ -1427,13 +1897,84 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testRenderReturnsEmptyEvenWithToggleWhenItemsAreEmpty(): void
+    {
+        self::assertEmpty(
+            Menu::tag()->toggle(Toggle::tag()->content('toggle'))->render(),
+            'Empty `items` list must short-circuit before rendering the toggle.',
+        );
+    }
+
+    public function testRenderToggleRemainsProtectedForSubclassOverride(): void
+    {
+        self::assertInstanceOf(
+            Menu::class,
+            new RenderToggleOverride(),
+            "'renderToggle()' must remain `protected` so subclasses with '#[\\Override]' can declare overrides.",
+        );
+    }
+
+    public function testRenderWithNavigationType(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav>
+            <ul>
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </nav>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->type('navigation')
+                ->render(),
+            "Type 'navigation' must wrap the menu in a '<nav>' element.",
+        );
+    }
+
+    public function testRenderWithNavType(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav>
+            <ul>
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </nav>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->type('nav')
+                ->render(),
+            "Type 'nav' must wrap the menu in a '<nav>' element.",
+        );
+    }
+
     public function testReturnNewInstanceWhenSettingAttribute(): void
     {
         $instance = Menu::tag();
 
         self::assertNotSame(
             $instance,
+            $instance->activateItems(),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
             $instance->ariaCurrent(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->currentPath(''),
             'New instance must be returned (immutability).',
         );
         self::assertNotSame(
@@ -1443,12 +1984,197 @@ final class MenuTest extends TestCase
         );
         self::assertNotSame(
             $instance,
+            $instance->firstItemClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->firstLinkClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
             $instance->items(),
             'New instance must be returned (immutability).',
         );
         self::assertNotSame(
             $instance,
+            $instance->lastItemClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->lastLinkClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkActiveClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkActiveTag(false),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkAriaCurrent(),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerRemoveAttribute('key'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerSetAttribute('key', 'value'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerTag(false),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkDisabledClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkRemoveAttribute('key'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkSetAttribute('key', 'value'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkTag(false),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
             $instance->listDropdownItemClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemActiveClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemAriaCurrent(),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemDisabledClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemRemoveAttribute('key'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemSetAttribute('key', 'value'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemTag(false),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listRemoveAttribute('key'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listSetAttribute('key', 'value'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listType(false),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->prefixItems(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->suffixItems(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->templateLinkItem(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->separator(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->templateItem(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->toggle(''),
             'New instance must be returned (immutability).',
         );
         self::assertNotSame(
@@ -1885,6 +2611,16 @@ final class MenuTest extends TestCase
             )
             ->listItemTag('span')
             ->render();
+    }
+
+    public function testThrowInvalidArgumentExceptionWhenListTypeIsNotAllowed(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            "Value 'span' is not in the list of valid values for 'listType': 'ol', 'ul'.",
+        );
+
+        Menu::tag()->listType('span');
     }
 
     public function testToggle(): void

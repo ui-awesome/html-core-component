@@ -413,7 +413,7 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
         if ($this->brandLink !== '') {
             $brandAttributes = $this->brandLinkAttributes;
             $brandAttributes['href'] = $this->brandLink;
-            $brandLink = Html::element(Inline::A, PHP_EOL . $brandLink . PHP_EOL, $brandAttributes);
+            $brandLink = Html::element(Inline::A, "\n{$brandLink}\n", $brandAttributes);
         }
 
         $brand = Template::render(

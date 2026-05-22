@@ -7,7 +7,7 @@ namespace UIAwesome\Html\Core\Component\Tests\Cookbook\Bootstrap5;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\Cookbook\Bootstrap5\NavBar\{AlignRight, Defaults};
-use UIAwesome\Html\Core\Component\{Item, Menu, NavBar};
+use UIAwesome\Html\Core\Component\{Dropdown, Item, Menu, NavBar};
 
 /**
  * Unit tests for the {@see NavBar} component with Bootstrap5 default providers.
@@ -18,6 +18,62 @@ use UIAwesome\Html\Core\Component\{Item, Menu, NavBar};
 #[Group('navbar')]
 final class NavBarTest extends TestCase
 {
+    public function testApplyAlignRightRendersNavbarWithDropdownItem(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container">
+            <a class="navbar-brand" href="/">
+            My App
+            </a>
+            <button class="navbar-toggler" type="button" aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="collapse">
+            <span class="navbar-toggler-icon">
+            </span>
+            </button>
+            <div class="collapse justify-content-end navbar-collapse">
+            <ul class="navbar-nav">
+            <li class="nav-item">
+            <a class="nav-link" href="/">
+            Home
+            </a>
+            </li>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown">
+            Dropdown
+            </a>
+            <div>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">
+            Action
+            </a>
+            </li>
+            </ul>
+            </div>
+            </li>
+            </ul>
+            </div>
+            </div>
+            </nav>
+            HTML,
+            NavBar::tag()
+                ->addDefaultProvider(AlignRight::class)
+                ->brandText('My App')
+                ->brandLink('/')
+                ->menu(
+                    Menu::tag()->items(
+                        Item::tag()->label('Home')->link('/'),
+                        Dropdown::tag()
+                            ->containerTag(false)
+                            ->id(null)
+                            ->items(Item::tag()->label('Action')->link('#')),
+                    ),
+                )
+                ->render(),
+            'AlignRight provider must apply the same dropdown classes as Defaults.',
+        );
+    }
     public function testApplyAlignRightUsesFixedContainer(): void
     {
         self::assertSame(
@@ -85,6 +141,63 @@ final class NavBarTest extends TestCase
                 ->menu(Menu::tag()->items(Item::tag()->label('Home')->link('/')))
                 ->render(),
             'Default provider must emit the expand-on-large navbar layout.',
+        );
+    }
+
+    public function testApplyDefaultsRendersNavbarWithDropdownItem(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+            My App
+            </a>
+            <button class="navbar-toggler" type="button" aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="collapse">
+            <span class="navbar-toggler-icon">
+            </span>
+            </button>
+            <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+            <a class="nav-link" href="/">
+            Home
+            </a>
+            </li>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown">
+            Dropdown
+            </a>
+            <div>
+            <ul class="dropdown-menu">
+            <li>
+            <a class="dropdown-item" href="#">
+            Action
+            </a>
+            </li>
+            </ul>
+            </div>
+            </li>
+            </ul>
+            </div>
+            </div>
+            </nav>
+            HTML,
+            NavBar::tag()
+                ->addDefaultProvider(Defaults::class)
+                ->brandText('My App')
+                ->brandLink('/')
+                ->menu(
+                    Menu::tag()->items(
+                        Item::tag()->label('Home')->link('/'),
+                        Dropdown::tag()
+                            ->containerTag(false)
+                            ->id(null)
+                            ->items(Item::tag()->label('Action')->link('#')),
+                    ),
+                )
+                ->render(),
+            'Nested dropdown must inherit Bootstrap5 nav-item, dropdown-menu, and dropdown-item classes.',
         );
     }
 }

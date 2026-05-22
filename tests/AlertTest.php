@@ -38,6 +38,23 @@ final class AlertTest extends TestCase
         );
     }
 
+    public function testRenderOmitsPrefixWrapperWhenPrefixContentIsEmpty(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div id="alert" role="alert">
+            content
+            </div>
+            HTML,
+            Alert::tag()
+                ->content('content')
+                ->id('alert')
+                ->prefixTag(Block::DIV)
+                ->render(),
+            'Empty prefix content must skip the prefix wrapper even when the prefix tag is a valid enum.',
+        );
+    }
+
     public function testRenderWithAttributes(): void
     {
         self::assertSame(

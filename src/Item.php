@@ -13,11 +13,7 @@ use UIAwesome\Html\Core\Component\Attribute\{
     HasLinkContainerCollection,
     HasListItemCollection,
 };
-use UIAwesome\Html\Core\Component\Mixin\{
-    CanBeActivateItems,
-    HasCurrentPath,
-    HasTemplateLinkItem,
-};
+use UIAwesome\Html\Core\Component\Mixin\{CanBeActivateItems, HasCurrentPath, HasTemplateLinkItem};
 use UIAwesome\Html\Core\Element\BaseBlock;
 use UIAwesome\Html\Core\Html;
 use UIAwesome\Html\Helper\{Encode, Template};
@@ -125,16 +121,14 @@ class Item extends BaseBlock implements RenderableInterface
      * Accepts either a {@see BackedEnum} tag (recommended) or a string tag name resolved against `Voids`, `Inline`, and
      * `Block`. Void tags render as self-closing elements; other tags render as empty paired elements.
      *
-     * @param BackedEnum|string $tag Tag for the divider element (defaults to `<hr>`).
+     * @param BackedEnum|string $tag Tag for the divider element (defaults to {@see Voids::HR}).
      * @param array<string, mixed> $attributes HTML attributes for the divider element.
      *
      * @return static New instance with the updated `divider` value.
      */
-    public function divider(BackedEnum|string $tag = 'hr', array $attributes = []): static
+    public function divider(BackedEnum|string $tag = Voids::HR, array $attributes = []): static
     {
-        $resolved = $tag instanceof BackedEnum
-            ? $tag
-            : (Voids::tryFrom($tag) ?? Inline::tryFrom($tag) ?? Block::tryFrom($tag) ?? Voids::HR);
+        $resolved = $tag instanceof BackedEnum ? $tag : self::resolveDividerTag($tag);
 
         $new = clone $this;
 
@@ -286,10 +280,9 @@ class Item extends BaseBlock implements RenderableInterface
     protected function loadDefault(): array
     {
         return [
-            'linkContainerTag' => [false],
-            'linkTag' => ['a'],
-            'template' => ['{separator}\n{link}'],
-            'templateLinkItem' => ['{icon}\n{label}\n{content}'],
+            'linkContainerTag' => false,
+            'template' => '{separator}\n{link}',
+            'templateLinkItem' => '{icon}\n{label}\n{content}',
         ];
     }
 
@@ -344,10 +337,6 @@ class Item extends BaseBlock implements RenderableInterface
             return $contentLink;
         }
 
-        if ($this->iconTag === 'svg') {
-            $contentLink .= "\n";
-        }
-
         $linkAttributes = $this->linkAttributes;
         $linkAttributes['href'] = $this->link;
 
@@ -357,7 +346,7 @@ class Item extends BaseBlock implements RenderableInterface
 
         $tag = $this->linkTag === 'a' || $this->linkTag === ''
             ? Inline::A
-            : (Inline::tryFrom($this->linkTag) ?? Block::tryFrom($this->linkTag));
+            : self::resolveTag($this->linkTag);
 
         if ($tag === null) {
             return $contentLink;
@@ -380,12 +369,62 @@ class Item extends BaseBlock implements RenderableInterface
             return $content;
         }
 
-        $tag = Inline::tryFrom($this->linkContainerTag) ?? Block::tryFrom($this->linkContainerTag);
+        $tag = self::resolveTag($this->linkContainerTag);
 
         if ($tag === null) {
             return $content;
         }
 
         return Html::element($tag, $content, $this->linkContainerAttributes);
+    }
+
+    /**
+     * Resolves a string tag name against {@see Voids}, {@see Inline}, and {@see Block} enums in order, falling back to
+     * {@see Voids::HR} when no enum recognizes the value.
+     *
+     * @param string $name Tag name to resolve.
+     *
+     * @return BackedEnum Resolved enum case, or {@see Voids::HR} as a fallback.
+     */
+    private static function resolveDividerTag(string $name): BackedEnum
+    {
+        $tag = Voids::tryFrom($name);
+
+        if ($tag !== null) {
+            return $tag;
+        }
+
+        $tag = Inline::tryFrom($name);
+
+        if ($tag !== null) {
+            return $tag;
+        }
+
+        $tag = Block::tryFrom($name);
+
+        if ($tag !== null) {
+            return $tag;
+        }
+
+        return Voids::HR;
+    }
+
+    /**
+     * Resolves a string tag name against {@see Inline} and {@see Block} enums in order, returning the first matching
+     * case or `null` when neither enum recognizes the value.
+     *
+     * @param string $name Tag name to resolve.
+     *
+     * @return BackedEnum|null Resolved enum case, or `null` when the name is not recognized.
+     */
+    private static function resolveTag(string $name): BackedEnum|null
+    {
+        $tag = Inline::tryFrom($name);
+
+        if ($tag !== null) {
+            return $tag;
+        }
+
+        return Block::tryFrom($name);
     }
 }

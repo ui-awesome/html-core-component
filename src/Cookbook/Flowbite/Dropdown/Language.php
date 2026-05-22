@@ -34,17 +34,12 @@ final class Language implements ThemeProviderInterface
     public function apply(BaseTag $tag, string $theme): array
     {
         return [
-            'class' => [
-                'z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700',
-            ],
-            'containerTag' => [Block::DIV],
-            'linkActiveClass' => [
-                'bg-blue-500 text-white block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 '
-                . 'dark:hover:text-white',
-            ],
-            'linkClass' => ['block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'],
-            'listClass' => ['py-2 text-sm text-gray-700 dark:text-gray-200'],
-            'toggle' => [Toggle::tag()->addThemeProvider($theme, SelectorLanguage::class)],
+            'class' => 'z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700',
+            'containerTag' => Block::DIV,
+            'linkActiveClass' => 'bg-blue-500 text-white',
+            'linkClass' => 'block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white',
+            'listClass' => 'py-2 text-sm text-gray-700 dark:text-gray-200',
+            'toggle' => Toggle::tag()->addThemeProvider($theme, SelectorLanguage::class),
         ];
     }
 }

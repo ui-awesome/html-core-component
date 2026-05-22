@@ -256,13 +256,13 @@ class Menu extends BaseBlock implements RenderableInterface
     protected function loadDefault(): array
     {
         return [
-            'linkActiveTag' => ['a'],
-            'linkContainerTag' => [false],
-            'linkTag' => ['a'],
-            'template' => ['{toggle}\n{prefix}\n{menu}\n{suffix}'],
-            'templateItem' => ['{prefixItems}\n{items}\n{suffixItems}'],
-            'templateLinkItem' => ['{icon}\n{label}\n{content}'],
-            'type' => ['menu'],
+            'linkActiveTag' => 'a',
+            'linkContainerTag' => false,
+            'linkTag' => 'a',
+            'template' => '{toggle}\n{prefix}\n{menu}\n{suffix}',
+            'templateItem' => '{prefixItems}\n{items}\n{suffixItems}',
+            'templateLinkItem' => '{icon}\n{label}\n{content}',
+            'type' => 'menu',
         ];
     }
 
@@ -301,11 +301,7 @@ class Menu extends BaseBlock implements RenderableInterface
                     $item->render(),
                     $this->listItemTag,
                 );
-
-                continue;
-            }
-
-            if ($item instanceof Item) {
+            } elseif ($item instanceof Item) {
                 $item = $item
                     ->activateItems($this->activateItems)
                     ->currentPath($this->currentPath)
@@ -395,10 +391,41 @@ class Menu extends BaseBlock implements RenderableInterface
         }
 
         if (is_string($tag)) {
-            $tag = Lists::tryFrom($tag) ?? Inline::tryFrom($tag) ?? Block::tryFrom($tag) ?? Block::DIV;
+            $tag = self::resolveTag($tag);
         }
 
         return Html::element($tag, $content, $attributes);
+    }
+
+    /**
+     * Resolves a string tag name against {@see Lists}, {@see Inline}, and {@see Block} enums in order, falling back to
+     * {@see Block::DIV} when no enum recognizes the value.
+     *
+     * @param string $name Tag name to resolve.
+     *
+     * @return BackedEnum Resolved enum case, or {@see Block::DIV} as a fallback.
+     */
+    private static function resolveTag(string $name): BackedEnum
+    {
+        $tag = Lists::tryFrom($name);
+
+        if ($tag !== null) {
+            return $tag;
+        }
+
+        $tag = Inline::tryFrom($name);
+
+        if ($tag !== null) {
+            return $tag;
+        }
+
+        $tag = Block::tryFrom($name);
+
+        if ($tag !== null) {
+            return $tag;
+        }
+
+        return Block::DIV;
     }
 
     /**

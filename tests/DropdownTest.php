@@ -7,7 +7,7 @@ namespace UIAwesome\Html\Core\Component\Tests;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\{Dropdown, Item, Toggle};
-use UIAwesome\Html\Interop\Inline;
+use UIAwesome\Html\Interop\{Block, Inline};
 
 /**
  * Unit tests for the {@see Dropdown} component rendering and immutable configuration.
@@ -1493,10 +1493,23 @@ final class DropdownTest extends TestCase
         );
     }
 
+    public function testRenderReturnsEmptyEvenWithContainerTagWhenItemsAreEmpty(): void
+    {
+        self::assertEmpty(
+            Dropdown::tag()->containerTag(Block::DIV)->render(),
+            'Empty `items` list must short-circuit before wrapping with the container tag.',
+        );
+    }
+
     public function testReturnNewInstanceWhenSettingAttribute(): void
     {
         $instance = Dropdown::tag();
 
+        self::assertNotSame(
+            $instance,
+            $instance->activateItems(true),
+            'New instance must be returned (immutability).',
+        );
         self::assertNotSame(
             $instance,
             $instance->ariaCurrent(''),
@@ -1504,7 +1517,157 @@ final class DropdownTest extends TestCase
         );
         self::assertNotSame(
             $instance,
+            $instance->firstItemClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->firstLinkClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
             $instance->items(),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->lastItemClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->lastLinkClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkActiveClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkAriaCurrent(),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerRemoveAttribute('key'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerSetAttribute('key', 'value'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerTag(false),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkDisabledClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkRemoveAttribute('class'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkSetAttribute('id', 'x'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkTag('a'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listClass('x'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemRemoveAttribute('key'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemSetAttribute('key', 'value'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemTag(false),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listRemoveAttribute('key'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listSetAttribute('key', 'value'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listType(false),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->prefixItems(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->suffixItems(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->templateLinkItem(''),
             'New instance must be returned (immutability).',
         );
         self::assertNotSame(

@@ -162,12 +162,12 @@ abstract class BaseBreadcrumb extends BaseBlock implements RenderableInterface
     protected function loadDefault(): array
     {
         return [
-            'ariaLabel' => ['breadcrumb'],
-            'id' => [Naming::generateId('breadcrumb-')],
-            'linkContainerTag' => [false],
-            'linkTag' => ['a'],
-            'listType' => ['ol'],
-            'templateLinkItem' => ['{icon}\n{label}\n{content}'],
+            'ariaLabel' => 'breadcrumb',
+            'id' => Naming::generateId('breadcrumb-'),
+            'linkContainerTag' => false,
+            'linkTag' => 'a',
+            'listType' => 'ol',
+            'templateLinkItem' => '{icon}\n{label}\n{content}',
         ];
     }
 
@@ -178,10 +178,6 @@ abstract class BaseBreadcrumb extends BaseBlock implements RenderableInterface
      */
     protected function run(): string
     {
-        if ($this->items === []) {
-            return '';
-        }
-
         return Menu::tag()
             ->activateItems($this->activateItems)
             ->ariaCurrent($this->ariaCurrent)

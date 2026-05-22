@@ -31,29 +31,28 @@ final class Defaults implements DefaultsProviderInterface
     public function getDefaults(BaseTag $tag): array
     {
         return [
-            'brandLinkClass' => ['navbar-brand'],
-            'class' => ['navbar navbar-expand-lg bg-body-tertiary'],
-            'containerMenuClass' => ['container-fluid'],
-            'containerMenuTag' => [Block::DIV],
+            'brandLinkClass' => 'navbar-brand',
+            'class' => 'navbar navbar-expand-lg bg-body-tertiary',
+            'containerMenuClass' => 'container-fluid',
+            'containerMenuTag' => Block::DIV,
             'menuDefaultDefinitions' => [
                 [
-                    'class' => ['collapse navbar-collapse'],
+                    'class' => 'collapse navbar-collapse',
                     'dropdownDefaultDefinitions' => [
                         [
-                            'containerTag' => [false],
-                            'linkClass' => ['dropdown-item'],
-                            'listClass' => ['dropdown-menu'],
-                            'toggle' => [Toggle::tag()->addDefaultProvider(MenuDropdown::class)],
+                            'linkClass' => 'dropdown-item',
+                            'listClass' => 'dropdown-menu',
+                            'toggle' => Toggle::tag()->addDefaultProvider(MenuDropdown::class),
                         ],
                     ],
-                    'linkActiveClass' => ['active'],
+                    'linkActiveClass' => 'active',
                     'linkAriaCurrent' => [],
-                    'linkClass' => ['nav-link'],
-                    'linkDisabledClass' => ['disabled'],
-                    'listClass' => ['navbar-nav me-auto mb-2 mb-lg-0'],
-                    'listDropdownItemClass' => ['nav-item dropdown'],
-                    'listItemClass' => ['nav-item'],
-                    'toggle' => [Toggle::tag()->addDefaultProvider(Menu::class)],
+                    'linkClass' => 'nav-link',
+                    'linkDisabledClass' => 'disabled',
+                    'listClass' => 'navbar-nav me-auto mb-2 mb-lg-0',
+                    'listDropdownItemClass' => 'nav-item dropdown',
+                    'listItemClass' => 'nav-item',
+                    'toggle' => Toggle::tag()->addDefaultProvider(Menu::class),
                 ],
             ],
         ];

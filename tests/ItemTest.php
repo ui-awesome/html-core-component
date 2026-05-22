@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\Item;
+use UIAwesome\Html\Core\Component\Tests\Support\RenderIconOverride;
 
 /**
  * Unit tests for the {@see Item} component rendering and immutable configuration.
@@ -81,6 +82,15 @@ final class ItemTest extends TestCase
         );
     }
 
+    public function testDividerWithVoidsTag(): void
+    {
+        self::assertSame(
+            '<br>',
+            Item::tag()->divider('br')->render(),
+            "Voids tag 'br' must resolve to 'Voids::BR' and render as a self-closing element.",
+        );
+    }
+
     public function testIconAttributes(): void
     {
         self::assertSame(
@@ -98,6 +108,29 @@ final class ItemTest extends TestCase
         );
     }
 
+    public function testIconAttributesMergesAcrossCalls(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            <i class="first" aria-hidden="true">
+            x
+            </i>
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->iconAttributes(['class' => 'first'])
+                ->iconAttributes(['aria-hidden' => 'true'])
+                ->iconContent('x')
+                ->iconTag()
+                ->link('/')
+                ->render(),
+            "Repeated 'iconAttributes()' calls must merge values from prior invocations.",
+        );
+    }
+
     public function testIconClass(): void
     {
         self::assertSame(
@@ -112,6 +145,27 @@ final class ItemTest extends TestCase
                 ->link('/')
                 ->render(),
             'CSS class must be applied to the icon element.',
+        );
+    }
+
+    public function testIconClassMergesWithBaseIconAttributeClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            <i class="base value">
+            </i>
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->iconAttributes(['class' => 'base'])
+                ->iconClass('value')
+                ->iconTag()
+                ->link('/')
+                ->render(),
+            "Default 'iconClass' merge must append to existing icon class.",
         );
     }
 
@@ -151,6 +205,51 @@ final class ItemTest extends TestCase
         );
     }
 
+    public function testIconRemoveAttribute(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            <i>
+            value
+            </i>
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->iconAttributes(['aria-hidden' => 'true'])
+                ->iconContent('value')
+                ->iconRemoveAttribute('aria-hidden')
+                ->iconTag()
+                ->link('/')
+                ->render(),
+            'Removed icon attribute must not appear in the rendered icon element.',
+        );
+    }
+
+    public function testIconSetAttribute(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            <i aria-hidden="true">
+            value
+            </i>
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->iconContent('value')
+                ->iconSetAttribute('aria-hidden', 'true')
+                ->iconTag()
+                ->link('/')
+                ->render(),
+            'Set icon attribute must appear on the rendered icon element.',
+        );
+    }
+
     public function testIconTag(): void
     {
         self::assertSame(
@@ -187,6 +286,27 @@ final class ItemTest extends TestCase
                 ->link('/')
                 ->render(),
             "'false' icon tag must drop the icon element.",
+        );
+    }
+
+    public function testIconTagWithSpanValue(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            <span>
+            value
+            </span>
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->iconContent('value')
+                ->iconTag('span')
+                ->link('/')
+                ->render(),
+            "Span icon tag must wrap the content in '<span>'.",
         );
     }
 
@@ -529,10 +649,79 @@ final class ItemTest extends TestCase
         );
     }
 
+    public function testRenderIconRemainsProtectedForSubclassOverride(): void
+    {
+        self::assertInstanceOf(
+            Item::class,
+            new RenderIconOverride(),
+            '`renderIcon()` must remain `protected` so subclasses with `#[\\Override]` can declare overrides.',
+        );
+    }
+
     public function testReturnNewInstanceWhenSettingAttribute(): void
     {
         $instance = Item::tag();
 
+        self::assertNotSame(
+            $instance,
+            $instance->activateItems(),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->active(),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->currentPath(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->disabled(),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->divider(),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->iconAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->iconClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->iconContent(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->iconFilePath(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->iconRemoveAttribute('key'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->iconSetAttribute('key', 'value'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->iconTag(false),
+            'New instance must be returned (immutability).',
+        );
         self::assertNotSame(
             $instance,
             $instance->items(),
@@ -541,6 +730,101 @@ final class ItemTest extends TestCase
         self::assertNotSame(
             $instance,
             $instance->label(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->link(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerRemoveAttribute('key'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerSetAttribute('key', 'value'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkContainerTag(false),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkRemoveAttribute('key'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkSetAttribute('key', 'value'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->linkTag(false),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemRemoveAttribute('key'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemSetAttribute('key', 'value'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->listItemTag(false),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->separator(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->templateLinkItem(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->visible(),
             'New instance must be returned (immutability).',
         );
     }
@@ -607,6 +891,16 @@ final class ItemTest extends TestCase
         );
     }
 
+    public function testThrowInvalidArgumentExceptionWhenIconTagIsNotAllowed(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            "Value 'div' is not in the list of valid values for 'iconTag': 'i', 'span', 'svg'.",
+        );
+
+        Item::tag()->iconTag('div');
+    }
+
     public function testThrowInvalidArgumentExceptionWhenListItemTagIsNotAllowed(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -631,9 +925,9 @@ final class ItemTest extends TestCase
             HTML,
             Item::tag()
                 ->label('label')
-                ->visible(true)
+                ->visible()
                 ->render(),
-            'Visible flag must render the item.',
+            'Default visible argument must render the item.',
         );
     }
 
@@ -641,9 +935,11 @@ final class ItemTest extends TestCase
     {
         self::assertEmpty(
             Item::tag()
+                ->label('label')
+                ->link('/')
                 ->visible(false)
                 ->render(),
-            "'false' visible flag must render an empty string.",
+            "'false' visible flag must short-circuit rendering even when label and link are set.",
         );
     }
 }

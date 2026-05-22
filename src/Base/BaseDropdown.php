@@ -126,12 +126,12 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
     protected function loadDefault(): array
     {
         return [
-            'id' => [Naming::generateId('dropdown-')],
-            'linkAriaCurrent' => [true],
-            'linkContainerTag' => [false],
-            'linkTag' => ['a'],
-            'template' => ['{toggle}\n{prefix}\n{menu}\n{suffix}'],
-            'templateLinkItem' => ['{icon}\n{label}\n{content}'],
+            'id' => Naming::generateId('dropdown-'),
+            'linkAriaCurrent' => true,
+            'linkContainerTag' => false,
+            'linkTag' => 'a',
+            'template' => '{toggle}\n{prefix}\n{menu}\n{suffix}',
+            'templateLinkItem' => '{icon}\n{label}\n{content}',
         ];
     }
 
