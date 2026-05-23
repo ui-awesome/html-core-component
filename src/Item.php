@@ -394,5 +394,4 @@ class Item extends BaseBlock implements RenderableInterface
 
         return Voids::HR;
     }
-
 }
