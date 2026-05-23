@@ -344,15 +344,7 @@ class Item extends BaseBlock implements RenderableInterface
             return $contentLink;
         }
 
-        $tag = $this->linkTag === 'a' || $this->linkTag === ''
-            ? Inline::A
-            : self::resolveTag($this->linkTag);
-
-        if ($tag === null) {
-            return $contentLink;
-        }
-
-        return Html::element($tag, $contentLink, $linkAttributes);
+        return Html::element($this->linkTag, $contentLink, $linkAttributes);
     }
 
     /**
@@ -369,13 +361,7 @@ class Item extends BaseBlock implements RenderableInterface
             return $content;
         }
 
-        $tag = self::resolveTag($this->linkContainerTag);
-
-        if ($tag === null) {
-            return $content;
-        }
-
-        return Html::element($tag, $content, $this->linkContainerAttributes);
+        return Html::element($this->linkContainerTag, $content, $this->linkContainerAttributes);
     }
 
     /**
@@ -409,22 +395,4 @@ class Item extends BaseBlock implements RenderableInterface
         return Voids::HR;
     }
 
-    /**
-     * Resolves a string tag name against {@see Inline} and {@see Block} enums in order, returning the first matching
-     * case or `null` when neither enum recognizes the value.
-     *
-     * @param string $name Tag name to resolve.
-     *
-     * @return BackedEnum|null Resolved enum case, or `null` when the name is not recognized.
-     */
-    private static function resolveTag(string $name): BackedEnum|null
-    {
-        $tag = Inline::tryFrom($name);
-
-        if ($tag !== null) {
-            return $tag;
-        }
-
-        return Block::tryFrom($name);
-    }
 }

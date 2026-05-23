@@ -18,6 +18,7 @@ use UIAwesome\Html\Interop\{Block, Inline};
 use UIAwesome\Html\Mixin\HasTemplate;
 
 use function implode;
+use function is_string;
 
 /**
  * Provides the base implementation for toggle components.
@@ -56,9 +57,9 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
      */
     protected string $toggleContent = '';
     /**
-     * Tag name for the toggle decoration wrapper, or `false` to skip wrapping.
+     * Tag enum for the toggle decoration wrapper, or `false` to skip wrapping.
      */
-    protected false|string $toggleTag = 'span';
+    protected BackedEnum|false $toggleTag = Inline::SPAN;
 
     /**
      * Stores the parent component's identifier for use by toggle subclasses.
@@ -150,20 +151,20 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
     }
 
     /**
-     * Sets the tag name for the toggle decoration wrapper, or `false` to skip wrapping.
+     * Sets the tag for the toggle decoration wrapper, or `false` to skip wrapping.
      *
-     * @param false|string $value Tag name for the toggle decoration wrapper, or `false` to skip wrapping.
+     * @param BackedEnum|false|string $value Inline/Block enum case (recommended) or its tag name, or `false` to skip
+     * wrapping.
      *
-     * @throws InvalidArgumentException When the value is the empty string.
+     * @throws InvalidArgumentException When the string value does not resolve to an {@see Inline} or {@see Block}
+     * enum case.
      *
      * @return static New instance with the updated `toggleTag` value.
      */
-    public function toggleTag(false|string $value = 'div'): static
+    public function toggleTag(BackedEnum|false|string $value = Block::DIV): static
     {
-        if ($value === '') {
-            throw new InvalidArgumentException(
-                'The toggle tag must be a non-empty string.',
-            );
+        if (is_string($value)) {
+            $value = self::resolveToggleTag($value);
         }
 
         $new = clone $this;
@@ -235,24 +236,20 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
             return $this->toggleContent;
         }
 
-        $tag = self::resolveToggleTag($this->toggleTag);
-
-        if ($tag === null) {
-            return $this->toggleContent;
-        }
-
-        return Html::element($tag, $this->toggleContent, $this->toggleAttributes);
+        return Html::element($this->toggleTag, $this->toggleContent, $this->toggleAttributes);
     }
 
     /**
-     * Resolves a string tag name against {@see Inline} and {@see Block} enums in order, returning the first matching
-     * case or `null` when neither enum recognizes the value.
+     * Resolves a string tag name against {@see Inline} and {@see Block} enums in order, throwing when neither
+     * recognizes the value.
      *
      * @param string $name Tag name to resolve.
      *
-     * @return BackedEnum|null Resolved enum case, or `null` when the name is not recognized.
+     * @throws InvalidArgumentException When the value does not match any {@see Inline} or {@see Block} case.
+     *
+     * @return BackedEnum Matching enum case.
      */
-    private static function resolveToggleTag(string $name): BackedEnum|null
+    private static function resolveToggleTag(string $name): BackedEnum
     {
         $tag = Inline::tryFrom($name);
 
@@ -260,6 +257,14 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
             return $tag;
         }
 
-        return Block::tryFrom($name);
+        $tag = Block::tryFrom($name);
+
+        if ($tag !== null) {
+            return $tag;
+        }
+
+        throw new InvalidArgumentException(
+            "Toggle tag '{$name}' must resolve to an `Inline` or `Block` enum case.",
+        );
     }
 }

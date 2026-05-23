@@ -8,7 +8,10 @@ use BackedEnum;
 use InvalidArgumentException;
 use Stringable;
 use UIAwesome\Html\Helper\{AttributeBag, CSSClass};
+use UIAwesome\Html\Interop\{Block, Inline};
 use UnitEnum;
+
+use function is_string;
 
 /**
  * Provides an immutable API for the wrapper element around a menu-item link.
@@ -26,9 +29,9 @@ trait HasLinkContainerCollection
      */
     protected array $linkContainerAttributes = [];
     /**
-     * Link container tag name, or `false` to skip the wrapper.
+     * Link container tag enum, or `false` to skip the wrapper.
      */
-    protected false|string $linkContainerTag = 'div';
+    protected BackedEnum|false $linkContainerTag = Block::DIV;
 
     /**
      * Returns the value of a single link container attribute, or the default when missing.
@@ -182,22 +185,18 @@ trait HasLinkContainerCollection
      * $component->linkContainerTag(false);
      * ```
      *
-     * @param BackedEnum|false|string $value Tag name (typically `div` or `span`), or `false` to skip the wrapper.
+     * @param BackedEnum|false|string $value Inline/Block enum case (recommended) or its tag name, or `false` to skip
+     * the wrapper.
      *
-     * @throws InvalidArgumentException When the value is the empty string.
+     * @throws InvalidArgumentException When the string value does not resolve to an {@see Inline} or {@see Block}
+     * enum case.
      *
      * @return static New instance with the updated `linkContainerTag`.
      */
-    public function linkContainerTag(BackedEnum|false|string $value = 'div'): static
+    public function linkContainerTag(BackedEnum|false|string $value = Block::DIV): static
     {
-        if ($value instanceof BackedEnum) {
-            $value = (string) $value->value;
-        }
-
-        if ($value === '') {
-            throw new InvalidArgumentException(
-                'The link container tag must be a non-empty string.',
-            );
+        if (is_string($value)) {
+            $value = self::resolveLinkContainerTag($value);
         }
 
         $new = clone $this;
@@ -205,5 +204,34 @@ trait HasLinkContainerCollection
         $new->linkContainerTag = $value;
 
         return $new;
+    }
+
+    /**
+     * Resolves a string tag name against {@see Inline} and {@see Block} enums in order, throwing when neither
+     * recognizes the value.
+     *
+     * @param string $name Tag name to resolve.
+     *
+     * @throws InvalidArgumentException When the value does not match any {@see Inline} or {@see Block} case.
+     *
+     * @return BackedEnum Matching enum case.
+     */
+    private static function resolveLinkContainerTag(string $name): BackedEnum
+    {
+        $tag = Inline::tryFrom($name);
+
+        if ($tag !== null) {
+            return $tag;
+        }
+
+        $tag = Block::tryFrom($name);
+
+        if ($tag !== null) {
+            return $tag;
+        }
+
+        throw new InvalidArgumentException(
+            "Link container tag '{$name}' must resolve to an `Inline` or `Block` enum case.",
+        );
     }
 }

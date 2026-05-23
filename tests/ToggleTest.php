@@ -570,11 +570,21 @@ final class ToggleTest extends TestCase
         );
     }
 
+    public function testThrowInvalidArgumentExceptionWhenToggleTagDoesNotResolveToEnum(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            "Toggle tag 'my-icon' must resolve to an `Inline` or `Block` enum case.",
+        );
+
+        Toggle::tag()->toggleTag('my-icon');
+    }
+
     public function testThrowInvalidArgumentExceptionWhenToggleTagIsEmpty(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The toggle tag must be a non-empty string.',
+            "Toggle tag '' must resolve to an `Inline` or `Block` enum case.",
         );
 
         Toggle::tag()->toggleTag('')->render();

@@ -8,7 +8,10 @@ use BackedEnum;
 use InvalidArgumentException;
 use Stringable;
 use UIAwesome\Html\Helper\{AttributeBag, CSSClass};
+use UIAwesome\Html\Interop\{Block, Inline};
 use UnitEnum;
+
+use function is_string;
 
 /**
  * Provides an immutable API for the link element of a menu item.
@@ -28,9 +31,9 @@ trait HasLinkCollection
      */
     protected array $linkAttributes = [];
     /**
-     * Link tag name, or `false` to skip the wrapper.
+     * Link tag enum, or `false` to skip the wrapper.
      */
-    protected false|string $linkTag = '';
+    protected BackedEnum|false $linkTag = Inline::A;
 
     /**
      * Returns the value of a single link attribute, or the default when missing.
@@ -171,23 +174,18 @@ trait HasLinkCollection
      * $component->linkTag(false);
      * ```
      *
-     * @param BackedEnum|false|string $value Tag name (typically `a`, `button`, or `span`), or `false` to skip the
-     * wrapper.
+     * @param BackedEnum|false|string $value Inline/Block enum case (recommended) or its tag name, or `false` to skip
+     * the wrapper.
      *
-     * @throws InvalidArgumentException When the value is the empty string.
+     * @throws InvalidArgumentException When the string value does not resolve to an {@see Inline} or {@see Block}
+     * enum case.
      *
      * @return static New instance with the updated `linkTag`.
      */
-    public function linkTag(BackedEnum|false|string $value = 'a'): static
+    public function linkTag(BackedEnum|false|string $value = Inline::A): static
     {
-        if ($value instanceof BackedEnum) {
-            $value = (string) $value->value;
-        }
-
-        if ($value === '') {
-            throw new InvalidArgumentException(
-                'The link tag must be a non-empty string.',
-            );
+        if (is_string($value)) {
+            $value = self::resolveLinkTag($value);
         }
 
         $new = clone $this;
@@ -195,5 +193,34 @@ trait HasLinkCollection
         $new->linkTag = $value;
 
         return $new;
+    }
+
+    /**
+     * Resolves a string tag name against {@see Inline} and {@see Block} enums in order, throwing when neither
+     * recognizes the value.
+     *
+     * @param string $name Tag name to resolve.
+     *
+     * @throws InvalidArgumentException When the value does not match any {@see Inline} or {@see Block} case.
+     *
+     * @return BackedEnum Matching enum case.
+     */
+    private static function resolveLinkTag(string $name): BackedEnum
+    {
+        $tag = Inline::tryFrom($name);
+
+        if ($tag !== null) {
+            return $tag;
+        }
+
+        $tag = Block::tryFrom($name);
+
+        if ($tag !== null) {
+            return $tag;
+        }
+
+        throw new InvalidArgumentException(
+            "Link tag '{$name}' must resolve to an `Inline` or `Block` enum case.",
+        );
     }
 }

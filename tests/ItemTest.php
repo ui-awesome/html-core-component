@@ -901,6 +901,26 @@ final class ItemTest extends TestCase
         Item::tag()->iconTag('div');
     }
 
+    public function testThrowInvalidArgumentExceptionWhenLinkContainerTagDoesNotResolveToEnum(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            "Link container tag 'my-wrapper' must resolve to an `Inline` or `Block` enum case.",
+        );
+
+        Item::tag()->linkContainerTag('my-wrapper');
+    }
+
+    public function testThrowInvalidArgumentExceptionWhenLinkTagDoesNotResolveToEnum(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            "Link tag 'my-link' must resolve to an `Inline` or `Block` enum case.",
+        );
+
+        Item::tag()->linkTag('my-link');
+    }
+
     public function testThrowInvalidArgumentExceptionWhenListItemTagIsNotAllowed(): void
     {
         $this->expectException(InvalidArgumentException::class);
