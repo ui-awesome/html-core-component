@@ -26,8 +26,8 @@ final class SelectorTheme implements DefaultsProviderInterface
     public function getDefaults(BaseTag $tag): array
     {
         return [
-            'class' => ['btn ms-2 me-2'],
-            'content' => [
+            'class' => 'btn ms-2 me-2',
+            'html' => [
                 Svg::icon('Bootstrap5:moon')
                     ->class('d-none')
                     ->fill('currentColor')
@@ -42,7 +42,7 @@ final class SelectorTheme implements DefaultsProviderInterface
                     ->id('theme-light-icon')
                     ->width(32),
             ],
-            'title' => ['Switch light/dark mode'],
+            'title' => 'Switch light/dark mode',
         ];
     }
 }

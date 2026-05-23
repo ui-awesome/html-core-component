@@ -26,8 +26,8 @@ final class SelectorTheme implements DefaultsProviderInterface
     public function getDefaults(BaseTag $tag): array
     {
         return [
-            'class' => ['text-gray-700 hover:text-gray-900 dark:hover:text-white dark:text-gray-400'],
-            'content' => [
+            'class' => 'text-gray-700 hover:text-gray-900 dark:hover:text-white dark:text-gray-400',
+            'html' => [
                 Svg::icon('Flowbite:moon')
                     ->class('hidden')
                     ->fill('currentColor')
@@ -42,7 +42,7 @@ final class SelectorTheme implements DefaultsProviderInterface
                     ->id('theme-toggle-light-icon')
                     ->width(32),
             ],
-            'title' => ['Switch light/dark mode'],
+            'title' => 'Switch light/dark mode',
         ];
     }
 }
