@@ -2,21 +2,6 @@
 
 ## 0.2.0
 
-### PHP and package requirements
-
-- The minimum PHP version is now `^8.3`.
-- Runtime dependencies were updated to the current UI Awesome package line:
-  - `ui-awesome/html-attribute:^0.6`
-  - `ui-awesome/html-contracts:^0.1`
-  - `ui-awesome/html-core:^0.6`
-  - `ui-awesome/html-helper:^0.7`
-  - `ui-awesome/html-interop:^0.4`
-  - `ui-awesome/html-mixin:^0.6`
-  - `ui-awesome/html-svg:^0.5`
-- Removed legacy runtime dependencies:
-  - `php-forge/awesome-widget`
-  - `ui-awesome/html-concern`
-
 ### Base class migration
 
 Abstract components migrated from `PHPForge\Widget\Element` to `UIAwesome\Html\Core\Element\BaseBlock`. Concrete
