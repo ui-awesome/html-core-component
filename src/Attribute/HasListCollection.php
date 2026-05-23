@@ -8,6 +8,7 @@ use BackedEnum;
 use InvalidArgumentException;
 use Stringable;
 use UIAwesome\Html\Helper\{AttributeBag, CSSClass, Validator};
+use UIAwesome\Html\Interop\Lists;
 use UnitEnum;
 
 /**
@@ -179,7 +180,7 @@ trait HasListCollection
     public function listType(string|false|BackedEnum $value): static
     {
         if ($value !== false) {
-            Validator::oneOf($value, ['ol', 'ul'], 'listType');
+            Validator::oneOf($value, [Lists::OL, Lists::UL], 'listType');
         }
 
         $new = clone $this;

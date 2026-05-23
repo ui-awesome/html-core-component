@@ -1547,6 +1547,28 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testListItemTagWithBackedEnumValue(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->listItemTag(\UIAwesome\Html\Interop\Lists::LI)
+                ->render(),
+            "`BackedEnum` value must normalize to its scalar before validating against `'li'`.",
+        );
+    }
+
     public function testListItemTagWithFalseValue(): void
     {
         self::assertSame(
@@ -1655,6 +1677,28 @@ final class MenuTest extends TestCase
                 ->listType('ol')
                 ->render(),
             'Custom list type must control the list element.',
+        );
+    }
+
+    public function testListTypeWithBackedEnumValue(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ol>
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ol>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->listType(\UIAwesome\Html\Interop\Lists::OL)
+                ->render(),
+            "`BackedEnum` value must normalize to its scalar before validating against `'ol'`/`'ul'`.",
         );
     }
 
