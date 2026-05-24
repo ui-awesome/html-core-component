@@ -31,6 +31,14 @@ use UIAwesome\Html\Interop\Block;
  */
 final class Language implements ThemeProviderInterface
 {
+    /**
+     * Returns the Flowbite language-switcher `dropdown` attribute set for the given contextual `$theme`.
+     *
+     * @param BaseTag $tag Tag the provider is decorating.
+     * @param string $theme Contextual theme key propagated to the embedded selector toggle.
+     *
+     * @return array<string, mixed> Method-call definitions merged into the tag at render time.
+     */
     public function apply(BaseTag $tag, string $theme): array
     {
         return [

@@ -14,8 +14,8 @@ use UnitEnum;
 /**
  * Provides an immutable API for the `<ul>`/`<ol>` list element of a menu.
  *
- * Stores the list attributes and the chosen list type (`ul` or `ol`). Consumed by {@see \UIAwesome\Html\Core\Component\Menu}
- * when rendering the list wrapper around the items.
+ * Stores the list attributes and the chosen list type (`ul` or `ol`). Consumed by
+ * {@see \UIAwesome\Html\Core\Component\Menu} when rendering the list wrapper around the items.
  *
  * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ul
  * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ol

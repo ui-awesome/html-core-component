@@ -24,6 +24,13 @@ use UIAwesome\Html\Core\Provider\DefaultsProviderInterface;
  */
 final class Alert implements DefaultsProviderInterface
 {
+    /**
+     * Returns the Bootstrap5 alert close `toggle` default method-call definitions for the tag.
+     *
+     * @param BaseTag $tag Tag the provider is decorating.
+     *
+     * @return array<string, mixed> Method-call definitions merged into the tag at render time.
+     */
     public function getDefaults(BaseTag $tag): array
     {
         return [

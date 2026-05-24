@@ -64,6 +64,11 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
     /**
      * Stores the parent component's identifier for use by toggle subclasses.
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Toggle::tag()->dataValue('alert-1');
+     * ```
+     *
      * @param string $value Identifier propagated from the parent component.
      *
      * @return static New instance with the updated `dataValue` value.
@@ -80,6 +85,11 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
     /**
      * Returns the toggle decoration attributes.
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Toggle::tag()->getToggleAttributes();
+     * ```
+     *
      * @return mixed[] HTML attributes for the toggle decoration tag.
      */
     public function getToggleAttributes(): array
@@ -89,6 +99,11 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
 
     /**
      * Switches the toggle to render as `<a>` instead of `<button>`.
+     *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Toggle::tag()->link();
+     * ```
      *
      * @return static New instance with the updated `isLink` value.
      */
@@ -103,6 +118,11 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
 
     /**
      * Sets the toggle decoration attributes, merging them with the existing values.
+     *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Toggle::tag()->toggleAttributes(['aria-hidden' => 'true']);
+     * ```
      *
      * @param mixed[] $values HTML attributes to merge into the toggle decoration attributes.
      *
@@ -119,6 +139,12 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
 
     /**
      * Adds a CSS class to the toggle decoration attributes.
+     *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Toggle::tag()->toggleClass('btn-close');
+     * \UIAwesome\Html\Core\Component\Toggle::tag()->toggleClass(['icon', 'icon-close'], true);
+     * ```
      *
      * @param array<string>|string $value CSS class or list of classes for the toggle decoration.
      * @param bool $override Whether to override the existing classes (defaults to `false`).
@@ -137,6 +163,11 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
     /**
      * Sets the markup rendered inside the toggle decoration tag.
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Toggle::tag()->toggleContent('Close');
+     * ```
+     *
      * @param RenderableInterface|string|Stringable ...$values Content joined to form the toggle decoration markup.
      *
      * @return static New instance with the updated `toggleContent` value.
@@ -152,6 +183,12 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
 
     /**
      * Sets the tag for the toggle decoration wrapper, or `false` to skip wrapping.
+     *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Toggle::tag()->toggleTag(\UIAwesome\Html\Interop\Inline::SPAN);
+     * \UIAwesome\Html\Core\Component\Toggle::tag()->toggleTag(false);
+     * ```
      *
      * @param BackedEnum|false|string $value Inline/Block enum case (recommended) or its tag name, or `false` to skip
      * wrapping.

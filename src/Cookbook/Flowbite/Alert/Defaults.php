@@ -14,8 +14,8 @@ use function array_values;
  * Flowbite alert defaults providing the colored variants.
  *
  * Supports the five Flowbite contextual types: `danger`, `dark`, `info`, `success`, `warning`. Each type maps to a
- * Tailwind color palette (red, gray, blue, green, yellow). Apply via {@see \UIAwesome\Html\Core\Base\BaseTag::addThemeProvider()}
- * with the contextual type as the theme name.
+ * Tailwind color palette (red, gray, blue, green, yellow). Apply via
+ * {@see \UIAwesome\Html\Core\Base\BaseTag::addThemeProvider()} with the contextual type as the theme name.
  *
  * Usage example:
  * ```php
@@ -49,6 +49,14 @@ final class Defaults implements ThemeProviderInterface
         'warning' => 'yellow',
     ];
 
+    /**
+     * Returns the Flowbite `alert` attribute set for the given contextual `$theme`.
+     *
+     * @param BaseTag $tag Tag the provider is decorating.
+     * @param string $theme Contextual theme key matched against {@see self::TYPES}.
+     *
+     * @return array<string, mixed> Method-call definitions merged into the tag at render time.
+     */
     public function apply(BaseTag $tag, string $theme): array
     {
         $color = self::TYPES[$theme] ?? 'gray';

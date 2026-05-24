@@ -7,7 +7,11 @@ namespace UIAwesome\Html\Core\Component;
 use UIAwesome\Html\Contracts\RenderableInterface;
 
 /**
- * Provide methods for handling HTML elements that can be toggled.
+ * Contract for toggle elements bound to a parent component identifier.
+ *
+ * Parent components (such as alerts, dropdowns, and navbars) propagate their `id` to the toggle through
+ * {@see dataValue()} so the toggle can emit explicit data hooks (for example, `data-bs-target`, `data-collapse-toggle`)
+ * referencing the parent.
  *
  * @copyright Copyright (C) 2026 Terabytesoftw.
  * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
@@ -15,11 +19,16 @@ use UIAwesome\Html\Contracts\RenderableInterface;
 interface ToggleInterface extends RenderableInterface
 {
     /**
-     * Set the `HTML` data-value attribute for the toggle.
+     * Stores the parent component's identifier on the toggle for subsequent data-attribute composition.
      *
-     * @param string $value The data-value attribute value.
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Toggle::tag()->dataValue('navbar-1');
+     * ```
      *
-     * @return static A new instance of the current class with the specified toggle attributes.
+     * @param string $value Identifier of the parent component bound to the toggle.
+     *
+     * @return static New instance with the updated `dataValue` value.
      */
     public function dataValue(string $value): static;
 }
