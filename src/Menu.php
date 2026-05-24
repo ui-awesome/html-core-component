@@ -125,6 +125,11 @@ class Menu extends BaseBlock implements RenderableInterface
     /**
      * Sets the `aria-current` attribute applied to the active item.
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Menu::tag()->ariaCurrent('page');
+     * ```
+     *
      * @param string $value Value for the `aria-current` attribute.
      *
      * @return static New instance with the updated `ariaCurrent` value.
@@ -140,6 +145,11 @@ class Menu extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the default definitions applied to nested {@see BaseDropdown} items via {@see SimpleFactory::configure()}.
+     *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Menu::tag()->dropdownDefaultDefinitions(['class()' => ['dropdown']]);
+     * ```
      *
      * @param array<string, mixed> $values Cookbook-style associative array of method names and arguments.
      *
@@ -157,6 +167,14 @@ class Menu extends BaseBlock implements RenderableInterface
     /**
      * Sets the menu items.
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Menu::tag()->items(
+     *     \UIAwesome\Html\Core\Component\Item::tag()->label('Home')->link('/'),
+     *     \UIAwesome\Html\Core\Component\Item::tag()->label('About')->link('/about'),
+     * );
+     * ```
+     *
      * @param Item|RenderableInterface ...$values Items to render in order inside the menu.
      *
      * @return static New instance with the updated `items` value.
@@ -172,6 +190,11 @@ class Menu extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the CSS class assigned to the list item that wraps a nested dropdown menu.
+     *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Menu::tag()->listDropdownItemClass('nav-item dropdown');
+     * ```
      *
      * @param string $value CSS class for the dropdown list item wrapper.
      *
@@ -189,6 +212,11 @@ class Menu extends BaseBlock implements RenderableInterface
     /**
      * Sets the separator rendered between consecutive items when {@see $type} is `breadcrumb`.
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Menu::tag()->type('breadcrumb')->separator('/');
+     * ```
+     *
      * @param string|Stringable $value Content for the separator.
      *
      * @return static New instance with the updated `separator` value.
@@ -205,6 +233,11 @@ class Menu extends BaseBlock implements RenderableInterface
     /**
      * Sets the template composing the rendered items block (`{prefixItems}/{items}/{suffixItems}`).
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Menu::tag()->templateItem('{prefixItems}{items}{suffixItems}');
+     * ```
+     *
      * @param string $value Template for the items block.
      *
      * @return static New instance with the updated `templateItem` value.
@@ -220,6 +253,11 @@ class Menu extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the menu type controlling the wrapper tag.
+     *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Menu::tag()->type('breadcrumb');
+     * ```
      *
      * @param string $value Menu type, for example `menu`, `breadcrumb`, `dropdown`, `nav`.
      *

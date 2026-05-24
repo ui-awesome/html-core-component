@@ -127,7 +127,7 @@ final class ItemTest extends TestCase
                 ->iconTag()
                 ->link('/')
                 ->render(),
-            "Repeated 'iconAttributes()' calls must merge values from prior invocations.",
+            'Prior values must be retained on merge.',
         );
     }
 
@@ -654,7 +654,7 @@ final class ItemTest extends TestCase
         self::assertInstanceOf(
             Item::class,
             new RenderIconOverride(),
-            '`renderIcon()` must remain `protected` so subclasses with `#[\\Override]` can declare overrides.',
+            'Override subclass must be an `Item` instance.',
         );
     }
 

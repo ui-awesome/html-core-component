@@ -86,6 +86,12 @@ class Item extends BaseBlock implements RenderableInterface
     /**
      * Sets the active state.
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Item::tag()->active();
+     * \UIAwesome\Html\Core\Component\Item::tag()->active(false);
+     * ```
+     *
      * @param bool $value Whether the item is active (defaults to `true`).
      *
      * @return static New instance with the updated `active` value.
@@ -101,6 +107,12 @@ class Item extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the disabled state.
+     *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Item::tag()->disabled();
+     * \UIAwesome\Html\Core\Component\Item::tag()->disabled(false);
+     * ```
      *
      * @param bool $value Whether the item is disabled (defaults to `true`).
      *
@@ -120,6 +132,12 @@ class Item extends BaseBlock implements RenderableInterface
      *
      * Accepts either a {@see BackedEnum} tag (recommended) or a string tag name resolved against `Voids`, `Inline`, and
      * `Block`. Void tags render as self-closing elements; other tags render as empty paired elements.
+     *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Item::tag()->divider();
+     * \UIAwesome\Html\Core\Component\Item::tag()->divider(\UIAwesome\Html\Interop\Voids::HR, ['class' => 'sep']);
+     * ```
      *
      * @param BackedEnum|string $tag Tag for the divider element (defaults to {@see Voids::HR}).
      * @param array<string, mixed> $attributes HTML attributes for the divider element.
@@ -142,6 +160,11 @@ class Item extends BaseBlock implements RenderableInterface
     /**
      * Returns `true` when the item should be rendered as active.
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Item::tag()->link('/home')->active()->isActive();
+     * ```
+     *
      * @return bool `true` if the item is active; otherwise, `false`.
      */
     public function isActive(): bool
@@ -160,6 +183,11 @@ class Item extends BaseBlock implements RenderableInterface
     /**
      * Returns `true` when the item is disabled.
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Item::tag()->disabled()->isDisabled();
+     * ```
+     *
      * @return bool `true` if the item is disabled; otherwise, `false`.
      */
     public function isDisabled(): bool
@@ -170,6 +198,11 @@ class Item extends BaseBlock implements RenderableInterface
     /**
      * Returns `true` when the item is visible.
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Item::tag()->visible(false)->isVisible();
+     * ```
+     *
      * @return bool `true` if the item is visible; otherwise, `false`.
      */
     public function isVisible(): bool
@@ -179,6 +212,14 @@ class Item extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the nested items.
+     *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Item::tag()->items(
+     *     \UIAwesome\Html\Core\Component\Item::tag()->label('Profile')->link('/profile'),
+     *     \UIAwesome\Html\Core\Component\Item::tag()->label('Settings')->link('/settings'),
+     * );
+     * ```
      *
      * @param self ...$values Child items to render below the current one.
      *
@@ -195,6 +236,12 @@ class Item extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the label content.
+     *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Item::tag()->label('Reports');
+     * \UIAwesome\Html\Core\Component\Item::tag()->label('<b>Reports</b>', false);
+     * ```
      *
      * @param string $value Text for the item label.
      * @param bool $encode Whether to HTML-encode the label text (defaults to `true`).
@@ -217,6 +264,11 @@ class Item extends BaseBlock implements RenderableInterface
     /**
      * Sets the link href for the item.
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Item::tag()->link('/reports');
+     * ```
+     *
      * @param string $value URL for the item link.
      *
      * @return static New instance with the updated `link` value.
@@ -233,6 +285,11 @@ class Item extends BaseBlock implements RenderableInterface
     /**
      * Sets the separator prepended before the rendered link.
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Item::tag()->separator('/');
+     * ```
+     *
      * @param string|Stringable $value Content for the separator.
      *
      * @return static New instance with the updated `separator` value.
@@ -248,6 +305,12 @@ class Item extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the visibility flag for the item.
+     *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Item::tag()->visible();
+     * \UIAwesome\Html\Core\Component\Item::tag()->visible(false);
+     * ```
      *
      * @param bool $value Whether the item is visible (defaults to `true`).
      *

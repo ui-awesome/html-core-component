@@ -16,8 +16,8 @@ use function is_string;
 /**
  * Provides an immutable API for the link element of a menu item.
  *
- * Stores the link `<a>` (or arbitrary tag) attributes and the rendering tag name. Consumed by {@see \UIAwesome\Html\Core\Component\Item}
- * when rendering each menu entry.
+ * Stores the link `<a>` (or arbitrary tag) attributes and the rendering tag name. Consumed by
+ * {@see \UIAwesome\Html\Core\Component\Item} when rendering each menu entry.
  *
  * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a
  *

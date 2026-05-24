@@ -793,7 +793,7 @@ final class MenuTest extends TestCase
                 ->linkContainerAttributes(['data-x' => 'value'])
                 ->linkContainerTag('span')
                 ->render(),
-            "Repeated 'linkContainerAttributes()' calls must merge values from prior invocations.",
+            'Prior values must be retained on merge.',
         );
     }
 
@@ -1202,7 +1202,7 @@ final class MenuTest extends TestCase
                 ->listAttributes(['class' => 'first'])
                 ->listAttributes(['data-x' => 'value'])
                 ->render(),
-            "Repeated 'listAttributes()' calls must merge values from prior invocations.",
+            'Prior values must be retained on merge.',
         );
     }
 
@@ -1954,7 +1954,7 @@ final class MenuTest extends TestCase
         self::assertInstanceOf(
             Menu::class,
             new RenderToggleOverride(),
-            "'renderToggle()' must remain `protected` so subclasses with '#[\\Override]' can declare overrides.",
+            'Override subclass must be a `Menu` instance.',
         );
     }
 

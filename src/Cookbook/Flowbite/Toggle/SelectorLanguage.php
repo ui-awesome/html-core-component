@@ -49,6 +49,14 @@ final class SelectorLanguage implements ThemeProviderInterface
         'warning' => 'yellow',
     ];
 
+    /**
+     * Returns the Flowbite language-selector `toggle` attribute set for the given contextual `$theme`.
+     *
+     * @param BaseTag $tag Tag the provider is decorating.
+     * @param string $theme Contextual theme key matched against {@see self::TYPES}.
+     *
+     * @return array<string, mixed> Method-call definitions merged into the tag at render time.
+     */
     public function apply(BaseTag $tag, string $theme): array
     {
         $color = self::TYPES[$theme] ?? 'gray';

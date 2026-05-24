@@ -623,7 +623,7 @@ final class ToggleTest extends TestCase
                 ->toggleContent('content')
                 ->toggleTag('span')
                 ->render(),
-            "Repeated 'toggleAttributes()' calls must merge values from prior invocations.",
+            'Prior values must be retained on merge.',
         );
     }
 

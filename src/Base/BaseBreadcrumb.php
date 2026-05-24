@@ -87,6 +87,11 @@ abstract class BaseBreadcrumb extends BaseBlock implements RenderableInterface
     /**
      * Sets the `aria-current` attribute applied to the active item.
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Breadcrumb::tag()->ariaCurrent('page');
+     * ```
+     *
      * @param string $value Value for the `aria-current` attribute.
      *
      * @return static New instance with the updated `ariaCurrent` value.
@@ -103,6 +108,11 @@ abstract class BaseBreadcrumb extends BaseBlock implements RenderableInterface
     /**
      * Sets the `aria-label` attribute applied to the breadcrumb wrapper.
      *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Breadcrumb::tag()->ariaLabel('breadcrumb');
+     * ```
+     *
      * @param string $value Value for the `aria-label` attribute, or empty string to remove the attribute.
      *
      * @return static New instance with the updated `aria-label` attribute.
@@ -114,6 +124,14 @@ abstract class BaseBreadcrumb extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the breadcrumb items.
+     *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Breadcrumb::tag()->items(
+     *     \UIAwesome\Html\Core\Component\Item::tag()->label('Home')->link('/'),
+     *     \UIAwesome\Html\Core\Component\Item::tag()->label('Library')->link('/library'),
+     * );
+     * ```
      *
      * @param Item|RenderableInterface ...$values Items to render in order inside the breadcrumb.
      *
@@ -130,6 +148,11 @@ abstract class BaseBreadcrumb extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the separator rendered between consecutive breadcrumb items.
+     *
+     * Usage example:
+     * ```php
+     * \UIAwesome\Html\Core\Component\Breadcrumb::tag()->separator('/');
+     * ```
      *
      * @param string|Stringable $value Content for the separator.
      *
