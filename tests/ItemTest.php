@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\Item;
-use UIAwesome\Html\Core\Component\Tests\Support\RenderIconOverride;
+use UIAwesome\Html\Core\Component\Tests\Support\{RenderIconOverride, RenderLabelOverride};
 
 /**
  * Unit tests for the {@see Item} component rendering and immutable configuration.
@@ -357,6 +357,202 @@ final class ItemTest extends TestCase
         );
     }
 
+    public function testLabelAttributes(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            <span title="tip">
+            value
+            </span>
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('value')
+                ->labelAttributes(['title' => 'tip'])
+                ->labelTag()
+                ->link('/')
+                ->render(),
+            'Label attribute map must decorate the label element.',
+        );
+    }
+
+    public function testLabelAttributesMergesAcrossCalls(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            <span class="first" title="tip">
+            value
+            </span>
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('value')
+                ->labelAttributes(['class' => 'first'])
+                ->labelAttributes(['title' => 'tip'])
+                ->labelTag()
+                ->link('/')
+                ->render(),
+            'Prior values must be retained on merge.',
+        );
+    }
+
+    public function testLabelClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            <span class="nav-label">
+            value
+            </span>
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('value')
+                ->labelClass('nav-label')
+                ->labelTag()
+                ->link('/')
+                ->render(),
+            'CSS class must be applied to the label element.',
+        );
+    }
+
+    public function testLabelClassMergesWithBaseLabelAttributeClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            <span class="base value">
+            label
+            </span>
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('label')
+                ->labelAttributes(['class' => 'base'])
+                ->labelClass('value')
+                ->labelTag()
+                ->link('/')
+                ->render(),
+            "Default 'labelClass' merge must append to existing label class.",
+        );
+    }
+
+    public function testLabelRemoveAttribute(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            <span>
+            value
+            </span>
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('value')
+                ->labelAttributes(['title' => 'tip'])
+                ->labelRemoveAttribute('title')
+                ->labelTag()
+                ->link('/')
+                ->render(),
+            'Removed label attribute must not appear in the rendered label element.',
+        );
+    }
+
+    public function testLabelSetAttribute(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            <span title="tip">
+            value
+            </span>
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('value')
+                ->labelSetAttribute('title', 'tip')
+                ->labelTag()
+                ->link('/')
+                ->render(),
+            'Set label attribute must appear on the rendered label element.',
+        );
+    }
+
+    public function testLabelTag(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            <span>
+            value
+            </span>
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('value')
+                ->labelTag()
+                ->link('/')
+                ->render(),
+            "Default label tag must be '<span>'.",
+        );
+    }
+
+    public function testLabelTagWithFalseValue(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            value
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('value')
+                ->labelTag(false)
+                ->link('/')
+                ->render(),
+            "'false' label tag must render the label as plain text.",
+        );
+    }
+
+    public function testLabelTagWithValue(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            <div>
+            value
+            </div>
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('value')
+                ->labelTag('div')
+                ->link('/')
+                ->render(),
+            'Custom label tag must wrap the label.',
+        );
+    }
+
     public function testLabelWithEncodeFalse(): void
     {
         self::assertSame(
@@ -658,6 +854,15 @@ final class ItemTest extends TestCase
         );
     }
 
+    public function testRenderLabelRemainsProtectedForSubclassOverride(): void
+    {
+        self::assertInstanceOf(
+            Item::class,
+            new RenderLabelOverride(),
+            'Override subclass must be an `Item` instance.',
+        );
+    }
+
     public function testReturnNewInstanceWhenSettingAttribute(): void
     {
         $instance = Item::tag();
@@ -730,6 +935,31 @@ final class ItemTest extends TestCase
         self::assertNotSame(
             $instance,
             $instance->label(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->labelAttributes([]),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->labelClass(''),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->labelRemoveAttribute('key'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->labelSetAttribute('key', 'value'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertNotSame(
+            $instance,
+            $instance->labelTag(false),
             'New instance must be returned (immutability).',
         );
         self::assertNotSame(
@@ -899,6 +1129,16 @@ final class ItemTest extends TestCase
         );
 
         Item::tag()->iconTag('div');
+    }
+
+    public function testThrowInvalidArgumentExceptionWhenLabelTagDoesNotResolveToEnum(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            "Label tag 'my-label' must resolve to an `Inline` or `Block` enum case.",
+        );
+
+        Item::tag()->labelTag('my-label');
     }
 
     public function testThrowInvalidArgumentExceptionWhenLinkContainerTagDoesNotResolveToEnum(): void
