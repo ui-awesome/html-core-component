@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 0.2.1 Under development
 
+- feat: Add label wrapper API to `Item` (`labelTag`, `labelClass`, `labelAttributes`, `labelSetAttribute`, `labelRemoveAttribute`) to wrap the menu-item label in a configurable element; defaults to plain text for backward compatibility.
+
 ## 0.2.0 May 24, 2026
 
 - refactor!: PHP 8.3 baseline, components and cookbooks migrated to `DefaultsProviderInterface`/`ThemeProviderInterface`, full PHPDoc across `src/`.

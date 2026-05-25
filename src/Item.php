@@ -9,6 +9,7 @@ use Stringable;
 use UIAwesome\Html\Contracts\RenderableInterface;
 use UIAwesome\Html\Core\Component\Attribute\{
     HasIconCollection,
+    HasLabelCollection,
     HasLinkCollection,
     HasLinkContainerCollection,
     HasListItemCollection,
@@ -44,6 +45,7 @@ class Item extends BaseBlock implements RenderableInterface
     use HasContent;
     use HasCurrentPath;
     use HasIconCollection;
+    use HasLabelCollection;
     use HasLinkCollection;
     use HasLinkContainerCollection;
     use HasListItemCollection;
@@ -392,7 +394,7 @@ class Item extends BaseBlock implements RenderableInterface
             [
                 '{content}' => $this->getContent(),
                 '{icon}' => $this->renderIcon(),
-                '{label}' => $this->label,
+                '{label}' => $this->renderLabel($this->label),
             ],
         );
 

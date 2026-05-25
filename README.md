@@ -102,6 +102,34 @@ echo NavBar::tag()
     ->render();
 ```
 
+#### Menu with wrapped labels
+
+Each item label can be wrapped in its own element (for styling or truncation) via `labelTag`/`labelClass`. Without `labelTag`, the label renders as plain text.
+
+```php
+use UIAwesome\Html\Core\Component\{Item, Menu};
+use UIAwesome\Html\Interop\Inline;
+
+echo Menu::tag()
+    ->type('nav')
+    ->linkClass('nav-link')
+    ->linkActiveClass('is-active')
+    ->items(
+        Item::tag()
+            ->label('Request')
+            ->link('/request')
+            ->active()
+            ->labelTag(Inline::SPAN)
+            ->labelClass('nav-link-label'),
+        Item::tag()
+            ->label('Logs')
+            ->link('/logs')
+            ->labelTag(Inline::SPAN)
+            ->labelClass('nav-link-label'),
+    )
+    ->render();
+```
+
 ### Cookbooks (Bootstrap5, Flowbite)
 
 The core ships preconfigured cookbooks for popular CSS frameworks under `src/Cookbook/`. Each cookbook implements one of the provider interfaces shipped by `ui-awesome/html-core`:
