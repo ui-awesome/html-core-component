@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 0.2.2 Under development
 
+- docs: Correct image source order in `README.md` for feature overview.
+
 ## 0.2.1 May 25, 2026
 
 - feat: Add label wrapper API to `Item` (`labelTag`, `labelClass`, `labelAttributes`, `labelSetAttribute`, `labelRemoveAttribute`) to wrap the menu-item label in a configurable element; defaults to plain text for backward compatibility.
