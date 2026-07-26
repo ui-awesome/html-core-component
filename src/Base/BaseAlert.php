@@ -20,9 +20,6 @@ use UnitEnum;
  * Extend this class to render dismissible alerts with a prefix area, content area, suffix area, and an optional toggle
  * element. Subclasses inherit attribute, class, content, container, prefix, suffix, and template handling from
  * {@see BaseBlock} and the mixin traits.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 abstract class BaseAlert extends BaseBlock implements RenderableInterface
 {

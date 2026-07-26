@@ -11,9 +11,6 @@ use UIAwesome\Html\Core\Component\Toggle;
 
 /**
  * Unit tests for the {@see Toggle} component rendering and immutable configuration.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 #[Group('toggle')]
 final class ToggleTest extends TestCase

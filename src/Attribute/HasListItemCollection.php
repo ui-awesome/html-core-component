@@ -17,10 +17,7 @@ use UnitEnum;
  * Stores the list-item attributes and the chosen tag name. Consumed by {@see \UIAwesome\Html\Core\Component\Item} when
  * rendering each entry.
  *
- * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/li
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/li
  */
 trait HasListItemCollection
 {

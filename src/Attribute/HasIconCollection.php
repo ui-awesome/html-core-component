@@ -22,11 +22,8 @@ use function implode;
  * Supports `<i>`, `<span>`, and `<svg>` icon tags. SVG icons can carry inline content, attributes, or be loaded from
  * disk via {@see Svg::filePath()}.
  *
- * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/i
- * @link https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/i
+ * @see https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg
  */
 trait HasIconCollection
 {
@@ -289,8 +286,6 @@ trait HasIconCollection
     }
 
     /**
-     * Renders an SVG icon.
-     *
      * @return string Rendered HTML of the SVG icon, or an empty string if no attributes, content, or file path are set.
      */
     private function renderSvgIcon(): string

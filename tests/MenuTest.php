@@ -13,9 +13,6 @@ use UIAwesome\Html\Interop\Inline;
 
 /**
  * Unit tests for the {@see Menu} component rendering and immutable configuration.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 #[Group('menu')]
 final class MenuTest extends TestCase

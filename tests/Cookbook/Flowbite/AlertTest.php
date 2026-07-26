@@ -11,9 +11,6 @@ use UIAwesome\Html\Core\Component\Cookbook\Flowbite\Alert\{Defaults, Dismissible
 
 /**
  * Unit tests for the {@see Alert} component with Flowbite theme providers.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 #[Group('alert')]
 final class AlertTest extends TestCase

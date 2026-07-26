@@ -21,8 +21,5 @@ use UIAwesome\Html\Core\Component\Base\BaseToggle;
  *     ->addDataAttribute('bs-target', '#navbar')
  *     ->render();
  * ```
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 class Toggle extends BaseToggle {}

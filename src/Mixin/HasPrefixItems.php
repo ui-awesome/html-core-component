@@ -11,9 +11,6 @@ use function implode;
 
 /**
  * Provides an immutable API for prefix content rendered before the main item list of a component.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 trait HasPrefixItems
 {

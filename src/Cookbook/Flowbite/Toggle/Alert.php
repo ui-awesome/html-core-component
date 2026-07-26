@@ -24,10 +24,7 @@ use function array_values;
  *     ->render();
  * ```
  *
- * @link https://flowbite.com/docs/components/alerts/
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
+ * @see https://flowbite.com/docs/components/alerts/
  */
 final class Alert implements ThemeProviderInterface
 {

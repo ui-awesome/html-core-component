@@ -18,6 +18,9 @@
     <a href="https://github.com/ui-awesome/html-core-component/actions/workflows/static.yml" target="_blank">
         <img src="https://img.shields.io/github/actions/workflow/status/ui-awesome/html-core-component/static.yml?style=for-the-badge&label=PHPStan&logo=github" alt="PHPStan">
     </a>
+    <a href="https://github.com/ui-awesome/html-core-component/actions/workflows/security.yml" target="_blank">
+        <img src="https://img.shields.io/github/actions/workflow/status/ui-awesome/html-core-component/security.yml?style=for-the-badge&label=Security&logo=github" alt="Security">
+    </a>
 </p>
 
 <p align="center">

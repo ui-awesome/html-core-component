@@ -20,10 +20,7 @@ use UIAwesome\Html\Core\Provider\DefaultsProviderInterface;
  *     ->render();
  * ```
  *
- * @link https://getbootstrap.com/docs/5.3/components/breadcrumb/
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
+ * @see https://getbootstrap.com/docs/5.3/components/breadcrumb/
  */
 final class Defaults implements DefaultsProviderInterface
 {

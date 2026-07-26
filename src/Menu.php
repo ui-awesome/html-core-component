@@ -61,9 +61,6 @@ use function is_string;
  *     ->currentPath('/reports')
  *     ->render();
  * ```
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 class Menu extends BaseBlock implements RenderableInterface
 {

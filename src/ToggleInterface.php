@@ -12,9 +12,6 @@ use UIAwesome\Html\Contracts\RenderableInterface;
  * Parent components (such as alerts, dropdowns, and navbars) propagate their `id` to the toggle through
  * {@see dataValue()} so the toggle can emit explicit data hooks (for example, `data-bs-target`, `data-collapse-toggle`)
  * referencing the parent.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 interface ToggleInterface extends RenderableInterface
 {

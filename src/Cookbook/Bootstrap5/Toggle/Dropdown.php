@@ -17,10 +17,7 @@ use UIAwesome\Html\Core\Provider\DefaultsProviderInterface;
  *     ->render();
  * ```
  *
- * @link https://getbootstrap.com/docs/5.3/components/dropdowns/
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
+ * @see https://getbootstrap.com/docs/5.3/components/dropdowns/
  */
 final class Dropdown implements DefaultsProviderInterface
 {

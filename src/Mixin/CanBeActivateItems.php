@@ -9,9 +9,6 @@ namespace UIAwesome\Html\Core\Component\Mixin;
  *
  * When enabled, items whose {@see HasCurrentPath::currentPath()} matches their link are rendered in the active state by
  * the consuming component (typically {@see \UIAwesome\Html\Core\Component\Menu}).
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 trait CanBeActivateItems
 {

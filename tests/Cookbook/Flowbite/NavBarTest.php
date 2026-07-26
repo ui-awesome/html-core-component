@@ -11,9 +11,6 @@ use UIAwesome\Html\Core\Component\{Dropdown, Item, Menu, NavBar, Toggle};
 
 /**
  * Unit tests for the {@see NavBar} component with Flowbite default providers.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 #[Group('navbar')]
 final class NavBarTest extends TestCase

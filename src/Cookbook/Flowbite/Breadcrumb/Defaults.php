@@ -20,10 +20,7 @@ use UIAwesome\Html\Svg\Svg;
  *     ->items($home, $reports)->render();
  * ```
  *
- * @link https://flowbite.com/docs/components/breadcrumb/
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
+ * @see https://flowbite.com/docs/components/breadcrumb/
  */
 final class Defaults implements DefaultsProviderInterface
 {

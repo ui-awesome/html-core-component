@@ -9,9 +9,6 @@ namespace UIAwesome\Html\Core\Component\Mixin;
  *
  * The template supports the placeholders `{icon}`, `{label}`, and `{content}`, which are substituted with the
  * respective values of the consuming {@see \UIAwesome\Html\Core\Component\Item}.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 trait HasTemplateLinkItem
 {

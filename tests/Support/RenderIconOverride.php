@@ -14,9 +14,6 @@ use UIAwesome\Html\Core\Component\Item;
  * Loading the class fails fatally when the parent method is not inheritable (for example, when a mutation flips the
  * trait method visibility from `protected` to `private`), which makes any test instantiating it detect the
  * {@see https://infection.github.io/guide/mutators.html#ProtectedVisibility} mutator.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 final class RenderIconOverride extends Item
 {

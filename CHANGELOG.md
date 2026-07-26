@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 0.2.2 Under development
 
 - docs: Correct image source order in `README.md` for feature overview.
+- ci: Replace Super-Linter with reusable `quality.yml` and `security.yml` workflows, pin reusable workflow references to a commit SHA, and group Dependabot updates.
 
 ## 0.2.1 May 25, 2026
 

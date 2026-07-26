@@ -12,9 +12,6 @@ use UIAwesome\Html\Core\Component\Tests\Support\{RenderIconOverride, RenderLabel
 
 /**
  * Unit tests for the {@see Item} component rendering and immutable configuration.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 #[Group('item')]
 final class ItemTest extends TestCase

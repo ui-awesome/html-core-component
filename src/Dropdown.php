@@ -21,8 +21,5 @@ use UIAwesome\Html\Core\Component\Base\BaseDropdown;
  *     )
  *     ->render();
  * ```
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 class Dropdown extends BaseDropdown {}
