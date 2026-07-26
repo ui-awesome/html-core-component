@@ -13,7 +13,7 @@ use UnitEnum;
  * The stored value is consumed by {@see \UIAwesome\Html\Core\Component\Menu} and propagated to the `<li>` of disabled
  * items via {@see HasListItemCollection::listItemClass()}.
  *
- * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/class
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/class
  *
  * @copyright Copyright (C) 2026 Terabytesoftw.
  * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.

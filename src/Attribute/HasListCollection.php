@@ -17,8 +17,8 @@ use UnitEnum;
  * Stores the list attributes and the chosen list type (`ul` or `ol`). Consumed by
  * {@see \UIAwesome\Html\Core\Component\Menu} when rendering the list wrapper around the items.
  *
- * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ul
- * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ol
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ul
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ol
  *
  * @copyright Copyright (C) 2026 Terabytesoftw.
  * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.

@@ -23,7 +23,7 @@ use UIAwesome\Html\Core\Provider\DefaultsProviderInterface;
  *     ->addDataAttribute('bs-target', '#' . $navId);
  * ```
  *
- * @link https://getbootstrap.com/docs/5.3/components/navbar/#toggler
+ * @see https://getbootstrap.com/docs/5.3/components/navbar/#toggler
  *
  * @copyright Copyright (C) 2026 Terabytesoftw.
  * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.

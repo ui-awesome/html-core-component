@@ -7,7 +7,7 @@ namespace UIAwesome\Html\Core\Component\Mixin;
 /**
  * Provides an immutable API for toggling the `aria-current` attribute on the active `<li>` of a menu item.
  *
- * @link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current
+ * @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current
  *
  * @copyright Copyright (C) 2026 Terabytesoftw.
  * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
