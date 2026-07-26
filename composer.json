@@ -40,7 +40,7 @@
         "ui-awesome/html-svg": "^0.4"
     },
     "require-dev": {
-        "infection/infection": "^0.33",
+        "infection/infection": "^0.34",
         "maglnet/composer-require-checker": "^4.1",
         "php-forge/baseline": "^0.1",
         "php-forge/coding-standard": "^0.3",
@@ -49,7 +49,7 @@
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpunit/phpunit": "^12.5",
-        "yii2-extensions/scaffold": "^0.1"
+        "yii2-extensions/scaffold": "^0.2"
     },
     "autoload": {
         "psr-4": {
