@@ -27,9 +27,6 @@ use UIAwesome\Html\Interop\Block;
  * ```
  *
  * @see https://flowbite.com/docs/components/navbar/
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 final class Defaults implements DefaultsProviderInterface
 {

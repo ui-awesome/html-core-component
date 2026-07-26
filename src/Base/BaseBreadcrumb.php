@@ -42,9 +42,6 @@ use UIAwesome\Html\Mixin\{HasPrefixCollection, HasSuffixCollection};
  *
  * Extend this class to render accessible breadcrumb navigation with active-path detection. The wrapper defaults to
  * `<nav>` and the inner list to `<ol>`.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 abstract class BaseBreadcrumb extends BaseBlock implements RenderableInterface
 {

@@ -39,9 +39,6 @@ use UIAwesome\Html\Mixin\{HasContainerCollection, HasPrefixCollection, HasSuffix
  *
  * Extend this class to render dropdown menus with toggles, dividers, and active-link wiring. The wrapper tag defaults
  * to `<div>` and can be customized by overriding {@see getTag()}.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 abstract class BaseDropdown extends BaseBlock implements RenderableInterface
 {

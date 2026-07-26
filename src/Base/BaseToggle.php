@@ -26,9 +26,6 @@ use function is_string;
  * Extend this class to render button or link toggles. Toggles render as `<button type="button">` by default and can be
  * switched to `<a>` via {@see link()}. Use {@see BaseBlock::addDataAttribute()} for Bootstrap, Flowbite, and Tailwind
  * UI data hooks (`data-bs-toggle`, `data-collapse-toggle`, `data-drawer-target`, and friends).
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 abstract class BaseToggle extends BaseBlock implements ToggleInterface
 {

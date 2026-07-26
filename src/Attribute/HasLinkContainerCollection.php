@@ -18,9 +18,6 @@ use function is_string;
  *
  * Stores the wrapper tag and its HTML attributes. Consumed by {@see \UIAwesome\Html\Core\Component\Item} to render an
  * optional wrapping element around the link (for example a `<div>` or `<span>`).
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 trait HasLinkContainerCollection
 {

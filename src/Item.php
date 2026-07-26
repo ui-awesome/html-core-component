@@ -35,9 +35,6 @@ use UIAwesome\Html\Mixin\{HasContent, HasTemplate};
  *     ->active(true)
  *     ->render();
  * ```
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 class Item extends BaseBlock implements RenderableInterface
 {

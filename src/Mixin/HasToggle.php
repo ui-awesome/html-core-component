@@ -15,9 +15,6 @@ use function is_string;
  * The toggle is either a raw string (rendered verbatim) or a {@see ToggleInterface} instance that receives the owning
  * component's id via {@see ToggleInterface::dataValue()} when rendered. Consuming classes must expose
  * {@see getAttribute()} (supplied by {@see HasAttributes}, inherited through {@see BaseBlock}).
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 trait HasToggle
 {

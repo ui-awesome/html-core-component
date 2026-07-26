@@ -22,9 +22,6 @@ use function implode;
  *
  * Extend this class to render navigation bars with brand, menu, and collapsible toggle elements. The wrapper tag
  * defaults to `<nav>` and supports brand, container, prefix, and suffix sections.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 abstract class BaseNavBar extends BaseBlock implements RenderableInterface
 {

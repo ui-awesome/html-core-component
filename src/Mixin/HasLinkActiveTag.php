@@ -11,9 +11,6 @@ use InvalidArgumentException;
  *
  * Consumed by {@see \UIAwesome\Html\Core\Component\Menu} to swap the default `<a>` tag with an alternative (commonly
  * `<span>`) when an item is rendered in the active state.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 trait HasLinkActiveTag
 {

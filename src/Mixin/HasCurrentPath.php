@@ -9,9 +9,6 @@ namespace UIAwesome\Html\Core\Component\Mixin;
  *
  * Consumed by {@see \UIAwesome\Html\Core\Component\Item::isActive()} when {@see CanBeActivateItems::activateItems()} is
  * enabled: an item whose link matches {@see $currentPath} is rendered in the active state.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 trait HasCurrentPath
 {

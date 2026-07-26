@@ -11,9 +11,6 @@ use UIAwesome\Html\Core\Component\{Dropdown, Item};
 
 /**
  * Unit tests for the {@see Dropdown} component with Flowbite theme providers.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 #[Group('dropdown')]
 final class DropdownTest extends TestCase

@@ -11,9 +11,6 @@ use UIAwesome\Html\Core\Component\Cookbook\Bootstrap5\Alert\{Defaults, Dismissib
 
 /**
  * Unit tests for the {@see Alert} component with Bootstrap5 theme providers.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 #[Group('alert')]
 final class AlertTest extends TestCase

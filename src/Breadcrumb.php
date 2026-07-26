@@ -22,8 +22,5 @@ use UIAwesome\Html\Core\Component\Base\BaseBreadcrumb;
  *     )
  *     ->render();
  * ```
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/MIT MIT License.
  */
 class Breadcrumb extends BaseBreadcrumb {}

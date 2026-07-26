@@ -19,9 +19,6 @@ use UIAwesome\Html\Svg\Svg;
  * ```
  *
  * @see https://getbootstrap.com/docs/5.3/components/dropdowns/
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 final class SelectorLanguage implements DefaultsProviderInterface
 {

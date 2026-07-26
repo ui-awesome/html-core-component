@@ -11,9 +11,6 @@ use UIAwesome\Html\Core\Component\Cookbook\Bootstrap5\Breadcrumb\Defaults;
 
 /**
  * Unit tests for the {@see Breadcrumb} component with Bootstrap5 default providers.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 #[Group('breadcrumb')]
 final class BreadcrumbTest extends TestCase

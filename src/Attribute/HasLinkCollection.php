@@ -20,9 +20,6 @@ use function is_string;
  * {@see \UIAwesome\Html\Core\Component\Item} when rendering each menu entry.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 trait HasLinkCollection
 {

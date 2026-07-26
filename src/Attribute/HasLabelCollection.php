@@ -20,9 +20,6 @@ use function is_string;
  * Stores the wrapper tag and its HTML attributes. Consumed by {@see \UIAwesome\Html\Core\Component\Item} to wrap the
  * label text in an optional element (for example a `<span>` or `<div>`). When {@see $labelTag} is `false`, the label
  * renders as plain text.
- *
- * @copyright Copyright (C) 2026 Terabytesoftw.
- * @license https://opensource.org/license/bsd-3-clause BSD 3-Clause License.
  */
 trait HasLabelCollection
 {
