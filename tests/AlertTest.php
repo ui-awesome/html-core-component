@@ -33,7 +33,7 @@ final class AlertTest extends TestCase
                     'stub.alert.dismissible',
                     new Cookbook(
                         new Call('class', 'alert-shell is-dismissible'),
-                        new Call('toggle', $toggle ),
+                        new Call('toggle', $toggle),
                     ),
                 ),
             ),

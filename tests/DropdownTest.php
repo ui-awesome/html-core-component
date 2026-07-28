@@ -184,7 +184,7 @@ final class DropdownTest extends TestCase
                         new Call('containerTag', Block::DIV),
                         new Call('linkClass', 'dropdown-entry'),
                         new Call('listClass', 'dropdown-list'),
-                        new Call('toggle',  $toggle),
+                        new Call('toggle', $toggle),
                     ),
                 ),
             ),
