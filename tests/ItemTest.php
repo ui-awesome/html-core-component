@@ -818,25 +818,6 @@ final class ItemTest extends TestCase
         );
     }
 
-    public function testLinkTagWithValue(): void
-    {
-        self::assertSame(
-            <<<HTML
-            <li>
-            <span>
-            value
-            </span>
-            </li>
-            HTML,
-            Item::tag()
-                ->label('value')
-                ->link('/')
-                ->linkTag('span')
-                ->render(),
-            'Custom link tag must wrap the label.',
-        );
-    }
-
     public function testLinkTagWithForeignEnumMatchingAnchorKeepsHref(): void
     {
         self::assertSame(
@@ -853,6 +834,25 @@ final class ItemTest extends TestCase
                 ->linkTag(ForeignTag::A)
                 ->render(),
             'Any enum meaning `a` must keep the link.',
+        );
+    }
+
+    public function testLinkTagWithValue(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <span>
+            value
+            </span>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('value')
+                ->link('/')
+                ->linkTag('span')
+                ->render(),
+            'Custom link tag must wrap the label.',
         );
     }
 
