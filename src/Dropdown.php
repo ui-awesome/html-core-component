@@ -9,8 +9,9 @@ use UIAwesome\Html\Core\Component\Base\BaseDropdown;
 /**
  * Represents a dropdown component composed of a toggle and a collapsible list of items.
  *
- * Renders a `<div>` wrapper enclosing a {@see Toggle} and a {@see Menu} of {@see Item} entries. Pair with a cookbook
- * recipe (for example, {@see Cookbook\Bootstrap5\Dropdown\Defaults}) to apply framework-specific styling.
+ * Renders a `<div>` wrapper enclosing a {@see Toggle} and a {@see Menu} of {@see Item} entries. Apply
+ * framework-specific styling through {@see \UIAwesome\Html\Core\Base\BaseTag::config()} with a
+ * {@see \UIAwesome\Html\Core\Theme\ThemeInterface} implementation.
  *
  * Usage example:
  * ```php

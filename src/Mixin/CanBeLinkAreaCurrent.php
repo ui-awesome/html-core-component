@@ -48,7 +48,6 @@ trait CanBeLinkAreaCurrent
     public function linkAriaCurrent(bool $value = true): static
     {
         $new = clone $this;
-
         $new->linkAriaCurrent = $value;
 
         return $new;

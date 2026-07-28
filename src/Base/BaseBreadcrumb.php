@@ -137,7 +137,6 @@ abstract class BaseBreadcrumb extends BaseBlock implements RenderableInterface
     public function items(Item|RenderableInterface ...$values): static
     {
         $new = clone $this;
-
         $new->items = $values;
 
         return $new;
@@ -158,7 +157,6 @@ abstract class BaseBreadcrumb extends BaseBlock implements RenderableInterface
     public function separator(string|Stringable $value): static
     {
         $new = clone $this;
-
         $new->separator = (string) $value;
 
         return $new;
@@ -203,24 +201,24 @@ abstract class BaseBreadcrumb extends BaseBlock implements RenderableInterface
             ->ariaCurrent($this->ariaCurrent)
             ->attributes($this->getAttributes())
             ->currentPath($this->currentPath)
-            ->firstItemClass($this->firstItemClass, $this->overrideFirstItemClass)
-            ->firstLinkClass($this->firstLinkClass, $this->overrideFirstLinkClass)
+            ->firstItemClass($this->firstItemClass)
+            ->firstLinkClass($this->firstLinkClass)
             ->items(...$this->items)
-            ->lastItemClass($this->lastItemClass, $this->overrideLastItemClass)
-            ->lastLinkClass($this->lastLinkClass, $this->overrideLastLinkClass)
-            ->linkActiveClass($this->linkActiveClass, $this->overrideLinkActiveClass)
+            ->lastItemClass($this->lastItemClass)
+            ->lastLinkClass($this->lastLinkClass)
+            ->linkActiveClass($this->linkActiveClass)
             ->linkActiveTag($this->linkActiveTag)
             ->linkAriaCurrent($this->linkAriaCurrent)
             ->linkAttributes($this->linkAttributes)
             ->linkContainerAttributes($this->linkContainerAttributes)
             ->linkContainerTag($this->linkContainerTag)
-            ->linkDisabledClass($this->linkDisabledClass, $this->overrideLinkDisabledClass)
+            ->linkDisabledClass($this->linkDisabledClass)
             ->linkTag($this->linkTag)
             ->listAttributes($this->listAttributes)
-            ->listItemActiveClass($this->listItemActiveClass, $this->overrideListItemActiveClass)
+            ->listItemActiveClass($this->listItemActiveClass)
             ->listItemAriaCurrent($this->listItemAriaCurrent)
             ->listItemAttributes($this->listItemAttributes)
-            ->listItemDisabledClass($this->listItemDisabledClass, $this->overrideListItemDisabledClass)
+            ->listItemDisabledClass($this->listItemDisabledClass)
             ->listItemTag($this->listItemTag)
             ->listType($this->listType)
             ->prefix($this->prefix)

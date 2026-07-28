@@ -48,7 +48,6 @@ trait CanBeListItemAreaCurrent
     public function listItemAriaCurrent(bool $value = true): static
     {
         $new = clone $this;
-
         $new->listItemAriaCurrent = $value;
 
         return $new;

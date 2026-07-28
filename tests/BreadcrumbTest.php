@@ -7,6 +7,8 @@ namespace UIAwesome\Html\Core\Component\Tests;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\{Breadcrumb, Item};
+use UIAwesome\Html\Core\Component\Tests\Support\{StringableValue, Theme};
+use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 use UIAwesome\Html\Interop\Inline;
 
 /**
@@ -199,6 +201,97 @@ final class BreadcrumbTest extends TestCase
                 )
                 ->render(),
             'CSS class must be applied to the wrapper.',
+        );
+    }
+
+    public function testConfigAppliesListRecipeThroughTheInnerMenu(): void
+    {
+        $config = new Config(
+            new Theme(
+                'stub',
+                new Recipe(
+                    'stub.breadcrumb',
+                    new Cookbook(
+                        new Call('listClass', 'crumb-list'),
+                        new Call('listItemActiveClass', 'is-active'),
+                        new Call('listItemAriaCurrent'),
+                        new Call('listItemClass', 'crumb-item'),
+                    ),
+                ),
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <nav id="breadcrumb" aria-label="breadcrumb">
+            <ol class="crumb-list">
+            <li class="crumb-item">
+            <a href="/">
+            Home
+            </a>
+            </li>
+            <li class="is-active" aria-current="page">
+            Reports
+            </li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumb::tag()
+                ->config($config, new ComponentContext('breadcrumb'))
+                ->currentPath('/reports')
+                ->id('breadcrumb')
+                ->items(
+                    Item::tag()->label('Home')->link('/'),
+                    Item::tag()->label('Reports')->link('/reports'),
+                )
+                ->render(),
+            'Recipe list classes must reach the inner menu.',
+        );
+    }
+
+    public function testConfigIsOverriddenByFluentCallsMadeAfterwards(): void
+    {
+        $config = new Config(
+            new Theme(
+                'stub',
+                new Recipe(
+                    'stub.breadcrumb',
+                    new Cookbook(
+                        new Call('listClass', 'from-config'),
+                        new Call('separator', '>'),
+                    ),
+                ),
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <nav id="breadcrumb" aria-label="breadcrumb">
+            <ol class="from-config">
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            <li>
+            /
+            <a href="/library">
+            Library
+            </a>
+            </li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumb::tag()
+                ->config($config, new ComponentContext('breadcrumb'))
+                ->id('breadcrumb')
+                ->items(
+                    Item::tag()->label('Home')->link('/'),
+                    Item::tag()->label('Library')->link('/library'),
+                )
+                ->separator('/')
+                ->render(),
+            'Local separator must win over the recipe value.',
         );
     }
 
@@ -486,7 +579,7 @@ final class BreadcrumbTest extends TestCase
             </a>
             </li>
             <li>
-            <span href="/library" aria-current="page">
+            <span aria-current="page">
             Library
             </span>
             </li>
@@ -908,17 +1001,17 @@ final class BreadcrumbTest extends TestCase
             <nav id="breadcrumb" aria-label="breadcrumb">
             <ol>
             <li>
-            <span href="/">
+            <span>
             Home
             </span>
             </li>
             <li>
-            <span href="/library">
+            <span>
             Library
             </span>
             </li>
             <li>
-            <span href="/data">
+            <span>
             Data
             </span>
             </li>
@@ -1826,6 +1919,34 @@ final class BreadcrumbTest extends TestCase
                 ->separator('>')
                 ->render(),
             'Separator must precede each non-first item.',
+        );
+    }
+
+    public function testSeparatorWithStringableValue(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav id="breadcrumb" aria-label="breadcrumb">
+            <ol>
+            <li>
+            Home
+            </li>
+            <li>
+            >
+            Library
+            </li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumb::tag()
+                ->id('breadcrumb')
+                ->items(
+                    Item::tag()->label('Home'),
+                    Item::tag()->label('Library'),
+                )
+                ->separator(new StringableValue('>'))
+                ->render(),
+            'Stringable separator must be cast to `string`.',
         );
     }
 

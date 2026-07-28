@@ -51,7 +51,6 @@ trait HasToggle
     public function toggle(string|ToggleInterface $value): static
     {
         $new = clone $this;
-
         $new->toggle = $value;
 
         return $new;

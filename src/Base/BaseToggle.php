@@ -73,7 +73,6 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
     public function dataValue(string $value): static
     {
         $new = clone $this;
-
         $new->dataValue = $value;
 
         return $new;
@@ -107,7 +106,6 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
     public function link(): static
     {
         $new = clone $this;
-
         $new->isLink = true;
 
         return $new;
@@ -128,7 +126,6 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
     public function toggleAttributes(array $values): static
     {
         $new = clone $this;
-
         $new->toggleAttributes = [...$new->toggleAttributes, ...$values];
 
         return $new;
@@ -151,7 +148,6 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
     public function toggleClass(array|string $value, bool $override = false): static
     {
         $new = clone $this;
-
         CSSClass::add($new->toggleAttributes, $value, $override);
 
         return $new;
@@ -172,7 +168,6 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
     public function toggleContent(string|Stringable|RenderableInterface ...$values): static
     {
         $new = clone $this;
-
         $new->toggleContent = implode('', $values);
 
         return $new;
@@ -202,7 +197,6 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
         }
 
         $new = clone $this;
-
         $new->toggleTag = $value;
 
         return $new;

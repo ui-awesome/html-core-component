@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace UIAwesome\Html\Core\Component\Tests;
 
+use PHPForge\Support\Stub\Unit;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Attribute\Values\{Data, Role};
 use UIAwesome\Html\Core\Component\{Alert, Toggle};
+use UIAwesome\Html\Core\Component\Tests\Support\{Theme, VariantTheme};
+use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 use UIAwesome\Html\Interop\Block;
 
 /**
@@ -16,6 +19,124 @@ use UIAwesome\Html\Interop\Block;
 #[Group('alert')]
 final class AlertTest extends TestCase
 {
+    public function testConfigEmbedsToggleSuppliedByRecipe(): void
+    {
+        $toggle = Toggle::tag()
+            ->addDataAttribute('dismiss-target', '#alert')
+            ->class('close-button')
+            ->content('Close');
+
+        $config = new Config(
+            new Theme(
+                'stub',
+                new Recipe(
+                    'stub.alert.dismissible',
+                    new Cookbook(
+                        new Call('class', 'alert-shell is-dismissible'),
+                        new Call('toggle', $toggle),
+                    ),
+                ),
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <div class="alert-shell is-dismissible" id="alert" role="alert">
+            Watch the bus!
+            <button class="close-button" type="button" data-dismiss-target="#alert">
+            Close
+            </button>
+            </div>
+            HTML,
+            Alert::tag()
+                ->config($config, new ComponentContext('alert'))
+                ->content('Watch the bus!')
+                ->id('alert')
+                ->render(),
+            'Recipe toggle must render after the content.',
+        );
+    }
+
+    public function testConfigIsOverriddenByFluentCallsMadeAfterwards(): void
+    {
+        $config = new Config(
+            new Theme(
+                'stub',
+                new Recipe(
+                    'stub.alert',
+                    new Cookbook(
+                        new Call('class', 'from-config'),
+                        new Call('id', 'id-config'),
+                    ),
+                ),
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <div class="from-config" id="id-user" role="alert">
+            content
+            </div>
+            HTML,
+            Alert::tag()
+                ->config($config, new ComponentContext('alert'))
+                ->content('content')
+                ->id('id-user')
+                ->render(),
+            'Local call must win over the recipe value.',
+        );
+    }
+
+    public function testConfigResolvesVariantFromContext(): void
+    {
+        $config = new Config(
+            new VariantTheme(
+                'stub',
+                'alert alert-%1$s',
+                ['danger', 'info'],
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <div class="alert alert-danger" id="alert" role="alert">
+            Watch out!
+            </div>
+            HTML,
+            Alert::tag()
+                ->config($config, new ComponentContext('alert', variant: 'danger'))
+                ->content('Watch out!')
+                ->id('alert')
+                ->render(),
+            'Wrapper class must carry the context variant.',
+        );
+    }
+
+    public function testConfigSkipsRecipesWhenContextVariantIsUnknown(): void
+    {
+        $config = new Config(
+            new VariantTheme(
+                'stub',
+                'alert alert-%1$s',
+                ['danger', 'info'],
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <div id="alert" role="alert">
+            Watch out!
+            </div>
+            HTML,
+            Alert::tag()
+                ->config($config, new ComponentContext('alert', variant: 'unmapped'))
+                ->content('Watch out!')
+                ->id('alert')
+                ->render(),
+            'Unresolved variant must leave the component untouched.',
+        );
+    }
+
     public function testRenderAutoGeneratesId(): void
     {
         self::assertStringContainsString(
@@ -49,6 +170,25 @@ final class AlertTest extends TestCase
                 ->prefixTag(Block::DIV)
                 ->render(),
             'Empty prefix content must skip the prefix wrapper even when the prefix tag is a valid enum.',
+        );
+    }
+
+    public function testRenderOmitsPrefixWrapperWhenPrefixTagIsNotBacked(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div id="alert" role="alert">
+            prefix
+            content
+            </div>
+            HTML,
+            Alert::tag()
+                ->content('content')
+                ->id('alert')
+                ->prefix('prefix')
+                ->prefixTag(Unit::value)
+                ->render(),
+            'A tag without a backing value must leave the prefix unwrapped.',
         );
     }
 
@@ -415,6 +555,26 @@ final class AlertTest extends TestCase
                 )
                 ->render(),
             'Toggle must render after the content.',
+        );
+    }
+
+    public function testRenderWithToggleWhenIdAttributeIsNotAString(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div id="7" role="alert">
+            content
+            <button type="button">
+            toggle-content
+            </button>
+            </div>
+            HTML,
+            Alert::tag()
+                ->attributes(['id' => 7])
+                ->content('content')
+                ->toggle(Toggle::tag()->content('toggle-content'))
+                ->render(),
+            'Non-string id must be replaced by an empty data value.',
         );
     }
 }

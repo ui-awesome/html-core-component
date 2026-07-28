@@ -32,7 +32,6 @@ trait CanBeActivateItems
     public function activateItems(bool $value = true): static
     {
         $new = clone $this;
-
         $new->activateItems = $value;
 
         return $new;

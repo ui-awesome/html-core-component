@@ -5,10 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 0.2.2 Under development
+## 0.3.0 Under development
 
-- docs: Correct image source order in `README.md` for feature overview.
-- ci: Replace Super-Linter with reusable `quality.yml` and `security.yml` workflows, pin reusable workflow references to a commit SHA, and group Dependabot updates.
+- feat!: Adopt the `ui-awesome/html-core` theming system, move the cookbooks to theme packages, and clean up the rendered markup.
 
 ## 0.2.1 May 25, 2026
 

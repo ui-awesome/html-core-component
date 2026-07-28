@@ -95,7 +95,6 @@ trait HasLinkContainerCollection
     public function linkContainerAttributes(array $values): static
     {
         $new = clone $this;
-
         $new->linkContainerAttributes = [...$this->linkContainerAttributes, ...$values];
 
         return $new;
@@ -119,7 +118,6 @@ trait HasLinkContainerCollection
     public function linkContainerClass(array|string|Stringable|UnitEnum $value, bool $override = false): static
     {
         $new = clone $this;
-
         CSSClass::add($new->linkContainerAttributes, $value, $override);
 
         return $new;
@@ -142,7 +140,6 @@ trait HasLinkContainerCollection
     public function linkContainerRemoveAttribute(string|UnitEnum $key, string $prefix = ''): static
     {
         $new = clone $this;
-
         AttributeBag::remove($new->linkContainerAttributes, $key, $prefix);
 
         return $new;
@@ -166,7 +163,6 @@ trait HasLinkContainerCollection
     public function linkContainerSetAttribute(string|UnitEnum $key, mixed $value, string $prefix = ''): static
     {
         $new = clone $this;
-
         AttributeBag::set($new->linkContainerAttributes, $key, $value, $prefix);
 
         return $new;
@@ -197,7 +193,6 @@ trait HasLinkContainerCollection
         }
 
         $new = clone $this;
-
         $new->linkContainerTag = $value;
 
         return $new;

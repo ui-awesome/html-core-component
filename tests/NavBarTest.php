@@ -6,7 +6,9 @@ namespace UIAwesome\Html\Core\Component\Tests;
 
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
-use UIAwesome\Html\Core\Component\{Item, Menu, NavBar};
+use UIAwesome\Html\Core\Component\{Dropdown, Item, Menu, NavBar, Toggle};
+use UIAwesome\Html\Core\Component\Tests\Support\Theme;
+use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 use UIAwesome\Html\Interop\{Block, Inline};
 
 /**
@@ -749,6 +751,91 @@ final class NavBarTest extends TestCase
         );
     }
 
+    public function testConfigAppliesRecipeDefaults(): void
+    {
+        $config = new Config(
+            new Theme(
+                'stub',
+                new Recipe(
+                    'stub.navbar',
+                    new Cookbook(
+                        new Call('brandLinkClass', 'brand-link'),
+                        new Call('class', 'navbar-shell'),
+                        new Call('containerMenuClass', 'menu-container'),
+                        new Call('containerMenuTag', Block::DIV),
+                    ),
+                ),
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <nav class="navbar-shell">
+            <div class="menu-container">
+            <a class="brand-link" href="/">
+            My App
+            </a>
+            <div>
+            <ul>
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            </div>
+            </nav>
+            HTML,
+            NavBar::tag()
+                ->config($config, new ComponentContext('navbar'))
+                ->brandLink('/')
+                ->brandText('My App')
+                ->menu(Menu::tag()->items(Item::tag()->label('Home')->link('/')))
+                ->render(),
+            'Recipe must apply the wrapper, container, and brand classes.',
+        );
+    }
+
+    public function testConfigIsOverriddenByFluentCallsMadeAfterwards(): void
+    {
+        $config = new Config(
+            new Theme(
+                'stub',
+                new Recipe(
+                    'stub.navbar',
+                    new Cookbook(
+                        new Call('class', 'from-config'),
+                        new Call('brandText', 'Config App'),
+                    ),
+                ),
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <nav class="from-config">
+            User App
+            <div>
+            <ul>
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            </nav>
+            HTML,
+            NavBar::tag()
+                ->config($config, new ComponentContext('navbar'))
+                ->brandText('User App')
+                ->menu(Menu::tag()->items(Item::tag()->label('Home')->link('/')))
+                ->render(),
+            'Local brand text must win over the recipe value.',
+        );
+    }
+
     public function testContainerAttributes(): void
     {
         self::assertSame(
@@ -1312,6 +1399,67 @@ final class NavBarTest extends TestCase
                 )
                 ->render(),
             'Explicit id must be applied to the wrapper.',
+        );
+    }
+
+    public function testMenuDefaultDefinitionsConfigureNestedMenuAndDropdown(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav>
+            <div class="menu-shell" id="nav">
+            <ul class="menu-list">
+            <li class="menu-item">
+            <a class="menu-link" href="/">
+            Home
+            </a>
+            </li>
+            <li class="menu-item has-dropdown">
+            <button class="dropdown-trigger" type="button">
+            Dropdown
+            </button>
+            <ul class="dropdown-list">
+            <li>
+            <a class="dropdown-entry" href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </li>
+            </ul>
+            </div>
+            </nav>
+            HTML,
+            NavBar::tag()
+                ->menuDefaultDefinitions(
+                    [
+                        'class' => 'menu-shell',
+                        'dropdownDefaultDefinitions' => [
+                            [
+                                'linkClass' => 'dropdown-entry',
+                                'listClass' => 'dropdown-list',
+                                'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                            ],
+                        ],
+                        'linkClass' => 'menu-link',
+                        'listClass' => 'menu-list',
+                        'listDropdownItemClass' => 'menu-item has-dropdown',
+                        'listItemClass' => 'menu-item',
+                    ],
+                )
+                ->menu(
+                    Menu::tag()
+                        ->id('nav')
+                        ->items(
+                            Item::tag()->label('Home')->link('/'),
+                            Dropdown::tag()
+                                ->containerTag(false)
+                                ->id(null)
+                                ->items(Item::tag()->label('Action')->link('/action')),
+                        ),
+                )
+                ->render(),
+            'Nested menu and dropdown must inherit the configured definitions.',
         );
     }
 

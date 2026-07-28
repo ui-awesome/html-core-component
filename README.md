@@ -38,7 +38,7 @@
 ### Installation
 
 ```bash
-composer require ui-awesome/html-core-component:^0.2
+composer require ui-awesome/html-core-component:^0.3
 ```
 
 ### Quick start
@@ -133,45 +133,56 @@ echo Menu::tag()
     ->render();
 ```
 
-### Cookbooks (Bootstrap5, Flowbite)
+### Application-scoped styling
 
-The core ships preconfigured cookbooks for popular CSS frameworks under `src/Cookbook/`. Each cookbook implements one of the provider interfaces shipped by `ui-awesome/html-core`:
-
-- `DefaultsProviderInterface::getDefaults(BaseTag $tag): array`; applied via `addDefaultProvider(ProviderClass::class)`. Used for cookbooks without variants.
-- `ThemeProviderInterface::apply(BaseTag $tag, string $theme): array`; applied via `addThemeProvider('variant', ProviderClass::class)`. Used for cookbooks with multiple variants (`danger`, `info`, `warning`, ...).
+Framework styling is supplied by a `ThemeInterface` implementation resolved through `Config` and applied with `BaseTag::config()`. The theme reads the `ComponentContext` to pick the recipe, so variants (`danger`, `info`, `warning`, ...) travel with the context instead of being hard-coded on the component.
 
 ```php
 use UIAwesome\Html\Core\Component\Alert;
-use UIAwesome\Html\Core\Component\Cookbook\Bootstrap5\Alert\Defaults as BootstrapAlert;
-use UIAwesome\Html\Core\Component\Cookbook\Flowbite\Alert\Defaults as FlowbiteAlert;
+use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
+use UIAwesome\Html\Core\Theme\ThemeInterface;
 
-// 1. Bootstrap5 danger alert (theme provider variant is the theme name)
+final class AppTheme implements ThemeInterface
+{
+    public function getName(): string
+    {
+        return 'app';
+    }
+
+    public function getRecipes(ComponentContext $context): iterable
+    {
+        if ($context->component !== 'alert' || $context->variant === null) {
+            return;
+        }
+
+        yield new Recipe(
+            'app.alert',
+            new Cookbook(new Call('class', "alert alert-{$context->variant}")),
+        );
+    }
+}
+
+$config = new Config(new AppTheme());
+
 echo Alert::tag()
-    ->addThemeProvider('danger', BootstrapAlert::class)
+    ->config($config, new ComponentContext('alert', variant: 'danger'))
     ->content('Watch out!')
-    ->render();
-
-// 2. Flowbite info alert
-echo Alert::tag()
-    ->addThemeProvider('info', FlowbiteAlert::class)
-    ->content('Heads up!')
-    ->render();
-
-// 3. Single-variant cookbook (default provider)
-use UIAwesome\Html\Core\Component\Cookbook\Bootstrap5\Breadcrumb\Defaults as BreadcrumbDefaults;
-
-echo Breadcrumb::tag()
-    ->addDefaultProvider(BreadcrumbDefaults::class)
-    ->items(/* ... */)
     ->render();
 ```
 
-Available cookbooks (all under `UIAwesome\Html\Core\Component\Cookbook`):
+Configuration composes by precedence, not by call order: `config()` applies the resolved recipes immediately, so every fluent call made afterwards stays a local override.
 
-- **Bootstrap5** `Alert\{Defaults, Dismissible}` (8 themes each), `Breadcrumb\Defaults`, `Dropdown\{Defaults, Language}`, `NavBar\{Defaults, AlignRight}`, `Toggle\{Alert, Dropdown, Menu, MenuDropdown, SelectorLanguage, SelectorTheme}`.
-- **Flowbite** `Alert\{Defaults, Dismissible}` (5 themes each), `Breadcrumb\Defaults`, `Dropdown\{Defaults, Language}` (5 themes each), `NavBar\Defaults`, `Toggle\{Alert, Dropdown, Menu, MenuDropdown, SelectorLanguage, SelectorTheme}`.
+For per-instance defaults that do not belong to a theme, pass them to the factory:
 
-Authoring a new cookbook is a `final class` implementing `DefaultsProviderInterface` (single variant) or `ThemeProviderInterface` (multiple variants); both return a cookbook-style associative array of fluent method names mapped to their arguments.
+```php
+use UIAwesome\Html\Core\Component\Alert;
+
+echo Alert::tag(['class' => 'alert alert-danger'])->content('Watch out!')->render();
+```
+
+> [!NOTE]
+> The `Bootstrap5` and `Flowbite` cookbooks were removed in `0.3.0`. Flowbite is discontinued, and the Bootstrap 5
+> presets are being republished as standalone theme packages. See the [Upgrade Guide](UPGRADE.md) for the migration.
 
 ## Documentation
 

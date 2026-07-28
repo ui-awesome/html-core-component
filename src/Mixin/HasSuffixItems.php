@@ -35,7 +35,6 @@ trait HasSuffixItems
     public function suffixItems(string|Stringable|RenderableInterface ...$values): static
     {
         $new = clone $this;
-
         $new->suffixItems = implode('', $values);
 
         return $new;

@@ -94,7 +94,6 @@ trait HasIconCollection
     public function iconAttributes(array $values): static
     {
         $new = clone $this;
-
         $new->iconAttributes = [...$new->iconAttributes, ...$values];
 
         return $new;
@@ -119,7 +118,6 @@ trait HasIconCollection
     public function iconClass(array|string|Stringable|UnitEnum $value, bool $override = false): static
     {
         $new = clone $this;
-
         CSSClass::add($new->iconAttributes, $value, $override);
 
         return $new;
@@ -141,7 +139,6 @@ trait HasIconCollection
     public function iconContent(string|Stringable|RenderableInterface ...$values): static
     {
         $new = clone $this;
-
         $new->iconContent = implode('', $values);
 
         return $new;
@@ -162,7 +159,6 @@ trait HasIconCollection
     public function iconFilePath(string $value): static
     {
         $new = clone $this;
-
         $new->iconFilePath = $value;
 
         return $new;
@@ -185,7 +181,6 @@ trait HasIconCollection
     public function iconRemoveAttribute(string|UnitEnum $key, string $prefix = ''): static
     {
         $new = clone $this;
-
         AttributeBag::remove($new->iconAttributes, $key, $prefix);
 
         return $new;
@@ -209,7 +204,6 @@ trait HasIconCollection
     public function iconSetAttribute(string|UnitEnum $key, mixed $value, string $prefix = ''): static
     {
         $new = clone $this;
-
         AttributeBag::set($new->iconAttributes, $key, $value, $prefix);
 
         return $new;
@@ -243,7 +237,6 @@ trait HasIconCollection
         }
 
         $new = clone $this;
-
         $new->iconTag = $value;
 
         return $new;

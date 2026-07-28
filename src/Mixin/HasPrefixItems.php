@@ -35,7 +35,6 @@ trait HasPrefixItems
     public function prefixItems(string|Stringable|RenderableInterface ...$values): static
     {
         $new = clone $this;
-
         $new->prefixItems = implode('', $values);
 
         return $new;

@@ -9,8 +9,9 @@ use UIAwesome\Html\Core\Component\Base\BaseAlert;
 /**
  * Represents a dismissible alert component for surfacing contextual messages.
  *
- * Renders a `<div role="alert">` wrapper composed of a prefix, content, suffix, and an optional toggle. Pair with a
- * cookbook recipe (for example, {@see Cookbook\Bootstrap5\Alert\Defaults}) to apply framework-specific styling.
+ * Renders a `<div role="alert">` wrapper composed of a prefix, content, suffix, and an optional toggle. Apply
+ * framework-specific styling through {@see \UIAwesome\Html\Core\Base\BaseTag::config()} with a
+ * {@see \UIAwesome\Html\Core\Theme\ThemeInterface} implementation.
  *
  * Usage example:
  * ```php

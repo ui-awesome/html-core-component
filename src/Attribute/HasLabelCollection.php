@@ -82,7 +82,6 @@ trait HasLabelCollection
     public function labelAttributes(array $values): static
     {
         $new = clone $this;
-
         $new->labelAttributes = [...$this->labelAttributes, ...$values];
 
         return $new;
@@ -107,7 +106,6 @@ trait HasLabelCollection
     public function labelClass(array|string|Stringable|UnitEnum $value, bool $override = false): static
     {
         $new = clone $this;
-
         CSSClass::add($new->labelAttributes, $value, $override);
 
         return $new;
@@ -130,7 +128,6 @@ trait HasLabelCollection
     public function labelRemoveAttribute(string|UnitEnum $key, string $prefix = ''): static
     {
         $new = clone $this;
-
         AttributeBag::remove($new->labelAttributes, $key, $prefix);
 
         return $new;
@@ -154,7 +151,6 @@ trait HasLabelCollection
     public function labelSetAttribute(string|UnitEnum $key, mixed $value, string $prefix = ''): static
     {
         $new = clone $this;
-
         AttributeBag::set($new->labelAttributes, $key, $value, $prefix);
 
         return $new;
@@ -186,7 +182,6 @@ trait HasLabelCollection
         }
 
         $new = clone $this;
-
         $new->labelTag = $value;
 
         return $new;

@@ -30,6 +30,7 @@ use UIAwesome\Html\Core\Component\Mixin\{
 };
 use UIAwesome\Html\Core\Element\BaseBlock;
 use UIAwesome\Html\Core\Html;
+use UIAwesome\Html\Helper\CSSClass;
 use UIAwesome\Html\Helper\Naming;
 use UIAwesome\Html\Interop\Block;
 use UIAwesome\Html\Mixin\{HasContainerCollection, HasPrefixCollection, HasSuffixCollection, HasTemplate};
@@ -88,7 +89,6 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
     public function ariaCurrent(string $value): static
     {
         $new = clone $this;
-
         $new->ariaCurrent = $value;
 
         return $new;
@@ -112,7 +112,6 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
     public function items(Item|RenderableInterface ...$values): static
     {
         $new = clone $this;
-
         $new->items = $values;
 
         return $new;
@@ -136,6 +135,7 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
     protected function loadDefault(): array
     {
         return [
+            'containerTag' => Block::DIV,
             'id' => Naming::generateId('dropdown-'),
             'linkAriaCurrent' => true,
             'linkContainerTag' => false,
@@ -148,6 +148,10 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
     /**
      * Renders the dropdown.
      *
+     * The inner {@see Menu} emits no wrapper of its own, so the list stays a direct child of the container element and
+     * `.dropdown > .dropdown-menu` style contracts match. The component's own attributes therefore land on the
+     * container, winning over the container attributes on a key collision; `class` values from both sides are kept.
+     *
      * @return string Rendered HTML for the dropdown, or an empty string when the inner menu produces no content.
      */
     protected function run(): string
@@ -155,7 +159,6 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
         $contentMenu = Menu::tag()
             ->activateItems($this->activateItems)
             ->ariaCurrent($this->ariaCurrent)
-            ->attributes($this->getAttributes())
             ->firstItemClass($this->firstItemClass)
             ->firstLinkClass($this->firstLinkClass)
             ->items(...$this->items)
@@ -183,16 +186,23 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
             ->template($this->template)
             ->templateLinkItem($this->templateLinkItem)
             ->toggle($this->renderToggle())
+            ->type('dropdown')
             ->render();
 
         if ($contentMenu === '') {
             return '';
         }
 
-        if ($this->containerTag === false || $this->containerTag instanceof BackedEnum === false) {
+        if ($this->containerTag instanceof BackedEnum === false) {
             return $contentMenu;
         }
 
-        return Html::element($this->containerTag, $contentMenu, $this->containerAttributes);
+        /** @var array<mixed>|string|\Stringable|\UnitEnum|null $containerClass */
+        $containerClass = $this->getContainerAttribute('class');
+        $attributes = [...$this->containerAttributes, ...$this->getAttributes()];
+
+        CSSClass::add($attributes, $containerClass);
+
+        return Html::element($this->containerTag, $contentMenu, $attributes);
     }
 }

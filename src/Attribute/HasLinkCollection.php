@@ -82,7 +82,6 @@ trait HasLinkCollection
     public function linkAttributes(array $values): static
     {
         $new = clone $this;
-
         $new->linkAttributes = [...$new->linkAttributes, ...$values];
 
         return $new;
@@ -107,7 +106,6 @@ trait HasLinkCollection
     public function linkClass(array|string|Stringable|UnitEnum $value, bool $override = false): static
     {
         $new = clone $this;
-
         CSSClass::add($new->linkAttributes, $value, $override);
 
         return $new;
@@ -130,7 +128,6 @@ trait HasLinkCollection
     public function linkRemoveAttribute(string|UnitEnum $key, string $prefix = ''): static
     {
         $new = clone $this;
-
         AttributeBag::remove($new->linkAttributes, $key, $prefix);
 
         return $new;
@@ -154,7 +151,6 @@ trait HasLinkCollection
     public function linkSetAttribute(string|UnitEnum $key, mixed $value, string $prefix = ''): static
     {
         $new = clone $this;
-
         AttributeBag::set($new->linkAttributes, $key, $value, $prefix);
 
         return $new;
@@ -186,7 +182,6 @@ trait HasLinkCollection
         }
 
         $new = clone $this;
-
         $new->linkTag = $value;
 
         return $new;

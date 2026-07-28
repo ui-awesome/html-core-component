@@ -6,6 +6,7 @@
             report: "main",
         },
     },
+    tmpDir: "runtime/infection",
     source: {
         directories: ["src"],
     },

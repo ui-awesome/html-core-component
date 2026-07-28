@@ -43,7 +43,6 @@ trait HasLinkActiveTag
         }
 
         $new = clone $this;
-
         $new->linkActiveTag = $value;
 
         return $new;

@@ -316,6 +316,19 @@ class Menu extends BaseBlock implements RenderableInterface
     }
 
     /**
+     * Returns the tag wrapping the rendered list, or `false` when the caller supplies the wrapper itself.
+     *
+     * The `dropdown` type renders no wrapper: {@see \UIAwesome\Html\Core\Component\Base\BaseDropdown} already encloses
+     * the toggle and the list in its own container, and the list must stay a direct child of it.
+     *
+     * @return BackedEnum|false Tag wrapping the list, or `false` to emit the list unwrapped.
+     */
+    private function menuTag(): BackedEnum|false
+    {
+        return $this->type === 'dropdown' ? false : $this->getTag();
+    }
+
+    /**
      * Renders each item in {@see $items}, applying active/disabled/separator/first-last decoration, then wraps the
      * resulting lines with the configured list tag.
      *
@@ -386,7 +399,7 @@ class Menu extends BaseBlock implements RenderableInterface
             ],
         );
 
-        $containerTag = $this->renderTag($this->getAttributes(), $items, $this->getTag());
+        $containerTag = $this->renderTag($this->getAttributes(), $items, $this->menuTag());
 
         return Template::render(
             $this->template,
@@ -477,16 +490,16 @@ class Menu extends BaseBlock implements RenderableInterface
     {
         if ($isDisabledd) {
             return $item
-                ->linkClass($this->linkDisabledClass, $this->overrideLinkDisabledClass)
-                ->listItemClass($this->listItemDisabledClass, $this->overrideListItemDisabledClass);
+                ->linkClass($this->linkDisabledClass, true)
+                ->listItemClass($this->listItemDisabledClass, true);
         }
 
         if ($isActive) {
             return $item
                 ->active()
-                ->linkClass($this->linkActiveClass, $this->overrideLinkActiveClass)
+                ->linkClass($this->linkActiveClass, true)
                 ->linkTag($this->linkActiveTag)
-                ->listItemClass($this->listItemActiveClass, $this->overrideListItemActiveClass);
+                ->listItemClass($this->listItemActiveClass, true);
         }
 
         return $item;
@@ -532,14 +545,14 @@ class Menu extends BaseBlock implements RenderableInterface
     {
         if ($i === 0) {
             return $item
-                ->linkClass($this->firstLinkClass, $this->overrideFirstLinkClass)
-                ->listItemClass($this->firstItemClass, $this->overrideFirstItemClass);
+                ->linkClass($this->firstLinkClass, true)
+                ->listItemClass($this->firstItemClass, true);
         }
 
         if ($i === $n - 1) {
             return $item
-                ->linkClass($this->lastLinkClass, $this->overrideLastLinkClass)
-                ->listItemClass($this->lastItemClass, $this->overrideLastItemClass);
+                ->linkClass($this->lastLinkClass, true)
+                ->listItemClass($this->lastItemClass, true);
         }
 
         return $item;
