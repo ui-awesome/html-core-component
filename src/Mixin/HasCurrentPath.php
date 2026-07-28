@@ -32,7 +32,6 @@ trait HasCurrentPath
     public function currentPath(string $value): static
     {
         $new = clone $this;
-
         $new->currentPath = $value;
 
         return $new;

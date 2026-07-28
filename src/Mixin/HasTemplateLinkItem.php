@@ -32,7 +32,6 @@ trait HasTemplateLinkItem
     public function templateLinkItem(string $value): static
     {
         $new = clone $this;
-
         $new->templateLinkItem = $value;
 
         return $new;

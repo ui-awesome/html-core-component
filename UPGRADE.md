@@ -1,5 +1,205 @@
 # Upgrade Guide
 
+## 0.3.0
+
+### Dependency line
+
+The package now requires `ui-awesome/html-core:^0.7` and `ui-awesome/html-svg:^0.5`, together with the matching
+`html-attribute:^0.7`, `html-contracts:^0.3`, `html-interop:^0.5`, and `html-mixin:^0.7` releases.
+
+### Provider API removal
+
+`ui-awesome/html-core:^0.7` removed the provider API. `DefaultsProviderInterface`, `ThemeProviderInterface`,
+`BaseTag::addDefaultProvider()`, and `BaseTag::addThemeProvider()` no longer exist. Application-scoped configuration now
+flows through `Config`, `ThemeInterface`, `ComponentContext`, `ConfigApplier`, and `BaseTag::config()`.
+
+See the `ui-awesome/html-core` upgrade guide (`UPGRADE.md`, section `0.7.0`) for the full contract, including how
+recipes are resolved and how `strict` mode reports unavailable calls.
+
+Per-instance defaults that do not belong to a theme keep working through the factory arguments of `tag()`:
+
+```php
+use UIAwesome\Html\Core\Component\Alert;
+
+echo Alert::tag(['class' => 'alert alert-danger'])->content('Watch out!')->render();
+```
+
+### Configuration precedence
+
+`config()` applies the resolved recipes immediately, so any fluent call made afterwards stays a local override:
+
+```php
+use UIAwesome\Html\Core\Component\Alert;
+use UIAwesome\Html\Core\Config\ComponentContext;
+
+echo Alert::tag()
+    ->config($config, new ComponentContext('alert', variant: 'danger'))
+    ->id('checkout-alert')
+    ->content('Watch out!')
+    ->render();
+```
+
+The recipe supplies the derived defaults, `id()` wins because it runs after `config()`.
+
+### Cookbook removal
+
+The `UIAwesome\Html\Core\Component\Cookbook\Bootstrap5\*` and `UIAwesome\Html\Core\Component\Cookbook\Flowbite\*`
+classes were removed. Flowbite is discontinued; the Bootstrap 5 presets are being republished as standalone theme
+packages. Until those ship, express the preset as a local `ThemeInterface` implementation.
+
+Before:
+
+```php
+use UIAwesome\Html\Core\Component\Alert;
+use UIAwesome\Html\Core\Component\Cookbook\Bootstrap5\Alert\Defaults;
+
+echo Alert::tag()
+    ->addThemeProvider('danger', Defaults::class)
+    ->content('Watch out!')
+    ->render();
+```
+
+After:
+
+```php
+use UIAwesome\Html\Core\Component\Alert;
+use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
+use UIAwesome\Html\Core\Theme\ThemeInterface;
+
+final class AppTheme implements ThemeInterface
+{
+    public function getName(): string
+    {
+        return 'app';
+    }
+
+    public function getRecipes(ComponentContext $context): iterable
+    {
+        if ($context->component !== 'alert' || $context->variant === null) {
+            return;
+        }
+
+        yield new Recipe(
+            'app.alert',
+            new Cookbook(new Call('class', "alert alert-{$context->variant}")),
+        );
+    }
+}
+
+$config = new Config(new AppTheme());
+
+echo Alert::tag()
+    ->config($config, new ComponentContext('alert', variant: 'danger'))
+    ->content('Watch out!')
+    ->render();
+```
+
+Mapping rules:
+
+- A cookbook implementing `DefaultsProviderInterface` becomes a `Recipe` yielded for the matching `component`
+  identifier.
+- A cookbook implementing `ThemeProviderInterface` becomes a `Recipe` selected from `ComponentContext::$variant`; the
+  variant name replaces the former `$theme` argument.
+- The cookbook array keys map one to one to `Call` entries: `'class' => ['btn']` becomes `new Call('class', 'btn')`.
+- Nested toggles keep working: pass the configured `Toggle` instance as a `Call` argument, for example
+  `new Call('toggle', Toggle::tag()->class('btn-close'))`.
+
+### Dropdown markup
+
+`Dropdown` no longer emits the `<div>` that used to sit between the container and the list, so the list is now a direct
+child of the container and `.dropdown > .dropdown-menu` style contracts match.
+
+The component's own attributes moved from that removed wrapper to the container element. They win over the container
+attributes on a key collision, and `class` values coming from both sides are kept.
+
+Before:
+
+```html
+<div class="dropdown">
+<button class="dropdown-toggle" type="button">Menu</button>
+<div id="user-menu">
+<ul class="dropdown-menu">…</ul>
+</div>
+</div>
+```
+
+After:
+
+```html
+<div class="dropdown" id="user-menu">
+<button class="dropdown-toggle" type="button">Menu</button>
+<ul class="dropdown-menu">…</ul>
+</div>
+```
+
+Two consequences follow.
+
+- `containerTag` now defaults to `Block::DIV` instead of `false`. The default markup is unchanged, since the removed
+  wrapper was a `<div>` too, but `prefix()`, `suffix()`, and `toggle()` now render inside that element rather than as
+  siblings next to it. Pass `containerTag(false)` to render the toggle, prefix, list, and suffix with no wrapper at all,
+  which is what a `Dropdown` nested in a `Menu` wants: the surrounding `<li>` is the styling hook.
+- With `containerTag(false)` there is no element left to carry the component's own attributes, so `id()`, `class()`, and
+  `attributes()` are dropped on that path. Move them to the enclosing element.
+
+Adjust any selector or test that targeted the removed wrapper, and any CSS that assumed the list was a grandchild of the
+container.
+
+### Item link tag
+
+An item link renders `href` only when the link tag is `<a>`. Swapping the tag, as `Menu::linkActiveTag('span')` does for
+the active item, previously produced `<span href="…">`, which is invalid. Attributes supplied through `linkAttributes()`
+are untouched; only the `href` derived from `link()` is withheld.
+
+### Menu decorations
+
+The second `bool $override` argument was removed from `firstItemClass()`, `firstLinkClass()`, `lastItemClass()`,
+`lastLinkClass()`, `linkActiveClass()`, `linkDisabledClass()`, `listItemActiveClass()`, and `listItemDisabledClass()`.
+
+One rule now governs all eight: **a decoration is the definitive class list for its slot**. The value replaces whatever
+`linkClass()` or `listItemClass()` had put on the decorated item; it never merges into it.
+
+Drop the second argument, and name every class the decorated element must end up with.
+
+Before:
+
+```php
+use UIAwesome\Html\Core\Component\Menu;
+
+echo Menu::tag()
+    ->linkClass('nav-link')
+    ->linkActiveClass('active')
+    ->items(...)
+    ->render();
+```
+
+After:
+
+```php
+use UIAwesome\Html\Core\Component\Menu;
+
+echo Menu::tag()
+    ->linkClass('nav-link')
+    ->linkActiveClass('nav-link active')
+    ->items(...)
+    ->render();
+```
+
+Replace is the universal mode because merge is expressible under it and the reverse is not: to keep the base classes,
+list them in the decoration value, as `'nav-link active'` does above. Under a merge mode there is no way to *drop* a
+base class, which is what a breadcrumb whose active crumb must lose its link styling needs.
+
+Audit every call to the eight setters:
+
+- A decoration that relied on the merge, such as `linkActiveClass('active')` next to `linkClass('nav-link')`, now needs
+  the full list: `linkActiveClass('nav-link active')`.
+- A decoration that already replaced needs no change.
+- Any second argument still present is dead. PHP ignores extra arguments to a user-defined method silently, so these do
+  not raise an error and must be found by inspection.
+
+The immediate setters keep their flag: `brandClass()`, `brandLinkClass()`, `containerMenuClass()`, `iconClass()`,
+`labelClass()`, `linkClass()`, `linkContainerClass()`, `listClass()`, `listItemClass()`, and `toggleClass()` are
+unchanged.
+
 ## 0.2.0
 
 ### Base class migration

@@ -98,7 +98,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function brandAttributes(array $values): static
     {
         $new = clone $this;
-
         $new->brandAttributes = $values;
 
         return $new;
@@ -120,7 +119,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function brandClass(string $value, bool $override = false): static
     {
         $new = clone $this;
-
         CSSClass::add($new->brandAttributes, $value, $override);
 
         return $new;
@@ -141,7 +139,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function brandImage(string|Stringable|RenderableInterface ...$value): static
     {
         $new = clone $this;
-
         $new->brandImage = implode('', $value);
 
         return $new;
@@ -162,7 +159,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function brandLink(string $value): static
     {
         $new = clone $this;
-
         $new->brandLink = $value;
 
         return $new;
@@ -183,7 +179,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function brandLinkAttributes(array $value): static
     {
         $new = clone $this;
-
         $new->brandLinkAttributes = $value;
 
         return $new;
@@ -205,7 +200,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function brandLinkClass(string $value, bool $override = false): static
     {
         $new = clone $this;
-
         CSSClass::add($new->brandLinkAttributes, $value, $override);
 
         return $new;
@@ -226,7 +220,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function brandLinkTemplate(string $value): static
     {
         $new = clone $this;
-
         $new->brandLinkTemplate = $value;
 
         return $new;
@@ -248,7 +241,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function brandTag(false|BackedEnum $value = Block::DIV): static
     {
         $new = clone $this;
-
         $new->brandTag = $value;
 
         return $new;
@@ -269,7 +261,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function brandTemplate(string $value): static
     {
         $new = clone $this;
-
         $new->brandTemplate = $value;
 
         return $new;
@@ -290,7 +281,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function brandText(string|Stringable|RenderableInterface ...$value): static
     {
         $new = clone $this;
-
         $new->brandText = implode('', $value);
 
         return $new;
@@ -313,7 +303,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function brandToggle(string|Stringable|RenderableInterface ...$value): static
     {
         $new = clone $this;
-
         $new->brandToggle = implode('', $value);
 
         return $new;
@@ -334,7 +323,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function containerMenuAttributes(array $values = []): static
     {
         $new = clone $this;
-
         $new->containerMenuAttributes = $values;
 
         return $new;
@@ -356,7 +344,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function containerMenuClass(string $value, bool $override = false): static
     {
         $new = clone $this;
-
         CSSClass::add($new->containerMenuAttributes, $value, $override);
 
         return $new;
@@ -378,7 +365,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function containerMenuTag(false|BackedEnum $value = Block::DIV): static
     {
         $new = clone $this;
-
         $new->containerMenuTag = $value;
 
         return $new;
@@ -408,7 +394,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
         $value = SimpleFactory::configure($value, $this->menuDefaultDefinitions);
 
         $new = clone $this;
-
         $new->menu = (string) $value;
 
         return $new;
@@ -429,7 +414,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     public function menuDefaultDefinitions(array $values): static
     {
         $new = clone $this;
-
         $new->menuDefaultDefinitions = $values;
 
         return $new;

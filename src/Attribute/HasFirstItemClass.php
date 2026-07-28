@@ -11,7 +11,7 @@ use UnitEnum;
  * Provides an immutable API for the CSS class applied to the first menu item.
  *
  * The stored value is consumed by {@see \UIAwesome\Html\Core\Component\Menu} during iteration and propagated to the
- * first `<li>` via {@see HasListItemCollection::listItemClass()}.
+ * first `<li>` via {@see HasListItemCollection::listItemClass()}, replacing any class already set on that item.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/class
  */
@@ -22,10 +22,6 @@ trait HasFirstItemClass
      * menu item.
      */
     protected array|string|Stringable|UnitEnum $firstItemClass = '';
-    /**
-     * Whether {@see firstItemClass()} replaces existing classes (`true`) or merges into them (`false`).
-     */
-    protected bool $overrideFirstItemClass = true;
 
     /**
      * Sets the CSS class applied to the first menu item.
@@ -35,20 +31,16 @@ trait HasFirstItemClass
      * $menu->firstItemClass('first');
      * $menu->firstItemClass(['first', 'highlight']);
      * $menu->firstItemClass(Theme::PRIMARY);
-     * $menu->firstItemClass('first', false);
      * ```
      *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class applied to the first item.
-     * @param bool $override Whether to replace existing classes (`true`) or merge (`false`).
      *
      * @return static New instance with the updated `firstItemClass` value.
      */
-    public function firstItemClass(array|string|Stringable|UnitEnum $value, bool $override = true): static
+    public function firstItemClass(array|string|Stringable|UnitEnum $value): static
     {
         $new = clone $this;
-
         $new->firstItemClass = $value;
-        $new->overrideFirstItemClass = $override;
 
         return $new;
     }

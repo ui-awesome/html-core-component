@@ -11,7 +11,7 @@ use UnitEnum;
  * Provides an immutable API for the CSS class applied to a disabled `<li>` list item.
  *
  * The stored value is consumed by {@see \UIAwesome\Html\Core\Component\Menu} and propagated to the `<li>` of disabled
- * items via {@see HasListItemCollection::listItemClass()}.
+ * items via {@see HasListItemCollection::listItemClass()}, replacing any class already set on that item.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/class
  */
@@ -22,10 +22,6 @@ trait HasListItemDisabledClass
      * `<li>`.
      */
     protected array|string|Stringable|UnitEnum $listItemDisabledClass = '';
-    /**
-     * Whether {@see listItemDisabledClass()} replaces existing classes (`true`) or merges into them (`false`).
-     */
-    protected bool $overrideListItemDisabledClass = false;
 
     /**
      * Sets the CSS class applied to a disabled list item.
@@ -35,21 +31,17 @@ trait HasListItemDisabledClass
      * $menu->listItemDisabledClass('disabled');
      * $menu->listItemDisabledClass(['disabled', 'is-muted']);
      * $menu->listItemDisabledClass(State::DISABLED);
-     * $menu->listItemDisabledClass('disabled', true);
      * ```
      *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class applied to a disabled
      * `<li>`.
-     * @param bool $override Whether to replace existing classes (`true`) or merge (`false`).
      *
      * @return static New instance with the updated `listItemDisabledClass` value.
      */
-    public function listItemDisabledClass(array|string|Stringable|UnitEnum $value, bool $override = false): static
+    public function listItemDisabledClass(array|string|Stringable|UnitEnum $value): static
     {
         $new = clone $this;
-
         $new->listItemDisabledClass = $value;
-        $new->overrideListItemDisabledClass = $override;
 
         return $new;
     }

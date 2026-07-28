@@ -11,7 +11,7 @@ use UnitEnum;
  * Provides an immutable API for the CSS class applied to the first menu-item link.
  *
  * The stored value is consumed by {@see \UIAwesome\Html\Core\Component\Menu} during iteration and propagated to the
- * first link via {@see HasLinkCollection::linkClass()}.
+ * first link via {@see HasLinkCollection::linkClass()}, replacing any class already set on that link.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/class
  */
@@ -22,10 +22,6 @@ trait HasFirstLinkClass
      * menu-item link.
      */
     protected array|string|Stringable|UnitEnum $firstLinkClass = '';
-    /**
-     * Whether {@see firstLinkClass()} replaces existing classes (`true`) or merges into them (`false`).
-     */
-    protected bool $overrideFirstLinkClass = true;
 
     /**
      * Sets the CSS class applied to the first menu-item link.
@@ -35,20 +31,16 @@ trait HasFirstLinkClass
      * $menu->firstLinkClass('first-link');
      * $menu->firstLinkClass(['first-link', 'highlight']);
      * $menu->firstLinkClass(Theme::PRIMARY);
-     * $menu->firstLinkClass('first-link', false);
      * ```
      *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class applied to the first link.
-     * @param bool $override Whether to replace existing classes (`true`) or merge (`false`).
      *
      * @return static New instance with the updated `firstLinkClass` value.
      */
-    public function firstLinkClass(array|string|Stringable|UnitEnum $value, bool $override = true): static
+    public function firstLinkClass(array|string|Stringable|UnitEnum $value): static
     {
         $new = clone $this;
-
         $new->firstLinkClass = $value;
-        $new->overrideFirstLinkClass = $override;
 
         return $new;
     }

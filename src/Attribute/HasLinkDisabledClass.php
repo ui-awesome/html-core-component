@@ -11,7 +11,7 @@ use UnitEnum;
  * Provides an immutable API for the CSS class applied to a disabled menu-item link.
  *
  * The stored value is consumed by {@see \UIAwesome\Html\Core\Component\Menu} and propagated to the link of disabled
- * items via {@see HasLinkCollection::linkClass()}.
+ * items via {@see HasLinkCollection::linkClass()}, replacing any class already set on that link.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/class
  */
@@ -22,10 +22,6 @@ trait HasLinkDisabledClass
      * link.
      */
     protected array|string|Stringable|UnitEnum $linkDisabledClass = '';
-    /**
-     * Whether {@see linkDisabledClass()} replaces existing classes (`true`) or merges into them (`false`).
-     */
-    protected bool $overrideLinkDisabledClass = false;
 
     /**
      * Sets the CSS class applied to a disabled link.
@@ -35,20 +31,16 @@ trait HasLinkDisabledClass
      * $menu->linkDisabledClass('disabled');
      * $menu->linkDisabledClass(['disabled', 'is-muted']);
      * $menu->linkDisabledClass(State::DISABLED);
-     * $menu->linkDisabledClass('disabled', true);
      * ```
      *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class applied to a disabled link.
-     * @param bool $override Whether to replace existing classes (`true`) or merge (`false`).
      *
      * @return static New instance with the updated `linkDisabledClass` value.
      */
-    public function linkDisabledClass(array|string|Stringable|UnitEnum $value, bool $override = false): static
+    public function linkDisabledClass(array|string|Stringable|UnitEnum $value): static
     {
         $new = clone $this;
-
         $new->linkDisabledClass = $value;
-        $new->overrideLinkDisabledClass = $override;
 
         return $new;
     }

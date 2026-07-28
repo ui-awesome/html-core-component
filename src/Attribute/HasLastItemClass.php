@@ -11,7 +11,7 @@ use UnitEnum;
  * Provides an immutable API for the CSS class applied to the last menu item.
  *
  * The stored value is consumed by {@see \UIAwesome\Html\Core\Component\Menu} during iteration and propagated to the
- * last `<li>` via {@see HasListItemCollection::listItemClass()}.
+ * last `<li>` via {@see HasListItemCollection::listItemClass()}, replacing any class already set on that item.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/class
  */
@@ -22,10 +22,6 @@ trait HasLastItemClass
      * menu item.
      */
     protected array|string|Stringable|UnitEnum $lastItemClass = '';
-    /**
-     * Whether {@see lastItemClass()} replaces existing classes (`true`) or merges into them (`false`).
-     */
-    protected bool $overrideLastItemClass = true;
 
     /**
      * Sets the CSS class applied to the last menu item.
@@ -35,20 +31,16 @@ trait HasLastItemClass
      * $menu->lastItemClass('last');
      * $menu->lastItemClass(['last', 'highlight']);
      * $menu->lastItemClass(Theme::PRIMARY);
-     * $menu->lastItemClass('last', false);
      * ```
      *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class applied to the last item.
-     * @param bool $override Whether to replace existing classes (`true`) or merge (`false`).
      *
      * @return static New instance with the updated `lastItemClass` value.
      */
-    public function lastItemClass(array|string|Stringable|UnitEnum $value, bool $override = true): static
+    public function lastItemClass(array|string|Stringable|UnitEnum $value): static
     {
         $new = clone $this;
-
         $new->lastItemClass = $value;
-        $new->overrideLastItemClass = $override;
 
         return $new;
     }

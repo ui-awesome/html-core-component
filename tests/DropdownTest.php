@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace UIAwesome\Html\Core\Component\Tests;
 
+use PHPForge\Support\Stub\Unit;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\{Dropdown, Item, Toggle};
+use UIAwesome\Html\Core\Component\Tests\Support\{Theme, VariantTheme};
+use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 use UIAwesome\Html\Interop\{Block, Inline};
 
 /**
@@ -165,6 +168,115 @@ final class DropdownTest extends TestCase
         );
     }
 
+    public function testConfigAppliesContainerAndToggleRecipe(): void
+    {
+        $toggle = Toggle::tag()
+            ->class('dropdown-trigger')
+            ->content('Dropdown button');
+
+        $config = new Config(
+            new Theme(
+                'stub',
+                new Recipe(
+                    'stub.dropdown',
+                    new Cookbook(
+                        new Call('containerClass', 'dropdown-shell'),
+                        new Call('containerTag', Block::DIV),
+                        new Call('linkClass', 'dropdown-entry'),
+                        new Call('listClass', 'dropdown-list'),
+                        new Call('toggle',  $toggle),
+                    ),
+                ),
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <div class="dropdown-shell" id="dropdown">
+            <button class="dropdown-trigger" type="button">
+            Dropdown button
+            </button>
+            <ul class="dropdown-list">
+            <li>
+            <a class="dropdown-entry" href="/profile">
+            Profile
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::tag()
+                ->config($config, new ComponentContext('dropdown'))
+                ->id('dropdown')
+                ->items(Item::tag()->label('Profile')->link('/profile'))
+                ->render(),
+            'Recipe must emit the container wrapper, the toggle, and the menu classes.',
+        );
+    }
+
+    public function testConfigIsOverriddenByFluentCallsMadeAfterwards(): void
+    {
+        $config = new Config(
+            new Theme(
+                'stub',
+                new Recipe(
+                    'stub.dropdown',
+                    new Cookbook(
+                        new Call('listClass', 'from-config'),
+                        new Call('id', 'id-config'),
+                    ),
+                ),
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <div id="id-user">
+            <ul class="from-config">
+            <li>
+            <a href="/profile">
+            Profile
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::tag()
+                ->config($config, new ComponentContext('dropdown'))
+                ->id('id-user')
+                ->items(Item::tag()->label('Profile')->link('/profile'))
+                ->render(),
+            'Local call must win over the recipe value.',
+        );
+    }
+
+    public function testConfigResolvesVariantFromContext(): void
+    {
+        $config = new Config(
+            new VariantTheme('stub', 'dropdown dropdown-%1$s', ['info', 'warning']),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <div class="dropdown dropdown-info" id="dropdown">
+            <ul>
+            <li>
+            <a href="/profile">
+            Profile
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::tag()
+                ->config($config, new ComponentContext('dropdown', variant: 'info'))
+                ->id('dropdown')
+                ->items(Item::tag()->label('Profile')->link('/profile'))
+                ->render(),
+            'Menu wrapper class must carry the context variant.',
+        );
+    }
+
     public function testDataAttributes(): void
     {
         self::assertSame(
@@ -273,6 +385,38 @@ final class DropdownTest extends TestCase
                 )
                 ->render(),
             'First item must carry the configured class.',
+        );
+    }
+
+    public function testFirstItemClassReplacesListItemClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div id="dropdown">
+            <ul>
+            <li class="first">
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            <li class="base">
+            <a href="/another-actionc">
+            Another actionc
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::tag()
+                ->firstItemClass('first')
+                ->id('dropdown')
+                ->items(
+                    Item::tag()->label('Action')->link('/action'),
+                    Item::tag()->label('Another actionc')->link('/another-actionc'),
+                )
+                ->listItemClass('base')
+                ->render(),
+            'Only the first item must lose the base class.',
         );
     }
 
@@ -466,6 +610,38 @@ final class DropdownTest extends TestCase
                 ->linkActiveClass('value')
                 ->render(),
             'Active link must carry the configured class.',
+        );
+    }
+
+    public function testLinkActiveClassReplacesLinkClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div id="dropdown">
+            <ul>
+            <li>
+            <a class="active-only" href="/action" aria-current="true">
+            Action
+            </a>
+            </li>
+            <li>
+            <a class="base" href="/another-actionc">
+            Another actionc
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::tag()
+                ->id('dropdown')
+                ->items(
+                    Item::tag()->label('Action')->link('/action')->active(),
+                    Item::tag()->label('Another actionc')->link('/another-actionc'),
+                )
+                ->linkActiveClass('active-only')
+                ->linkClass('base')
+                ->render(),
+            'Base class must not survive on the active link.',
         );
     }
 
@@ -940,17 +1116,17 @@ final class DropdownTest extends TestCase
             <div id="dropdown">
             <ul>
             <li>
-            <span href="/action">
+            <span>
             Action
             </span>
             </li>
             <li>
-            <span href="/another-actionc">
+            <span>
             Another actionc
             </span>
             </li>
             <li>
-            <span href="/something-else-here">
+            <span>
             Something else here
             </span>
             </li>
@@ -1215,8 +1391,8 @@ final class DropdownTest extends TestCase
     {
         self::assertSame(
             <<<HTML
-            prefix
             <div id="dropdown">
+            prefix
             <ul>
             <li>
             <a href="/action">
@@ -1253,8 +1429,8 @@ final class DropdownTest extends TestCase
     {
         self::assertSame(
             <<<HTML
-            prefix
             <div id="dropdown">
+            prefix
             <ul>
             <li>
             <a href="/action">
@@ -1293,8 +1469,8 @@ final class DropdownTest extends TestCase
     {
         self::assertSame(
             <<<HTML
-            prefix
             <div id="dropdown">
+            prefix
             <ul>
             <li>
             <a href="/action">
@@ -1333,8 +1509,8 @@ final class DropdownTest extends TestCase
     {
         self::assertSame(
             <<<HTML
-            prefix
             <div id="dropdown">
+            prefix
             prefix-items
             <ul>
             <li>
@@ -1373,8 +1549,8 @@ final class DropdownTest extends TestCase
     {
         self::assertSame(
             <<<HTML
-            prefix
             <div id="dropdown">
+            prefix
             <ul>
             <li>
             <a href="/action">
@@ -1412,8 +1588,8 @@ final class DropdownTest extends TestCase
     {
         self::assertSame(
             <<<HTML
-            prefix
             <div id="dropdown">
+            prefix
             <ul>
             <li>
             Action
@@ -1445,10 +1621,10 @@ final class DropdownTest extends TestCase
     {
         self::assertSame(
             <<<HTML
+            <div id="dropdown">
             <span>
             prefix
             </span>
-            <div id="dropdown">
             <ul>
             <li>
             <a href="/action">
@@ -1490,11 +1666,80 @@ final class DropdownTest extends TestCase
         );
     }
 
+    public function testRenderKeepsContainerAttributesAlongsideOwnAttributes(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div id="dropdown" data-controller="dropdown">
+            <ul>
+            <li>
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::tag()
+                ->containerAttributes(['data-controller' => 'dropdown'])
+                ->id('dropdown')
+                ->items(Item::tag()->label('Action')->link('/action'))
+                ->render(),
+            'Both attribute maps must reach the container.',
+        );
+    }
+
+    public function testRenderKeepsListAsDirectChildOfContainerMergingClasses(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div class="mine dropdown" id="dropdown">
+            <ul class="dropdown-menu">
+            <li>
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::tag()
+                ->class('mine')
+                ->containerClass('dropdown')
+                ->id('dropdown')
+                ->items(Item::tag()->label('Action')->link('/action'))
+                ->listClass('dropdown-menu')
+                ->render(),
+            'No wrapper may sit between the container and the list.',
+        );
+    }
+
     public function testRenderReturnsEmptyEvenWithContainerTagWhenItemsAreEmpty(): void
     {
         self::assertEmpty(
             Dropdown::tag()->containerTag(Block::DIV)->render(),
             'Empty `items` list must short-circuit before wrapping with the container tag.',
+        );
+    }
+
+    public function testRenderSkipsContainerWhenContainerTagIsNotBacked(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <ul>
+            <li>
+            <a href="/profile">
+            Profile
+            </a>
+            </li>
+            </ul>
+            HTML,
+            Dropdown::tag()
+                ->containerTag(Unit::value)
+                ->id('dropdown')
+                ->items(Item::tag()->label('Profile')->link('/profile'))
+                ->render(),
+            'A tag without a backing value must leave the menu unwrapped.',
         );
     }
 
@@ -1728,8 +1973,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             </ul>
-            </div>
             suffix
+            </div>
             HTML,
             Dropdown::tag()
                 ->id('dropdown')
@@ -1760,8 +2005,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             </ul>
-            </div>
             suffix
+            </div>
             HTML,
             Dropdown::tag()
                 ->id('dropdown')
@@ -1794,8 +2039,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             </ul>
-            </div>
             suffix
+            </div>
             HTML,
             Dropdown::tag()
                 ->id('dropdown')
@@ -1829,8 +2074,8 @@ final class DropdownTest extends TestCase
             </li>
             </ul>
             suffix-items
-            </div>
             suffix
+            </div>
             HTML,
             Dropdown::tag()
                 ->id('dropdown')
@@ -1858,8 +2103,8 @@ final class DropdownTest extends TestCase
             Another actionc
             </li>
             </ul>
-            </div>
             suffix
+            </div>
             HTML,
             Dropdown::tag()
                 ->id('dropdown')
@@ -1887,8 +2132,8 @@ final class DropdownTest extends TestCase
             Another actionc
             </li>
             </ul>
-            </div>
             suffix
+            </div>
             HTML,
             Dropdown::tag()
                 ->id('dropdown')
@@ -1916,10 +2161,10 @@ final class DropdownTest extends TestCase
             Another actionc
             </li>
             </ul>
-            </div>
             <span>
             suffix
             </span>
+            </div>
             HTML,
             Dropdown::tag()
                 ->id('dropdown')
@@ -1979,10 +2224,10 @@ final class DropdownTest extends TestCase
     {
         self::assertSame(
             <<<HTML
+            <div id="dropdown">
             <button type="button" data-dropdown-toggle="dropdown-65f0094ceefe3">
             toggle
             </button>
-            <div id="dropdown">
             <ul>
             <li>
             <a href="/action">

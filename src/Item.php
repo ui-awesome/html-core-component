@@ -382,6 +382,9 @@ class Item extends BaseBlock implements RenderableInterface
      * Renders the link section of the item by composing the icon, label, and content through the link template, then
      * wrapping the result with the configured link tag when {@see $link} is set.
      *
+     * The `href` attribute is emitted only for an `<a>` tag. A swapped tag, such as the `<span>` an active item renders
+     * through {@see Menu::linkActiveTag()}, would otherwise carry an attribute that is invalid outside an anchor.
+     *
      * @return string Rendered HTML for the item link, or the link content when no link is configured.
      */
     private function renderLink(): string
@@ -399,11 +402,14 @@ class Item extends BaseBlock implements RenderableInterface
             return $contentLink;
         }
 
-        $linkAttributes = $this->linkAttributes;
-        $linkAttributes['href'] = $this->link;
-
         if ($this->linkTag === false) {
             return $contentLink;
+        }
+
+        $linkAttributes = $this->linkAttributes;
+
+        if ($this->linkTag === Inline::A) {
+            $linkAttributes['href'] = $this->link;
         }
 
         return Html::element($this->linkTag, $contentLink, $linkAttributes);

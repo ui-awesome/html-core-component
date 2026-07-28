@@ -7,7 +7,9 @@ namespace UIAwesome\Html\Core\Component\Tests;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use UIAwesome\Html\Core\Component\Tests\Support\Theme;
 use UIAwesome\Html\Core\Component\Toggle;
+use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 
 /**
  * Unit tests for the {@see Toggle} component rendering and immutable configuration.
@@ -82,6 +84,67 @@ final class ToggleTest extends TestCase
                 ->class('value')
                 ->render(),
             'CSS class must be applied to the wrapper.',
+        );
+    }
+
+    public function testConfigAppliesRecipeDefaults(): void
+    {
+        $config = new Config(
+            new Theme(
+                'stub',
+                new Recipe(
+                    'stub.toggle',
+                    new Cookbook(
+                        new Call('addAriaAttribute', 'label', 'Toggle navigation'),
+                        new Call('addDataAttribute', 'collapse-toggle', 'nav'),
+                        new Call('class', 'toggler'),
+                        new Call('toggleClass', 'toggler-icon'),
+                    ),
+                ),
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <button class="toggler" type="button" aria-label="Toggle navigation" data-collapse-toggle="nav">
+            <span class="toggler-icon">
+            </span>
+            </button>
+            HTML,
+            Toggle::tag()
+                ->config($config, new ComponentContext('toggle'))
+                ->render(),
+            'Recipe must emit the wrapper, aria, data, and decoration markup.',
+        );
+    }
+
+    public function testConfigIsOverriddenByFluentCallsMadeAfterwards(): void
+    {
+        $config = new Config(
+            new Theme(
+                'stub',
+                new Recipe(
+                    'stub.toggle',
+                    new Cookbook(
+                        new Call('class', 'from-config'),
+                        new Call('id', 'id-config'),
+                    ),
+                ),
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <button class="from-config" id="id-user" type="button">
+            label
+            </button>
+            HTML,
+            Toggle::tag()
+                ->config($config, new ComponentContext('toggle'))
+                ->content('label')
+                ->id('id-user')
+                ->render(),
+            'Local call must win over the recipe value.',
         );
     }
 
@@ -268,6 +331,23 @@ final class ToggleTest extends TestCase
                 ->iconTag()
                 ->render(),
             'Icon attribute map must decorate the icon element.',
+        );
+    }
+
+    public function testIconAttributesWithSvgTag(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <button type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" aria-hidden="true" fill="none" viewBox="0 0 17 14"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/></svg>
+            </button>
+            HTML,
+            Toggle::tag()
+                ->iconAttributes(['class' => 'icon'])
+                ->iconFilePath(__DIR__ . '/Support/svg/toggle.svg')
+                ->iconTag('svg')
+                ->render(),
+            'Icon attribute map must decorate the inlined SVG element.',
         );
     }
 

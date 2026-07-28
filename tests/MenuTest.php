@@ -8,7 +8,8 @@ use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\{Dropdown, Item, Menu, Toggle};
-use UIAwesome\Html\Core\Component\Tests\Support\RenderToggleOverride;
+use UIAwesome\Html\Core\Component\Tests\Support\{RenderToggleOverride, StringableValue, Theme};
+use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 use UIAwesome\Html\Interop\Inline;
 
 /**
@@ -165,6 +166,78 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testConfigAppliesRecipeDefaults(): void
+    {
+        $config = new Config(
+            new Theme(
+                'stub',
+                new Recipe(
+                    'stub.menu',
+                    new Cookbook(
+                        new Call('linkClass', 'menu-link'),
+                        new Call('listClass', 'menu-list'),
+                        new Call('listItemClass', 'menu-item'),
+                    ),
+                ),
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul class="menu-list">
+            <li class="menu-item">
+            <a class="menu-link" href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->config($config, new ComponentContext('menu'))
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->render(),
+            'Recipe classes must reach the list, the item, and the link.',
+        );
+    }
+
+    public function testConfigIsOverriddenByFluentCallsMadeAfterwards(): void
+    {
+        $config = new Config(
+            new Theme(
+                'stub',
+                new Recipe(
+                    'stub.menu',
+                    new Cookbook(
+                        new Call('listClass', 'from-config'),
+                        new Call('listType', 'ul'),
+                    ),
+                ),
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ol class="from-config">
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ol>
+            </div>
+            HTML,
+            Menu::tag()
+                ->config($config, new ComponentContext('menu'))
+                ->items(Item::tag()->label('Home')->link('/'))
+                ->listType('ol')
+                ->render(),
+            'Local list type must win over the recipe value.',
+        );
+    }
+
     public function testCurrentPath(): void
     {
         self::assertSame(
@@ -230,6 +303,47 @@ final class MenuTest extends TestCase
                 )
                 ->render(),
             'Divider item must render as the configured separator element.',
+        );
+    }
+
+    public function testDropdownDefaultDefinitionsConfigureNestedDropdown(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li class="menu-item has-dropdown">
+            <button class="dropdown-trigger" type="button">
+            Dropdown
+            </button>
+            <ul class="dropdown-list">
+            <li>
+            <a class="dropdown-entry" href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->dropdownDefaultDefinitions(
+                    [
+                        'linkClass' => 'dropdown-entry',
+                        'listClass' => 'dropdown-list',
+                        'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                    ],
+                )
+                ->items(
+                    Dropdown::tag()
+                        ->containerTag(false)
+                        ->id(null)
+                        ->items(Item::tag()->label('Action')->link('/action')),
+                )
+                ->listDropdownItemClass('menu-item has-dropdown')
+                ->render(),
+            'Nested dropdown must inherit the configured definitions.',
         );
     }
 
@@ -336,6 +450,37 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testFirstLinkClassOverridesBaseClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <a class="value" href="/">
+            Home
+            </a>
+            </li>
+            <li>
+            <a class="base" href="/about">
+            About
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->firstLinkClass('value')
+                ->items(
+                    Item::tag()->label('Home')->link('/'),
+                    Item::tag()->label('About')->link('/about'),
+                )
+                ->linkAttributes(['class' => 'base'])
+                ->render(),
+            "Default 'firstLinkClass' override must replace the base link class.",
+        );
+    }
+
     public function testId(): void
     {
         self::assertSame(
@@ -385,6 +530,39 @@ final class MenuTest extends TestCase
         self::assertTrue(
             Menu::tag()->listItemAriaCurrent(true)->isListItemAriaCurrent(),
             "List item 'aria-current' flag must be reflected by the accessor.",
+        );
+    }
+
+    public function testItemsFromDefaultsAreReindexed(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li class="value">
+            <a href="/">
+            Home
+            </a>
+            </li>
+            <li>
+            <a href="/about">
+            About
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag(
+                [
+                    'items' => [
+                        'home' => Item::tag()->label('Home')->link('/'),
+                        'about' => Item::tag()->label('About')->link('/about'),
+                    ],
+                ],
+            )
+                ->firstItemClass('value')
+                ->render(),
+            'String-keyed defaults must be reindexed to a list.',
         );
     }
 
@@ -558,6 +736,60 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testLinkActiveClassKeepsBaseClassWhenValueCarriesTheCompleteList(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <a class="nav-link active" href="/">
+            Home
+            </a>
+            </li>
+            <li>
+            <a class="nav-link" href="/about">
+            About
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(
+                    Item::tag()->label('Home')->link('/')->active(),
+                    Item::tag()->label('About')->link('/about'),
+                )
+                ->linkActiveClass('nav-link active')
+                ->linkClass('nav-link')
+                ->render(),
+            'Composition is expressed by naming every class in the decoration.',
+        );
+    }
+
+    public function testLinkActiveClassReplacesBaseLinkAttributeClass(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <a class="value" href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->items(Item::tag()->label('Home')->link('/')->active())
+                ->linkAttributes(['class' => 'base'])
+                ->linkActiveClass('value')
+                ->render(),
+            'Base class must not survive the decoration.',
+        );
+    }
+
     public function testLinkActiveTag(): void
     {
         self::assertSame(
@@ -570,7 +802,7 @@ final class MenuTest extends TestCase
             </a>
             </li>
             <li>
-            <span href="/about">
+            <span>
             About
             </span>
             </li>
@@ -1112,14 +1344,14 @@ final class MenuTest extends TestCase
         );
     }
 
-    public function testLinkDisabledClassMergesWithBaseLinkAttributeClass(): void
+    public function testLinkDisabledClassReplacesBaseLinkAttributeClass(): void
     {
         self::assertSame(
             <<<HTML
             <div>
             <ul>
             <li>
-            <a class="base value" href="/">
+            <a class="value" href="/">
             Home
             </a>
             </li>
@@ -1131,7 +1363,7 @@ final class MenuTest extends TestCase
                 ->linkAttributes(['class' => 'base'])
                 ->linkDisabledClass('value')
                 ->render(),
-            "Default 'linkDisabledClass' merge must append to existing link class for disabled items.",
+            'Base class must not survive the decoration.',
         );
     }
 
@@ -1233,7 +1465,6 @@ final class MenuTest extends TestCase
             <div>
             <ul>
             <li class="value">
-            <div>
             <ul>
             <li>
             <a href="#">
@@ -1251,7 +1482,6 @@ final class MenuTest extends TestCase
             </a>
             </li>
             </ul>
-            </div>
             </li>
             </ul>
             </div>
@@ -1440,13 +1670,13 @@ final class MenuTest extends TestCase
         );
     }
 
-    public function testListItemDisabledClassMergesWithBaseListItemAttributeClass(): void
+    public function testListItemDisabledClassReplacesBaseListItemAttributeClass(): void
     {
         self::assertSame(
             <<<HTML
             <div>
             <ul>
-            <li class="base value">
+            <li class="value">
             <a href="/">
             Home
             </a>
@@ -1459,7 +1689,7 @@ final class MenuTest extends TestCase
                 ->listItemAttributes(['class' => 'base'])
                 ->listItemDisabledClass('value')
                 ->render(),
-            "Default 'listItemDisabledClass' merge must append to existing list-item class for disabled items.",
+            'Base class must not survive the decoration.',
         );
     }
 
@@ -2261,6 +2491,38 @@ final class MenuTest extends TestCase
                 ->type('breadcrumb')
                 ->render(),
             'Separator must precede each non-first item in breadcrumb type.',
+        );
+    }
+
+    public function testSeparatorWithStringableValue(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav>
+            <ul>
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            <li>
+            >
+            <a href="/about">
+            About
+            </a>
+            </li>
+            </ul>
+            </nav>
+            HTML,
+            Menu::tag()
+                ->items(
+                    Item::tag()->label('Home')->link('/'),
+                    Item::tag()->label('About')->link('/about'),
+                )
+                ->separator(new StringableValue('>'))
+                ->type('breadcrumb')
+                ->render(),
+            'Stringable separator must be cast to `string`.',
         );
     }
 

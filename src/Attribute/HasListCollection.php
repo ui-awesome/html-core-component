@@ -81,7 +81,6 @@ trait HasListCollection
     public function listAttributes(array $values): static
     {
         $new = clone $this;
-
         $new->listAttributes = [...$this->listAttributes, ...$values];
 
         return $new;
@@ -105,7 +104,6 @@ trait HasListCollection
     public function listClass(array|string|Stringable|UnitEnum $value, bool $override = false): static
     {
         $new = clone $this;
-
         CSSClass::add($new->listAttributes, $value, $override);
 
         return $new;
@@ -128,7 +126,6 @@ trait HasListCollection
     public function listRemoveAttribute(string|UnitEnum $key, string $prefix = ''): static
     {
         $new = clone $this;
-
         AttributeBag::remove($new->listAttributes, $key, $prefix);
 
         return $new;
@@ -152,7 +149,6 @@ trait HasListCollection
     public function listSetAttribute(string|UnitEnum $key, mixed $value, string $prefix = ''): static
     {
         $new = clone $this;
-
         AttributeBag::set($new->listAttributes, $key, $value, $prefix);
 
         return $new;
@@ -181,7 +177,6 @@ trait HasListCollection
         }
 
         $new = clone $this;
-
         $new->listType = $value;
 
         return $new;

@@ -8,7 +8,8 @@ use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\Item;
-use UIAwesome\Html\Core\Component\Tests\Support\{RenderIconOverride, RenderLabelOverride};
+use UIAwesome\Html\Core\Component\Tests\Support\{RenderIconOverride, RenderLabelOverride, StringableValue, Theme};
+use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 
 /**
  * Unit tests for the {@see Item} component rendering and immutable configuration.
@@ -36,6 +37,70 @@ final class ItemTest extends TestCase
                 ->link('/')
                 ->isActive(),
             'Disabled activation must short-circuit the active state.',
+        );
+    }
+
+    public function testConfigAppliesRecipeDefaults(): void
+    {
+        $config = new Config(
+            new Theme(
+                'stub',
+                new Recipe(
+                    'stub.item',
+                    new Cookbook(
+                        new Call('linkClass', 'item-link'),
+                        new Call('listItemClass', 'item-shell'),
+                    ),
+                ),
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <li class="item-shell">
+            <a class="item-link" href="/">
+            Home
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->config($config, new ComponentContext('item'))
+                ->label('Home')
+                ->link('/')
+                ->render(),
+            'Recipe classes must reach the list item and the link.',
+        );
+    }
+
+    public function testConfigIsOverriddenByFluentCallsMadeAfterwards(): void
+    {
+        $config = new Config(
+            new Theme(
+                'stub',
+                new Recipe(
+                    'stub.item',
+                    new Cookbook(
+                        new Call('linkClass', 'from-config'),
+                        new Call('label', 'Config label'),
+                    ),
+                ),
+            ),
+        );
+
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a class="from-config" href="/">
+            User label
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->config($config, new ComponentContext('item'))
+                ->label('User label')
+                ->link('/')
+                ->render(),
+            'Local label must win over the recipe value.',
         );
     }
 
@@ -752,7 +817,7 @@ final class ItemTest extends TestCase
         self::assertSame(
             <<<HTML
             <li>
-            <span href="/">
+            <span>
             value
             </span>
             </li>
@@ -763,6 +828,27 @@ final class ItemTest extends TestCase
                 ->linkTag('span')
                 ->render(),
             'Custom link tag must wrap the label.',
+        );
+    }
+
+    public function testLinkTagWithValueKeepsLinkAttributes(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <span class="value" data-role="current">
+            value
+            </span>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('value')
+                ->link('/')
+                ->linkAttributes(['data-role' => 'current'])
+                ->linkClass('value')
+                ->linkTag('span')
+                ->render(),
+            'Only `href` is dropped outside an anchor.',
         );
     }
 
@@ -1073,6 +1159,26 @@ final class ItemTest extends TestCase
                 ->separator('>')
                 ->render(),
             'Separator must precede the link.',
+        );
+    }
+
+    public function testSeparatorWithStringableValue(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            >
+            <a href="/">
+            value
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('value')
+                ->link('/')
+                ->separator(new StringableValue('>'))
+                ->render(),
+            'Stringable separator must be cast to `string`.',
         );
     }
 
