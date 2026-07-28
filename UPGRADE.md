@@ -185,7 +185,7 @@ echo Menu::tag()
 ```
 
 Replace is the universal mode because merge is expressible under it and the reverse is not: to keep the base classes,
-list them in the decoration value, as `'nav-link active'` does above. Under a merge mode there is no way to *drop* a
+list them in the decoration value, as `'nav-link active'` does above. Under a merge mode there is no way to _drop_ a
 base class, which is what a breadcrumb whose active crumb must lose its link styling needs.
 
 Audit every call to the eight setters:
