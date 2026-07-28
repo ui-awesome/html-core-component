@@ -8,7 +8,13 @@ use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\Item;
-use UIAwesome\Html\Core\Component\Tests\Support\{RenderIconOverride, RenderLabelOverride, StringableValue, Theme};
+use UIAwesome\Html\Core\Component\Tests\Support\{
+    ForeignTag,
+    RenderIconOverride,
+    RenderLabelOverride,
+    StringableValue,
+    Theme,
+};
 use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 
 /**
@@ -828,6 +834,25 @@ final class ItemTest extends TestCase
                 ->linkTag('span')
                 ->render(),
             'Custom link tag must wrap the label.',
+        );
+    }
+
+    public function testLinkTagWithForeignEnumMatchingAnchorKeepsHref(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            value
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('value')
+                ->link('/')
+                ->linkTag(ForeignTag::A)
+                ->render(),
+            'Any enum meaning `a` must keep the link.',
         );
     }
 

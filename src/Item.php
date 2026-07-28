@@ -385,6 +385,9 @@ class Item extends BaseBlock implements RenderableInterface
      * The `href` attribute is emitted only for an `<a>` tag. A swapped tag, such as the `<span>` an active item renders
      * through {@see Menu::linkActiveTag()}, would otherwise carry an attribute that is invalid outside an anchor.
      *
+     * The tag is matched by backed value, not by enum identity: {@see HasLinkCollection::linkTag()} stores any
+     * {@see BackedEnum}, and {@see Html::element()} renders that value, so every enum meaning `a` keeps its `href`.
+     *
      * @return string Rendered HTML for the item link, or the link content when no link is configured.
      */
     private function renderLink(): string
@@ -408,7 +411,7 @@ class Item extends BaseBlock implements RenderableInterface
 
         $linkAttributes = $this->linkAttributes;
 
-        if ($this->linkTag === Inline::A) {
+        if ($this->linkTag->value === Inline::A->value) {
             $linkAttributes['href'] = $this->link;
         }
 
