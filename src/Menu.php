@@ -145,7 +145,7 @@ class Menu extends BaseBlock implements RenderableInterface
      *
      * Usage example:
      * ```php
-     * \UIAwesome\Html\Core\Component\Menu::tag()->dropdownDefaultDefinitions(['class()' => ['dropdown']]);
+     * \UIAwesome\Html\Core\Component\Menu::tag()->dropdownDefaultDefinitions(['class' => ['dropdown']]);
      * ```
      *
      * @param array<string, mixed> $values Cookbook-style associative array of method names and arguments.

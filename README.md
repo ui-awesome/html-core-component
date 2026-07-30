@@ -168,7 +168,7 @@ echo Alert::tag()
     ->render();
 ```
 
-Configuration composes by precedence, not by call order: `config()` applies the resolved recipes immediately, so every fluent call made afterwards stays a local override.
+`config()` applies recipes immediately. Call it before fluent setters that must remain local overrides.
 
 For per-instance defaults that do not belong to a theme, pass them to the factory:
 

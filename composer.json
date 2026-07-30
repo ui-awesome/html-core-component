@@ -34,7 +34,7 @@
         "ui-awesome/html-helper": "^0.7",
         "ui-awesome/html-interop": "^0.4",
         "ui-awesome/html-mixin": "^0.7",
-        "ui-awesome/html-svg": "^0.5@dev"
+        "ui-awesome/html-svg": "^0.5"
     },
     "require-dev": {
         "infection/infection": "^0.34",
@@ -60,7 +60,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "0.3.x-dev"
+            "dev-main": "0.4.x-dev"
         },
         "scaffold": {
             "allowed-packages": [
