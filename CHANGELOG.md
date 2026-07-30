@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 0.3.1 Under development
 
+- docs: simplify upgrade guidance and correct configuration examples.
+
 ## 0.3.0 July 30, 2026
 
 - feat!: Adopt the `ui-awesome/html-core` theming system, move the cookbooks to theme packages, and clean up the rendered markup.

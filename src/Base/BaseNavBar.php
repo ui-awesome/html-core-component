@@ -404,7 +404,7 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
      *
      * Usage example:
      * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->menuDefaultDefinitions(['class()' => ['navbar-nav']]);
+     * \UIAwesome\Html\Core\Component\NavBar::tag()->menuDefaultDefinitions(['class' => ['navbar-nav']]);
      * ```
      *
      * @param mixed[] $values Cookbook-style associative array of method names and arguments.
