@@ -28,12 +28,12 @@
     ],
     "require": {
         "php": "^8.3",
-        "ui-awesome/html-attribute": "^0.7@dev",
-        "ui-awesome/html-contracts": "^0.3@dev",
-        "ui-awesome/html-core": "^0.7@dev",
+        "ui-awesome/html-attribute": "^0.7",
+        "ui-awesome/html-contracts": "^0.2",
+        "ui-awesome/html-core": "^0.7",
         "ui-awesome/html-helper": "^0.7",
-        "ui-awesome/html-interop": "^0.5@dev",
-        "ui-awesome/html-mixin": "^0.7@dev",
+        "ui-awesome/html-interop": "^0.4",
+        "ui-awesome/html-mixin": "^0.7",
         "ui-awesome/html-svg": "^0.5@dev"
     },
     "require-dev": {

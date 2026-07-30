@@ -1,8 +1,6 @@
 <!-- markdownlint-disable MD041 -->
 <p align="center">
-    <picture>
-        <img src="https://raw.githubusercontent.com/ui-awesome/.github/refs/heads/main/logo/ui_awesome.png" alt="UI Awesome" width="25%">
-    </picture>
+    <img src="https://raw.githubusercontent.com/ui-awesome/.github/refs/heads/main/logo/ui_awesome.png" alt="UI Awesome" width="25%">
     <h1 align="center">Html Core Component</h1>
     <br>
 </p>
@@ -133,7 +131,7 @@ echo Menu::tag()
     ->render();
 ```
 
-### Application-scoped styling
+#### Application-scoped styling
 
 Framework styling is supplied by a `ThemeInterface` implementation resolved through `Config` and applied with `BaseTag::config()`. The theme reads the `ComponentContext` to pick the recipe, so variants (`danger`, `info`, `warning`, ...) travel with the context instead of being hard-coded on the component.
 
@@ -186,10 +184,10 @@ echo Alert::tag(['class' => 'alert alert-danger'])->content('Watch out!')->rende
 
 ## Documentation
 
-For detailed configuration options and advanced usage.
+For detailed testing, migration, and quality workflows.
 
-- 🧪 [Testing Guide](docs/testing.md)
-- ⬆️ [Upgrade Guide](UPGRADE.md)
+- [Testing Guide](docs/testing.md)
+- [Upgrade Guide](UPGRADE.md)
 
 ## Package information
 
@@ -197,11 +195,11 @@ For detailed configuration options and advanced usage.
 [![Latest Stable Version](https://img.shields.io/packagist/v/ui-awesome/html-core-component.svg?style=for-the-badge&logo=packagist&logoColor=white&label=Stable)](https://packagist.org/packages/ui-awesome/html-core-component)
 [![Total Downloads](https://img.shields.io/packagist/dt/ui-awesome/html-core-component.svg?style=for-the-badge&logo=composer&logoColor=white&label=Downloads)](https://packagist.org/packages/ui-awesome/html-core-component)
 
-## Quality code
+## Project status
 
 [![Codecov](https://img.shields.io/codecov/c/github/ui-awesome/html-core-component.svg?style=for-the-badge&logo=codecov&logoColor=white&label=Coverage)](https://codecov.io/github/ui-awesome/html-core-component)
 [![PHPStan Level Max](https://img.shields.io/badge/PHPStan-Level%20Max-4F5D95.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ui-awesome/html-core-component/actions/workflows/static.yml)
-[![Super-Linter](https://img.shields.io/github/actions/workflow/status/ui-awesome/html-core-component/linter.yml?style=for-the-badge&label=Super-Linter&logo=github)](https://github.com/ui-awesome/html-core-component/actions/workflows/linter.yml)
+[![Quality](https://img.shields.io/github/actions/workflow/status/ui-awesome/html-core-component/quality.yml?style=for-the-badge&label=Quality&logo=github)](https://github.com/ui-awesome/html-core-component/actions/workflows/quality.yml)
 [![StyleCI](https://img.shields.io/badge/StyleCI-Passed-44CC11.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.styleci.io/repos/776381948?branch=main)
 
 ## Our social networks
@@ -210,4 +208,4 @@ For detailed configuration options and advanced usage.
 
 ## License
 
-[![License](https://img.shields.io/badge/License-MIT-brightgreen.svg?style=for-the-badge&logo=opensourceinitiative&logoColor=white&labelColor=555555)](LICENSE)
+[![License](https://img.shields.io/badge/License-BSD--3--Clause-brightgreen.svg?style=for-the-badge&logo=opensourceinitiative&logoColor=white&labelColor=555555)](LICENSE)
