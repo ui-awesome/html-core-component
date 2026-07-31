@@ -28,13 +28,13 @@
     ],
     "require": {
         "php": "^8.3",
-        "ui-awesome/html-attribute": "^0.7",
+        "ui-awesome/html-attribute": "^0.8",
         "ui-awesome/html-contracts": "^0.2",
-        "ui-awesome/html-core": "^0.7",
+        "ui-awesome/html-core": "^0.8",
         "ui-awesome/html-helper": "^0.7",
         "ui-awesome/html-interop": "^0.4",
-        "ui-awesome/html-mixin": "^0.7",
-        "ui-awesome/html-svg": "^0.5"
+        "ui-awesome/html-mixin": "^0.8",
+        "ui-awesome/html-svg": "^0.6"
     },
     "require-dev": {
         "infection/infection": "^0.34",
