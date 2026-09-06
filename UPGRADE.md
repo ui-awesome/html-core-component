@@ -30,10 +30,12 @@ Before:
 
 ```html
 <div class="dropdown">
-<button class="dropdown-toggle" type="button">Menu</button>
-<div id="user-menu">
-<ul class="dropdown-menu">…</ul>
-</div>
+  <button class="dropdown-toggle" type="button">Menu</button>
+  <div id="user-menu">
+    <ul class="dropdown-menu">
+      …
+    </ul>
+  </div>
 </div>
 ```
 
@@ -41,8 +43,10 @@ After:
 
 ```html
 <div class="dropdown" id="user-menu">
-<button class="dropdown-toggle" type="button">Menu</button>
-<ul class="dropdown-menu">…</ul>
+  <button class="dropdown-toggle" type="button">Menu</button>
+  <ul class="dropdown-menu">
+    …
+  </ul>
 </div>
 ```
 
