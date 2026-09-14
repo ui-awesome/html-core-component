@@ -94,6 +94,55 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testActiveItemKeepsItsOwnLinkTag(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <button class="active" type="button">
+            Newest
+            </button>
+            </div>
+            HTML,
+            Menu::tag()
+                ->listItemTag(false)
+                ->listType(false)
+                ->items(
+                    Item::tag()
+                        ->label('Newest')
+                        ->link('/newest')
+                        ->active()
+                        ->linkAttributes(['type' => 'button'])
+                        ->linkTag('button'),
+                )
+                ->linkActiveClass('active')
+                ->linkActiveTag('a')
+                ->render(),
+            'An active button entry must not turn into an anchor.',
+        );
+    }
+
+    public function testActiveItemWithoutItsOwnLinkTagTakesTheActiveTag(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <span class="active">
+            Newest
+            </span>
+            </div>
+            HTML,
+            Menu::tag()
+                ->listItemTag(false)
+                ->listType(false)
+                ->items(Item::tag()->label('Newest')->link('/newest')->active())
+                ->linkActiveClass('active')
+                ->linkActiveTag('span')
+                ->render(),
+            'The active tag must still reach an entry that chose no tag.',
+        );
+    }
+
     public function testAttributes(): void
     {
         self::assertSame(

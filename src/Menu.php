@@ -329,7 +329,7 @@ class Menu extends BaseBlock implements RenderableInterface
                 $isDisabledd = $item->isDisabled();
                 $isActive = $isDisabledd === false && $item->isActive();
 
-                $item = $this->setActiveAndDisableClass($item, $isActive, $isDisabledd);
+                $item = $this->setActiveAndDisableClass($item, $isActive, $isDisabledd, $hasOwnLinkTag);
                 $item = $this->setAriaCurrent($item, $isActive);
                 $item = $this->setFirstAndLastClass($item, $i, $n);
                 $item = $this->setLinkContainerTag($item);
@@ -448,23 +448,29 @@ class Menu extends BaseBlock implements RenderableInterface
      *
      * @return Item Decorated item with the active or disabled classes when applicable.
      */
-    private function setActiveAndDisableClass(Item $item, bool $isActive, bool $isDisabledd): Item
-    {
+    private function setActiveAndDisableClass(
+        Item $item,
+        bool $isActive,
+        bool $isDisabledd,
+        bool $hasOwnLinkTag = false,
+    ): Item {
         if ($isDisabledd) {
             return $item
                 ->linkClass($this->linkDisabledClass, true)
                 ->listItemClass($this->listItemDisabledClass, true);
         }
 
-        if ($isActive) {
-            return $item
-                ->active()
-                ->linkClass($this->linkActiveClass, true)
-                ->linkTag($this->linkActiveTag)
-                ->listItemClass($this->listItemActiveClass, true);
+        if ($isActive === false) {
+            return $item;
         }
 
-        return $item;
+        $item = $item
+            ->active()
+            ->linkClass($this->linkActiveClass, true)
+            ->listItemClass($this->listItemActiveClass, true);
+
+        // An item that chose its own tag keeps it while active too, so a button entry does not turn into an anchor.
+        return $hasOwnLinkTag ? $item : $item->linkTag($this->linkActiveTag);
     }
 
     /**
