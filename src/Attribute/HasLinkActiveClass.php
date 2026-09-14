@@ -26,13 +26,6 @@ trait HasLinkActiveClass
     /**
      * Sets the CSS class applied to the active link.
      *
-     * Usage example:
-     * ```php
-     * $menu->linkActiveClass('active');
-     * $menu->linkActiveClass(['active', 'is-current']);
-     * $menu->linkActiveClass(State::ACTIVE);
-     * ```
-     *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class applied to the active link.
      *
      * @return static New instance with the updated `linkActiveClass` value.

@@ -35,12 +35,6 @@ trait HasLabelCollection
     /**
      * Returns the value of a single label attribute, or the default when missing.
      *
-     * Usage example:
-     * ```php
-     * $component->getLabelAttribute('title', 'Menu item');
-     * $component->getLabelAttribute('hidden', null, 'aria-');
-     * ```
-     *
      * @param string|UnitEnum $key Attribute name.
      * @param mixed $default Default value when the attribute is missing.
      * @param string $prefix Optional prefix to ensure on the key.
@@ -55,11 +49,6 @@ trait HasLabelCollection
     /**
      * Returns the label attributes.
      *
-     * Usage example:
-     * ```php
-     * $component->getLabelAttributes();
-     * ```
-     *
      * @return mixed[] Current label attributes.
      */
     public function getLabelAttributes(): array
@@ -69,11 +58,6 @@ trait HasLabelCollection
 
     /**
      * Sets the label attributes (merged with previous values).
-     *
-     * Usage example:
-     * ```php
-     * $component->labelAttributes(['title' => 'Menu item']);
-     * ```
      *
      * @param mixed[] $values Attribute map merged into existing label attributes.
      *
@@ -89,14 +73,6 @@ trait HasLabelCollection
 
     /**
      * Adds a CSS class to the label attributes.
-     *
-     * Usage example:
-     * ```php
-     * $component->labelClass('nav-label');
-     * $component->labelClass(['nav-label', 'truncate']);
-     * $component->labelClass(Theme::PRIMARY);
-     * $component->labelClass('nav-label', true);
-     * ```
      *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class (or class list) to add.
      * @param bool $override Whether to replace existing classes (`true`) or merge (`false`).
@@ -114,12 +90,6 @@ trait HasLabelCollection
     /**
      * Removes a single label attribute.
      *
-     * Usage example:
-     * ```php
-     * $component->labelRemoveAttribute('title');
-     * $component->labelRemoveAttribute('hidden', 'aria-');
-     * ```
-     *
      * @param string|UnitEnum $key Attribute name to remove.
      * @param string $prefix Optional prefix to ensure on the key.
      *
@@ -135,12 +105,6 @@ trait HasLabelCollection
 
     /**
      * Sets a single label attribute.
-     *
-     * Usage example:
-     * ```php
-     * $component->labelSetAttribute('title', 'Menu item');
-     * $component->labelSetAttribute('hidden', 'true', 'aria-');
-     * ```
      *
      * @param string|UnitEnum $key Attribute name.
      * @param mixed $value Attribute value.
@@ -158,14 +122,6 @@ trait HasLabelCollection
 
     /**
      * Sets the label wrapper tag, or `false` to render the label as plain text.
-     *
-     * Usage example:
-     * ```php
-     * $component->labelTag();
-     * $component->labelTag(\UIAwesome\Html\Interop\Inline::SPAN);
-     * $component->labelTag('div');
-     * $component->labelTag(false);
-     * ```
      *
      * @param BackedEnum|false|string $value Inline/Block enum case (recommended) or its tag name, or `false` to render
      * the label as plain text.

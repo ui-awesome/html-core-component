@@ -33,12 +33,6 @@ trait HasLinkContainerCollection
     /**
      * Returns the value of a single link container attribute, or the default when missing.
      *
-     * Usage example:
-     * ```php
-     * $component->getLinkContainerAttribute('role', 'group');
-     * $component->getLinkContainerAttribute('label', null, 'aria-');
-     * ```
-     *
      * @param string|UnitEnum $key Attribute name.
      * @param mixed $default Default value when the attribute is missing.
      * @param string $prefix Optional prefix to ensure on the key.
@@ -53,11 +47,6 @@ trait HasLinkContainerCollection
     /**
      * Returns the link container attributes.
      *
-     * Usage example:
-     * ```php
-     * $component->getLinkContainerAttributes();
-     * ```
-     *
      * @return mixed[] Current link container attributes.
      */
     public function getLinkContainerAttributes(): array
@@ -67,13 +56,6 @@ trait HasLinkContainerCollection
 
     /**
      * Returns `true` when the link container wrapper is enabled.
-     *
-     * Usage example:
-     * ```php
-     * if ($component->isLinkContainer()) {
-     *     // wrap the link in $component->linkContainerTag.
-     * }
-     * ```
      */
     public function isLinkContainer(): bool
     {
@@ -82,11 +64,6 @@ trait HasLinkContainerCollection
 
     /**
      * Sets the link container attributes (merged with previous values).
-     *
-     * Usage example:
-     * ```php
-     * $component->linkContainerAttributes(['role' => 'group']);
-     * ```
      *
      * @param mixed[] $values Attribute map merged into existing container attributes.
      *
@@ -102,13 +79,6 @@ trait HasLinkContainerCollection
 
     /**
      * Adds a CSS class to the link container attributes.
-     *
-     * Usage example:
-     * ```php
-     * $component->linkContainerClass('wrapper');
-     * $component->linkContainerClass(Theme::PRIMARY);
-     * $component->linkContainerClass('wrapper', true);
-     * ```
      *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class (or class list) to add.
      * @param bool $override Whether to replace existing classes (`true`) or merge (`false`).
@@ -126,12 +96,6 @@ trait HasLinkContainerCollection
     /**
      * Removes a single link container attribute.
      *
-     * Usage example:
-     * ```php
-     * $component->linkContainerRemoveAttribute('role');
-     * $component->linkContainerRemoveAttribute('label', 'aria-');
-     * ```
-     *
      * @param string|UnitEnum $key Attribute name to remove.
      * @param string $prefix Optional prefix to ensure on the key.
      *
@@ -147,12 +111,6 @@ trait HasLinkContainerCollection
 
     /**
      * Sets a single link container attribute.
-     *
-     * Usage example:
-     * ```php
-     * $component->linkContainerSetAttribute('role', 'group');
-     * $component->linkContainerSetAttribute('label', 'Menu', 'aria-');
-     * ```
      *
      * @param string|UnitEnum $key Attribute name.
      * @param mixed $value Attribute value.
@@ -170,13 +128,6 @@ trait HasLinkContainerCollection
 
     /**
      * Sets the link container tag, or `false` to disable.
-     *
-     * Usage example:
-     * ```php
-     * $component->linkContainerTag('div');
-     * $component->linkContainerTag(\UIAwesome\Html\Interop\Block::DIV);
-     * $component->linkContainerTag(false);
-     * ```
      *
      * @param BackedEnum|false|string $value Inline/Block enum case (recommended) or its tag name, or `false` to skip
      * the wrapper.

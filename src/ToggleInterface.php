@@ -18,11 +18,6 @@ interface ToggleInterface extends RenderableInterface
     /**
      * Stores the parent component's identifier on the toggle for subsequent data-attribute composition.
      *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\Toggle::tag()->dataValue('navbar-1');
-     * ```
-     *
      * @param string $value Identifier of the parent component bound to the toggle.
      *
      * @return static New instance with the updated `dataValue` value.

@@ -20,11 +20,6 @@ trait CanBeActivateItems
     /**
      * Toggles automatic activation of menu items.
      *
-     * Usage example:
-     * ```php
-     * $menu->activateItems(false);
-     * ```
-     *
      * @param bool $value `true` to activate items whose link matches the current path; `false` to disable.
      *
      * @return static New instance with the updated `activateItems` value.
@@ -39,13 +34,6 @@ trait CanBeActivateItems
 
     /**
      * Returns `true` when automatic activation of menu items is enabled.
-     *
-     * Usage example:
-     * ```php
-     * if ($menu->isActivateItems()) {
-     *     // ...
-     * }
-     * ```
      *
      * @return bool Current `activateItems` flag.
      */

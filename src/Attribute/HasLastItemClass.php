@@ -26,13 +26,6 @@ trait HasLastItemClass
     /**
      * Sets the CSS class applied to the last menu item.
      *
-     * Usage example:
-     * ```php
-     * $menu->lastItemClass('last');
-     * $menu->lastItemClass(['last', 'highlight']);
-     * $menu->lastItemClass(Theme::PRIMARY);
-     * ```
-     *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class applied to the last item.
      *
      * @return static New instance with the updated `lastItemClass` value.

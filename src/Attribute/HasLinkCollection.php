@@ -31,15 +31,13 @@ trait HasLinkCollection
      * Link tag enum, or `false` to skip the wrapper.
      */
     protected BackedEnum|false $linkTag = Inline::A;
+    /**
+     * Whether {@see linkTag()} was called, so a parent component keeps the chosen tag.
+     */
+    private bool $ownLinkTag = false;
 
     /**
      * Returns the value of a single link attribute, or the default when missing.
-     *
-     * Usage example:
-     * ```php
-     * $component->getLinkAttribute('rel', 'noopener');
-     * $component->getLinkAttribute('label', null, 'aria-');
-     * ```
      *
      * @param string|UnitEnum $key Attribute name.
      * @param mixed $default Default value when the attribute is missing.
@@ -55,11 +53,6 @@ trait HasLinkCollection
     /**
      * Returns the link attributes.
      *
-     * Usage example:
-     * ```php
-     * $component->getLinkAttributes();
-     * ```
-     *
      * @return mixed[] Current link attributes.
      */
     public function getLinkAttributes(): array
@@ -68,12 +61,20 @@ trait HasLinkCollection
     }
 
     /**
-     * Sets the link attributes (merged with previous values).
+     * Returns whether the component chose its own link tag.
      *
-     * Usage example:
-     * ```php
-     * $component->linkAttributes(['rel' => 'noopener', 'target' => '_blank']);
-     * ```
+     * A parent component applies its own link tag only to children that did not, so one menu can mix anchors with
+     * buttons.
+     *
+     * @return bool `true` when {@see linkTag()} was called; `false` otherwise.
+     */
+    public function hasOwnLinkTag(): bool
+    {
+        return $this->ownLinkTag;
+    }
+
+    /**
+     * Sets the link attributes (merged with previous values).
      *
      * @param mixed[] $values Attribute map merged into existing link attributes.
      *
@@ -89,14 +90,6 @@ trait HasLinkCollection
 
     /**
      * Adds a CSS class to the link attributes.
-     *
-     * Usage example:
-     * ```php
-     * $component->linkClass('nav-link');
-     * $component->linkClass(['nav-link', 'is-active']);
-     * $component->linkClass(Theme::PRIMARY);
-     * $component->linkClass('nav-link', true);
-     * ```
      *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class (or class list) to add.
      * @param bool $override Whether to replace existing classes (`true`) or merge (`false`).
@@ -114,12 +107,6 @@ trait HasLinkCollection
     /**
      * Removes a single link attribute.
      *
-     * Usage example:
-     * ```php
-     * $component->linkRemoveAttribute('rel');
-     * $component->linkRemoveAttribute('label', 'aria-');
-     * ```
-     *
      * @param string|UnitEnum $key Attribute name to remove.
      * @param string $prefix Optional prefix to ensure on the key.
      *
@@ -135,12 +122,6 @@ trait HasLinkCollection
 
     /**
      * Sets a single link attribute.
-     *
-     * Usage example:
-     * ```php
-     * $component->linkSetAttribute('rel', 'noopener');
-     * $component->linkSetAttribute('label', 'Open', 'aria-');
-     * ```
      *
      * @param string|UnitEnum $key Attribute name.
      * @param mixed $value Attribute value.
@@ -159,14 +140,6 @@ trait HasLinkCollection
     /**
      * Sets the link tag, or `false` to disable.
      *
-     * Usage example:
-     * ```php
-     * $component->linkTag('a');
-     * $component->linkTag('button');
-     * $component->linkTag(\UIAwesome\Html\Interop\Inline::A);
-     * $component->linkTag(false);
-     * ```
-     *
      * @param BackedEnum|false|string $value Inline/Block enum case (recommended) or its tag name, or `false` to skip
      * the wrapper.
      *
@@ -183,6 +156,7 @@ trait HasLinkCollection
 
         $new = clone $this;
         $new->linkTag = $value;
+        $new->ownLinkTag = true;
 
         return $new;
     }

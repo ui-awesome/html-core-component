@@ -20,11 +20,6 @@ trait HasCurrentPath
     /**
      * Sets the current request path.
      *
-     * Usage example:
-     * ```php
-     * $menu->currentPath('/reports');
-     * ```
-     *
      * @param string $value Current request path used to match active menu items.
      *
      * @return static New instance with the updated `currentPath` value.

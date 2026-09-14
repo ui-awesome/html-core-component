@@ -26,13 +26,6 @@ trait HasListItemDisabledClass
     /**
      * Sets the CSS class applied to a disabled list item.
      *
-     * Usage example:
-     * ```php
-     * $menu->listItemDisabledClass('disabled');
-     * $menu->listItemDisabledClass(['disabled', 'is-muted']);
-     * $menu->listItemDisabledClass(State::DISABLED);
-     * ```
-     *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class applied to a disabled
      * `<li>`.
      *

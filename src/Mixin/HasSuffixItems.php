@@ -22,12 +22,6 @@ trait HasSuffixItems
     /**
      * Sets the suffix content rendered after the main item list.
      *
-     * Usage example:
-     * ```php
-     * $menu->suffixItems('See more');
-     * $menu->suffixItems('<a href="/all">View all</a>');
-     * ```
-     *
      * @param RenderableInterface|string|Stringable ...$values Content fragments concatenated into the suffix block.
      *
      * @return static New instance with the updated `suffixItems` value.

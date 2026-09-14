@@ -26,13 +26,6 @@ trait HasFirstItemClass
     /**
      * Sets the CSS class applied to the first menu item.
      *
-     * Usage example:
-     * ```php
-     * $menu->firstItemClass('first');
-     * $menu->firstItemClass(['first', 'highlight']);
-     * $menu->firstItemClass(Theme::PRIMARY);
-     * ```
-     *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class applied to the first item.
      *
      * @return static New instance with the updated `firstItemClass` value.

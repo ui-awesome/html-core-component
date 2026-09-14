@@ -22,12 +22,6 @@ trait HasPrefixItems
     /**
      * Sets the prefix content rendered before the main item list.
      *
-     * Usage example:
-     * ```php
-     * $menu->prefixItems('Latest');
-     * $menu->prefixItems('<span class="badge">New</span>');
-     * ```
-     *
      * @param RenderableInterface|string|Stringable ...$values Content fragments concatenated into the prefix block.
      *
      * @return static New instance with the updated `prefixItems` value.

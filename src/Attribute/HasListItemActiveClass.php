@@ -26,13 +26,6 @@ trait HasListItemActiveClass
     /**
      * Sets the CSS class applied to the active list item.
      *
-     * Usage example:
-     * ```php
-     * $menu->listItemActiveClass('active');
-     * $menu->listItemActiveClass(['active', 'is-current']);
-     * $menu->listItemActiveClass(State::ACTIVE);
-     * ```
-     *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class applied to the active
      * `<li>`.
      *

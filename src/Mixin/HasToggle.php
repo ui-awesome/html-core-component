@@ -38,12 +38,6 @@ trait HasToggle
     /**
      * Sets the toggle element.
      *
-     * Usage example:
-     * ```php
-     * $component->toggle('Open');
-     * $component->toggle(\UIAwesome\Html\Core\Component\Toggle::tag()->content('Open'));
-     * ```
-     *
      * @param string|ToggleInterface $value Raw markup or a {@see ToggleInterface} instance.
      *
      * @return static New instance with the updated `toggle` value.

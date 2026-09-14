@@ -34,12 +34,6 @@ trait HasListCollection
     /**
      * Returns the value of a single list attribute, or the default when missing.
      *
-     * Usage example:
-     * ```php
-     * $component->getListAttribute('role', 'menu');
-     * $component->getListAttribute('label', null, 'aria-');
-     * ```
-     *
      * @param string|UnitEnum $key Attribute name.
      * @param mixed $default Default value when the attribute is missing.
      * @param string $prefix Optional prefix to ensure on the key.
@@ -54,11 +48,6 @@ trait HasListCollection
     /**
      * Returns the list element attributes.
      *
-     * Usage example:
-     * ```php
-     * $component->getListAttributes();
-     * ```
-     *
      * @return mixed[] Current list element attributes.
      */
     public function getListAttributes(): array
@@ -68,11 +57,6 @@ trait HasListCollection
 
     /**
      * Sets the list element attributes (merged with previous values).
-     *
-     * Usage example:
-     * ```php
-     * $component->listAttributes(['role' => 'menu']);
-     * ```
      *
      * @param mixed[] $values Attribute map merged into existing list attributes.
      *
@@ -88,13 +72,6 @@ trait HasListCollection
 
     /**
      * Adds a CSS class to the list element attributes.
-     *
-     * Usage example:
-     * ```php
-     * $component->listClass('menu');
-     * $component->listClass(Theme::PRIMARY);
-     * $component->listClass('menu', true);
-     * ```
      *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class (or class list) to add.
      * @param bool $override Whether to replace existing classes (`true`) or merge (`false`).
@@ -112,12 +89,6 @@ trait HasListCollection
     /**
      * Removes a single list attribute.
      *
-     * Usage example:
-     * ```php
-     * $component->listRemoveAttribute('role');
-     * $component->listRemoveAttribute('label', 'aria-');
-     * ```
-     *
      * @param string|UnitEnum $key Attribute name to remove.
      * @param string $prefix Optional prefix to ensure on the key.
      *
@@ -133,12 +104,6 @@ trait HasListCollection
 
     /**
      * Sets a single list attribute.
-     *
-     * Usage example:
-     * ```php
-     * $component->listSetAttribute('role', 'menu');
-     * $component->listSetAttribute('label', 'Main', 'aria-');
-     * ```
      *
      * @param string|UnitEnum $key Attribute name.
      * @param mixed $value Attribute value.
@@ -156,13 +121,6 @@ trait HasListCollection
 
     /**
      * Sets the list type (`ul` or `ol`), or `false` to disable.
-     *
-     * Usage example:
-     * ```php
-     * $component->listType('ul');
-     * $component->listType(\UIAwesome\Html\Interop\Lists::OL);
-     * $component->listType(false);
-     * ```
      *
      * @param BackedEnum|false|string $value `ul`, `ol`, or `false` to skip the list wrapper.
      *

@@ -86,11 +86,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     /**
      * Sets the HTML attributes for the brand container.
      *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->brandAttributes(['class' => 'navbar-brand']);
-     * ```
-     *
      * @param mixed[] $values HTML attributes for the brand container.
      *
      * @return static New instance with the updated `brandAttributes` value.
@@ -105,11 +100,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
 
     /**
      * Adds a CSS class to the brand container attributes.
-     *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->brandClass('navbar-brand');
-     * ```
      *
      * @param string $value CSS class for the brand container.
      * @param bool $override Whether to override the existing classes (defaults to `false`).
@@ -127,11 +117,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     /**
      * Sets the brand image markup.
      *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->brandImage('<img src="/logo.svg" alt="Logo">');
-     * ```
-     *
      * @param RenderableInterface|string|Stringable ...$value Content joined to form the brand image markup.
      *
      * @return static New instance with the updated `brandImage` value.
@@ -146,11 +131,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the brand link href.
-     *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->brandLink('/');
-     * ```
      *
      * @param string $value URL for the brand link.
      *
@@ -167,11 +147,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     /**
      * Sets the HTML attributes for the brand link.
      *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->brandLinkAttributes(['class' => 'navbar-brand']);
-     * ```
-     *
      * @param mixed[] $value HTML attributes for the brand link.
      *
      * @return static New instance with the updated `brandLinkAttributes` value.
@@ -186,11 +161,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
 
     /**
      * Adds a CSS class to the brand link attributes.
-     *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->brandLinkClass('navbar-brand');
-     * ```
      *
      * @param string $value CSS class for the brand link.
      * @param bool $override Whether to override the existing classes (defaults to `false`).
@@ -208,11 +178,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     /**
      * Sets the template composing the brand link content.
      *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->brandLinkTemplate('{image} {text}');
-     * ```
-     *
      * @param string $value Template for the brand link (typically `{image}/{text}`).
      *
      * @return static New instance with the updated `brandLinkTemplate` value.
@@ -227,12 +192,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the tag wrapping the brand block, or `false` to skip wrapping.
-     *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->brandTag(\UIAwesome\Html\Interop\Block::DIV);
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->brandTag(false);
-     * ```
      *
      * @param BackedEnum|false $value Tag enum, or `false` to skip wrapping (defaults to `Block::DIV`).
      *
@@ -249,11 +208,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     /**
      * Sets the template composing the brand block.
      *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->brandTemplate('{link} {toggle}');
-     * ```
-     *
      * @param string $value Template for the brand block (typically `{link}/{toggle}`).
      *
      * @return static New instance with the updated `brandTemplate` value.
@@ -268,11 +222,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the brand text content.
-     *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->brandText('UI Awesome');
-     * ```
      *
      * @param RenderableInterface|string|Stringable ...$value Content joined to form the brand text.
      *
@@ -289,13 +238,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     /**
      * Sets the markup of the brand-side toggle rendered alongside the brand link.
      *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->brandToggle(
-     *     \UIAwesome\Html\Core\Component\Toggle::tag()->content('Menu')->render(),
-     * );
-     * ```
-     *
      * @param RenderableInterface|string|Stringable ...$value Content joined to form the brand toggle markup.
      *
      * @return static New instance with the updated `brandToggle` value.
@@ -310,11 +252,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the HTML attributes for the container wrapping the menu block.
-     *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->containerMenuAttributes(['class' => 'collapse navbar-collapse']);
-     * ```
      *
      * @param mixed[] $values HTML attributes for the container menu.
      *
@@ -331,11 +268,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
     /**
      * Adds a CSS class to the container menu attributes.
      *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->containerMenuClass('collapse navbar-collapse');
-     * ```
-     *
      * @param string $value CSS class for the container menu.
      * @param bool $override Whether to override the existing classes (defaults to `false`).
      *
@@ -351,12 +283,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the tag wrapping the menu block, or `false` to skip wrapping.
-     *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->containerMenuTag(\UIAwesome\Html\Interop\Block::DIV);
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->containerMenuTag(false);
-     * ```
      *
      * @param BackedEnum|false $value Tag enum, or `false` to skip wrapping (defaults to `Block::DIV`).
      *
@@ -376,15 +302,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
      * The instance is configured with {@see $menuDefaultDefinitions} via {@see SimpleFactory::configure()} before being
      * cast to its rendered string form.
      *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->menu(
-     *     \UIAwesome\Html\Core\Component\Menu::tag()->items(
-     *         \UIAwesome\Html\Core\Component\Item::tag()->label('Home')->link('/'),
-     *     ),
-     * );
-     * ```
-     *
      * @param Menu $value Menu instance to render inside the navbar body.
      *
      * @return static New instance with the updated `menu` value.
@@ -401,11 +318,6 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the default definitions applied to the nested {@see Menu} via {@see SimpleFactory::configure()}.
-     *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\NavBar::tag()->menuDefaultDefinitions(['class' => ['navbar-nav']]);
-     * ```
      *
      * @param mixed[] $values Cookbook-style associative array of method names and arguments.
      *
