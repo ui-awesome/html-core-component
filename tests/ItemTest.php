@@ -171,6 +171,7 @@ final class ItemTest extends TestCase
             "Voids tag 'br' must resolve to 'Voids::BR' and render as a self-closing element.",
         );
     }
+
     public function testHasOwnTagsReportsWhetherTheItemChoseThem(): void
     {
         $item = Item::tag();
