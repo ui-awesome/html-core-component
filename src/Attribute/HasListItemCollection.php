@@ -29,15 +29,13 @@ trait HasListItemCollection
      * List-item tag name, or `false` to skip the wrapper.
      */
     protected false|string|BackedEnum $listItemTag = 'li';
+    /**
+     * Whether {@see listItemTag()} was called, so a parent component keeps the chosen tag.
+     */
+    private bool $ownListItemTag = false;
 
     /**
      * Returns the value of a single list-item attribute, or the default when missing.
-     *
-     * Usage example:
-     * ```php
-     * $component->getListItemAttribute('role', 'menuitem');
-     * $component->getListItemAttribute('label', null, 'aria-');
-     * ```
      *
      * @param string|UnitEnum $key Attribute name.
      * @param mixed $default Default value when the attribute is missing.
@@ -53,11 +51,6 @@ trait HasListItemCollection
     /**
      * Returns the list-item attributes.
      *
-     * Usage example:
-     * ```php
-     * $component->getListItemAttributes();
-     * ```
-     *
      * @return mixed[] Current list-item attributes.
      */
     public function getListItemAttributes(): array
@@ -66,12 +59,20 @@ trait HasListItemCollection
     }
 
     /**
-     * Sets the list-item attributes (merged with previous values).
+     * Returns whether the component chose its own list-item tag.
      *
-     * Usage example:
-     * ```php
-     * $component->listItemAttributes(['role' => 'menuitem']);
-     * ```
+     * A parent component applies its own list-item tag only to children that did not, so one menu can mix wrapped
+     * entries with unwrapped ones.
+     *
+     * @return bool `true` when {@see listItemTag()} was called; `false` otherwise.
+     */
+    public function hasOwnListItemTag(): bool
+    {
+        return $this->ownListItemTag;
+    }
+
+    /**
+     * Sets the list-item attributes (merged with previous values).
      *
      * @param mixed[] $values Attribute map merged into existing list-item attributes.
      *
@@ -87,14 +88,6 @@ trait HasListItemCollection
 
     /**
      * Adds a CSS class to the list-item attributes.
-     *
-     * Usage example:
-     * ```php
-     * $component->listItemClass('menu-item');
-     * $component->listItemClass(['menu-item', 'is-active']);
-     * $component->listItemClass(Theme::PRIMARY);
-     * $component->listItemClass('menu-item', true);
-     * ```
      *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class (or class list) to add.
      * @param bool $override Whether to replace existing classes (`true`) or merge (`false`).
@@ -112,12 +105,6 @@ trait HasListItemCollection
     /**
      * Removes a single list-item attribute.
      *
-     * Usage example:
-     * ```php
-     * $component->listItemRemoveAttribute('role');
-     * $component->listItemRemoveAttribute('label', 'aria-');
-     * ```
-     *
      * @param string|UnitEnum $key Attribute name to remove.
      * @param string $prefix Optional prefix to ensure on the key.
      *
@@ -133,12 +120,6 @@ trait HasListItemCollection
 
     /**
      * Sets a single list-item attribute.
-     *
-     * Usage example:
-     * ```php
-     * $component->listItemSetAttribute('role', 'menuitem');
-     * $component->listItemSetAttribute('current', 'page', 'aria-');
-     * ```
      *
      * @param string|UnitEnum $key Attribute name.
      * @param mixed $value Attribute value.
@@ -157,13 +138,6 @@ trait HasListItemCollection
     /**
      * Sets the list-item tag, or `false` to disable.
      *
-     * Usage example:
-     * ```php
-     * $component->listItemTag('li');
-     * $component->listItemTag(\UIAwesome\Html\Interop\Lists::LI);
-     * $component->listItemTag(false);
-     * ```
-     *
      * @param BackedEnum|false|string $value Currently must be `li`, or `false` to skip the wrapper.
      *
      * @throws InvalidArgumentException When the value is not `li` or `false`.
@@ -178,6 +152,7 @@ trait HasListItemCollection
 
         $new = clone $this;
         $new->listItemTag = $value;
+        $new->ownListItemTag = true;
 
         return $new;
     }

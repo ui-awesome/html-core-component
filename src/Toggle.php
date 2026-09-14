@@ -13,14 +13,5 @@ use UIAwesome\Html\Core\Component\Base\BaseToggle;
  * attributes for framework-specific toggle hooks (for example, `data-bs-toggle`, `data-collapse-toggle`). Apply
  * framework-specific styling through {@see \UIAwesome\Html\Core\Base\BaseTag::config()} with a
  * {@see \UIAwesome\Html\Core\Theme\ThemeInterface} implementation.
- *
- * Usage example:
- * ```php
- * echo \UIAwesome\Html\Core\Component\Toggle::tag()
- *     ->content('Open menu')
- *     ->addDataAttribute('bs-toggle', 'collapse')
- *     ->addDataAttribute('bs-target', '#navbar')
- *     ->render();
- * ```
  */
 class Toggle extends BaseToggle {}

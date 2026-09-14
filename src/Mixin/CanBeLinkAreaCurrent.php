@@ -19,13 +19,6 @@ trait CanBeLinkAreaCurrent
     /**
      * Returns `true` when the active link emits the `aria-current` attribute.
      *
-     * Usage example:
-     * ```php
-     * if ($menu->isLinkAriaCurrent()) {
-     *     // ...
-     * }
-     * ```
-     *
      * @return bool Current `linkAriaCurrent` flag.
      */
     public function isLinkAriaCurrent(): bool
@@ -35,11 +28,6 @@ trait CanBeLinkAreaCurrent
 
     /**
      * Toggles emission of the `aria-current` attribute on the active link.
-     *
-     * Usage example:
-     * ```php
-     * $menu->linkAriaCurrent(true);
-     * ```
      *
      * @param bool $value `true` to emit `aria-current` on the active link; `false` to omit it.
      *

@@ -13,13 +13,5 @@ use UIAwesome\Html\Core\Component\Base\BaseNavBar;
  * collapse {@see Toggle}. Apply framework-specific styling through
  * {@see \UIAwesome\Html\Core\Base\BaseTag::config()} with a {@see \UIAwesome\Html\Core\Theme\ThemeInterface}
  * implementation.
- *
- * Usage example:
- * ```php
- * echo \UIAwesome\Html\Core\Component\NavBar::tag()
- *     ->brandText('My App')
- *     ->brandLink('/')
- *     ->render();
- * ```
  */
 class NavBar extends BaseNavBar {}

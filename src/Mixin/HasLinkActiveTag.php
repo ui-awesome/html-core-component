@@ -22,12 +22,6 @@ trait HasLinkActiveTag
     /**
      * Sets the tag name for the active link, or `false` to disable the link wrapper on active items.
      *
-     * Usage example:
-     * ```php
-     * $menu->linkActiveTag('span');
-     * $menu->linkActiveTag(false);
-     * ```
-     *
      * @param false|string $value Tag name for the active link, or `false` to drop the link wrapper.
      *
      * @throws InvalidArgumentException When the value is the empty string.

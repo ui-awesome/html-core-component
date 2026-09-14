@@ -26,13 +26,6 @@ trait HasLinkDisabledClass
     /**
      * Sets the CSS class applied to a disabled link.
      *
-     * Usage example:
-     * ```php
-     * $menu->linkDisabledClass('disabled');
-     * $menu->linkDisabledClass(['disabled', 'is-muted']);
-     * $menu->linkDisabledClass(State::DISABLED);
-     * ```
-     *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class applied to a disabled link.
      *
      * @return static New instance with the updated `linkDisabledClass` value.

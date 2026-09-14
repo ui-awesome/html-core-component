@@ -20,11 +20,6 @@ trait HasTemplateLinkItem
     /**
      * Sets the template used to compose the link content of a menu item.
      *
-     * Usage example:
-     * ```php
-     * $menu->templateLinkItem('{icon}\n{label}\n{content}');
-     * ```
-     *
      * @param string $value Template with `{icon}`, `{label}`, and `{content}` placeholders.
      *
      * @return static New instance with the updated `templateLinkItem` value.

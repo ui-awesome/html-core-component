@@ -94,6 +94,55 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testActiveItemKeepsItsOwnLinkTag(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <button class="active" type="button">
+            Newest
+            </button>
+            </div>
+            HTML,
+            Menu::tag()
+                ->listItemTag(false)
+                ->listType(false)
+                ->items(
+                    Item::tag()
+                        ->label('Newest')
+                        ->link('/newest')
+                        ->active()
+                        ->linkAttributes(['type' => 'button'])
+                        ->linkTag('button'),
+                )
+                ->linkActiveClass('active')
+                ->linkActiveTag('a')
+                ->render(),
+            'An active button entry must not turn into an anchor.',
+        );
+    }
+
+    public function testActiveItemWithoutItsOwnLinkTagTakesTheActiveTag(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <span class="active">
+            Newest
+            </span>
+            </div>
+            HTML,
+            Menu::tag()
+                ->listItemTag(false)
+                ->listType(false)
+                ->items(Item::tag()->label('Newest')->link('/newest')->active())
+                ->linkActiveClass('active')
+                ->linkActiveTag('span')
+                ->render(),
+            'The active tag must still reach an entry that chose no tag.',
+        );
+    }
+
     public function testAttributes(): void
     {
         self::assertSame(
@@ -533,6 +582,36 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testItemKeepsItsOwnLinkTagAndListItemTag(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div class="row" role="group">
+            <button type="button" disabled>
+            Newest
+            </button>
+            <a href="/older" title="Older">
+            Older
+            </a>
+            </div>
+            HTML,
+            Menu::tag()
+                ->class('row')
+                ->addAttribute('role', 'group')
+                ->listItemTag(false)
+                ->listType(false)
+                ->items(
+                    Item::tag()
+                        ->label('Newest')
+                        ->linkAttributes(['type' => 'button', 'disabled' => true])
+                        ->linkTag('button'),
+                    Item::tag()->label('Older')->link('/older')->linkAttributes(['title' => 'Older']),
+                )
+                ->render(),
+            'One menu must mix a button entry with an anchor entry.',
+        );
+    }
+
     public function testItemsFromDefaultsAreReindexed(): void
     {
         self::assertSame(
@@ -563,6 +642,25 @@ final class MenuTest extends TestCase
                 ->firstItemClass('value')
                 ->render(),
             'String-keyed defaults must be reindexed to a list.',
+        );
+    }
+
+    public function testItemWithoutItsOwnTagsInheritsThemFromTheMenu(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <a href="/c">
+            C
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()->items(Item::tag()->label('C')->link('/c'))->render(),
+            'Menu defaults must still reach an entry that chose no tag.',
         );
     }
 

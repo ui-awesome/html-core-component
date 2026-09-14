@@ -26,13 +26,6 @@ trait HasLastLinkClass
     /**
      * Sets the CSS class applied to the last menu-item link.
      *
-     * Usage example:
-     * ```php
-     * $menu->lastLinkClass('last-link');
-     * $menu->lastLinkClass(['last-link', 'highlight']);
-     * $menu->lastLinkClass(Theme::PRIMARY);
-     * ```
-     *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class applied to the last link.
      *
      * @return static New instance with the updated `lastLinkClass` value.

@@ -12,15 +12,5 @@ use UIAwesome\Html\Core\Component\Base\BaseDropdown;
  * Renders a `<div>` wrapper enclosing a {@see Toggle} and a {@see Menu} of {@see Item} entries. Apply
  * framework-specific styling through {@see \UIAwesome\Html\Core\Base\BaseTag::config()} with a
  * {@see \UIAwesome\Html\Core\Theme\ThemeInterface} implementation.
- *
- * Usage example:
- * ```php
- * echo \UIAwesome\Html\Core\Component\Dropdown::tag()
- *     ->items(
- *         \UIAwesome\Html\Core\Component\Item::tag()->label('Profile')->link('/profile'),
- *         \UIAwesome\Html\Core\Component\Item::tag()->label('Sign out')->link('/logout'),
- *     )
- *     ->render();
- * ```
  */
 class Dropdown extends BaseDropdown {}

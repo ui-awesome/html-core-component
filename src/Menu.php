@@ -50,17 +50,6 @@ use function is_string;
  *
  * Drives breadcrumb, dropdown, and navigation menu rendering with active-path matching, dividers, prefix/suffix items,
  * and link wrappers.
- *
- * Usage example:
- * ```php
- * echo \UIAwesome\Html\Core\Component\Menu::tag()
- *     ->items(
- *         \UIAwesome\Html\Core\Component\Item::tag()->label('Home')->link('/'),
- *         \UIAwesome\Html\Core\Component\Item::tag()->label('Reports')->link('/reports'),
- *     )
- *     ->currentPath('/reports')
- *     ->render();
- * ```
  */
 class Menu extends BaseBlock implements RenderableInterface
 {
@@ -122,11 +111,6 @@ class Menu extends BaseBlock implements RenderableInterface
     /**
      * Sets the `aria-current` attribute applied to the active item.
      *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\Menu::tag()->ariaCurrent('page');
-     * ```
-     *
      * @param string $value Value for the `aria-current` attribute.
      *
      * @return static New instance with the updated `ariaCurrent` value.
@@ -142,11 +126,6 @@ class Menu extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the default definitions applied to nested {@see BaseDropdown} items via {@see SimpleFactory::configure()}.
-     *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\Menu::tag()->dropdownDefaultDefinitions(['class' => ['dropdown']]);
-     * ```
      *
      * @param array<string, mixed> $values Cookbook-style associative array of method names and arguments.
      *
@@ -164,14 +143,6 @@ class Menu extends BaseBlock implements RenderableInterface
     /**
      * Sets the menu items.
      *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\Menu::tag()->items(
-     *     \UIAwesome\Html\Core\Component\Item::tag()->label('Home')->link('/'),
-     *     \UIAwesome\Html\Core\Component\Item::tag()->label('About')->link('/about'),
-     * );
-     * ```
-     *
      * @param Item|RenderableInterface ...$values Items to render in order inside the menu.
      *
      * @return static New instance with the updated `items` value.
@@ -187,11 +158,6 @@ class Menu extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the CSS class assigned to the list item that wraps a nested dropdown menu.
-     *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\Menu::tag()->listDropdownItemClass('nav-item dropdown');
-     * ```
      *
      * @param string $value CSS class for the dropdown list item wrapper.
      *
@@ -209,11 +175,6 @@ class Menu extends BaseBlock implements RenderableInterface
     /**
      * Sets the separator rendered between consecutive items when {@see $type} is `breadcrumb`.
      *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\Menu::tag()->type('breadcrumb')->separator('/');
-     * ```
-     *
      * @param string|Stringable $value Content for the separator.
      *
      * @return static New instance with the updated `separator` value.
@@ -230,11 +191,6 @@ class Menu extends BaseBlock implements RenderableInterface
     /**
      * Sets the template composing the rendered items block (`{prefixItems}/{items}/{suffixItems}`).
      *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\Menu::tag()->templateItem('{prefixItems}{items}{suffixItems}');
-     * ```
-     *
      * @param string $value Template for the items block.
      *
      * @return static New instance with the updated `templateItem` value.
@@ -250,11 +206,6 @@ class Menu extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the menu type controlling the wrapper tag.
-     *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\Menu::tag()->type('breadcrumb');
-     * ```
      *
      * @param string $value Menu type, for example `menu`, `breadcrumb`, `dropdown`, `nav`.
      *
@@ -350,15 +301,26 @@ class Menu extends BaseBlock implements RenderableInterface
                     $this->listItemTag,
                 );
             } elseif ($item instanceof Item) {
+                $hasOwnLinkTag = $item->hasOwnLinkTag();
+                $hasOwnListItemTag = $item->hasOwnListItemTag();
+
                 $item = $item
                     ->activateItems($this->activateItems)
                     ->currentPath($this->currentPath)
                     ->linkAttributes($this->linkAttributes)
                     ->linkContainerAttributes($this->linkContainerAttributes)
-                    ->linkTag($this->linkTag)
                     ->listItemAttributes($this->listItemAttributes)
-                    ->listItemTag($this->listItemTag)
                     ->templateLinkItem($this->templateLinkItem);
+
+                // An item that chose its own tag keeps it, so one menu can mix anchors with buttons, or wrapped
+                // entries with unwrapped ones.
+                if ($hasOwnLinkTag === false) {
+                    $item = $item->linkTag($this->linkTag);
+                }
+
+                if ($hasOwnListItemTag === false) {
+                    $item = $item->listItemTag($this->listItemTag);
+                }
 
                 if ($this->type === 'breadcrumb' && $i > 0) {
                     $item = $item->separator($this->separator);
@@ -367,7 +329,7 @@ class Menu extends BaseBlock implements RenderableInterface
                 $isDisabledd = $item->isDisabled();
                 $isActive = $isDisabledd === false && $item->isActive();
 
-                $item = $this->setActiveAndDisableClass($item, $isActive, $isDisabledd);
+                $item = $this->setActiveAndDisableClass($item, $isActive, $isDisabledd, $hasOwnLinkTag);
                 $item = $this->setAriaCurrent($item, $isActive);
                 $item = $this->setFirstAndLastClass($item, $i, $n);
                 $item = $this->setLinkContainerTag($item);
@@ -486,23 +448,29 @@ class Menu extends BaseBlock implements RenderableInterface
      *
      * @return Item Decorated item with the active or disabled classes when applicable.
      */
-    private function setActiveAndDisableClass(Item $item, bool $isActive, bool $isDisabledd): Item
-    {
+    private function setActiveAndDisableClass(
+        Item $item,
+        bool $isActive,
+        bool $isDisabledd,
+        bool $hasOwnLinkTag = false,
+    ): Item {
         if ($isDisabledd) {
             return $item
                 ->linkClass($this->linkDisabledClass, true)
                 ->listItemClass($this->listItemDisabledClass, true);
         }
 
-        if ($isActive) {
-            return $item
-                ->active()
-                ->linkClass($this->linkActiveClass, true)
-                ->linkTag($this->linkActiveTag)
-                ->listItemClass($this->listItemActiveClass, true);
+        if ($isActive === false) {
+            return $item;
         }
 
-        return $item;
+        $item = $item
+            ->active()
+            ->linkClass($this->linkActiveClass, true)
+            ->listItemClass($this->listItemActiveClass, true);
+
+        // An item that chose its own tag keeps it while active too, so a button entry does not turn into an anchor.
+        return $hasOwnLinkTag ? $item : $item->linkTag($this->linkActiveTag);
     }
 
     /**

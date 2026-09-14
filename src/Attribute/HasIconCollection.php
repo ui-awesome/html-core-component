@@ -47,12 +47,6 @@ trait HasIconCollection
     /**
      * Returns the value of a single icon attribute, or the default when missing.
      *
-     * Usage example:
-     * ```php
-     * $component->getIconAttribute('aria-hidden', 'false');
-     * $component->getIconAttribute('hidden', null, 'aria-');
-     * ```
-     *
      * @param string|UnitEnum $key Attribute name.
      * @param mixed $default Default value when the attribute is missing.
      * @param string $prefix Optional prefix to ensure on the key (`aria-`, `data-`, `on`).
@@ -67,11 +61,6 @@ trait HasIconCollection
     /**
      * Returns the icon attributes.
      *
-     * Usage example:
-     * ```php
-     * $component->getIconAttributes();
-     * ```
-     *
      * @return mixed[] Current icon attributes.
      */
     public function getIconAttributes(): array
@@ -81,11 +70,6 @@ trait HasIconCollection
 
     /**
      * Sets the icon attributes (merged with previous values).
-     *
-     * Usage example:
-     * ```php
-     * $component->iconAttributes(['aria-hidden' => 'true']);
-     * ```
      *
      * @param mixed[] $values Attribute map merged into existing icon attributes.
      *
@@ -101,14 +85,6 @@ trait HasIconCollection
 
     /**
      * Adds a CSS class to the icon attributes.
-     *
-     * Usage example:
-     * ```php
-     * $component->iconClass('icon-lg');
-     * $component->iconClass(['icon-lg', 'icon-primary']);
-     * $component->iconClass(Theme::PRIMARY);
-     * $component->iconClass('icon-lg', true);
-     * ```
      *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class (or class list) to add.
      * @param bool $override Whether to replace existing classes (`true`) or merge (`false`).
@@ -126,12 +102,6 @@ trait HasIconCollection
     /**
      * Sets the icon HTML content.
      *
-     * Usage example:
-     * ```php
-     * $component->iconContent('★');
-     * $component->iconContent('<path d="M0 0L10 10"/>');
-     * ```
-     *
      * @param RenderableInterface|string|Stringable ...$values Content fragments concatenated into the icon body.
      *
      * @return static New instance with the updated `iconContent`.
@@ -147,11 +117,6 @@ trait HasIconCollection
     /**
      * Sets the filesystem path of the SVG file loaded as the icon body.
      *
-     * Usage example:
-     * ```php
-     * $component->iconFilePath('/assets/icons/home.svg');
-     * ```
-     *
      * @param string $value Absolute or relative filesystem path to an SVG file.
      *
      * @return static New instance with the updated `iconFilePath`.
@@ -166,12 +131,6 @@ trait HasIconCollection
 
     /**
      * Removes a single icon attribute.
-     *
-     * Usage example:
-     * ```php
-     * $component->iconRemoveAttribute('aria-hidden');
-     * $component->iconRemoveAttribute('hidden', 'aria-');
-     * ```
      *
      * @param string|UnitEnum $key Attribute name to remove.
      * @param string $prefix Optional prefix to ensure on the key.
@@ -189,12 +148,6 @@ trait HasIconCollection
     /**
      * Sets a single icon attribute.
      *
-     * Usage example:
-     * ```php
-     * $component->iconSetAttribute('aria-hidden', 'true');
-     * $component->iconSetAttribute('hidden', 'true', 'aria-');
-     * ```
-     *
      * @param string|UnitEnum $key Attribute name.
      * @param mixed $value Attribute value.
      * @param string $prefix Optional prefix to ensure on the key.
@@ -211,14 +164,6 @@ trait HasIconCollection
 
     /**
      * Sets the icon tag, or `false` to disable.
-     *
-     * Usage example:
-     * ```php
-     * $component->iconTag('i');
-     * $component->iconTag('svg');
-     * $component->iconTag(\UIAwesome\Html\Interop\Inline::SPAN);
-     * $component->iconTag(false);
-     * ```
      *
      * @param BackedEnum|false|string $value One of `i`, `span`, `svg`, or `false` to disable the icon.
      *

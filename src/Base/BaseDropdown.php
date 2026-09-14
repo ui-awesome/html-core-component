@@ -77,11 +77,6 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
     /**
      * Sets the `aria-current` attribute applied to the active item.
      *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\Dropdown::tag()->ariaCurrent('true');
-     * ```
-     *
      * @param string $value Value for the `aria-current` attribute.
      *
      * @return static New instance with the updated `ariaCurrent` value.
@@ -96,14 +91,6 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
 
     /**
      * Sets the dropdown items.
-     *
-     * Usage example:
-     * ```php
-     * \UIAwesome\Html\Core\Component\Dropdown::tag()->items(
-     *     \UIAwesome\Html\Core\Component\Item::tag()->label('Profile')->link('/profile'),
-     *     \UIAwesome\Html\Core\Component\Item::tag()->label('Sign out')->link('/logout'),
-     * );
-     * ```
      *
      * @param Item|RenderableInterface ...$values Items to render in order inside the dropdown menu.
      *

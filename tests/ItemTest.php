@@ -46,6 +46,19 @@ final class ItemTest extends TestCase
         );
     }
 
+    public function testAnchorWithoutTargetRendersUnwrapped(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            Newest
+            </li>
+            HTML,
+            Item::tag()->label('Newest')->render(),
+            'An anchor without a target is not a link.',
+        );
+    }
+
     public function testConfigAppliesRecipeDefaults(): void
     {
         $config = new Config(
@@ -156,6 +169,28 @@ final class ItemTest extends TestCase
             '<br>',
             Item::tag()->divider('br')->render(),
             "Voids tag 'br' must resolve to 'Voids::BR' and render as a self-closing element.",
+        );
+    }
+
+    public function testHasOwnTagsReportsWhetherTheItemChoseThem(): void
+    {
+        $item = Item::tag();
+
+        self::assertFalse(
+            $item->hasOwnLinkTag(),
+            'A fresh item chose no link tag.',
+        );
+        self::assertFalse(
+            $item->hasOwnListItemTag(),
+            'A fresh item chose no list-item tag.',
+        );
+        self::assertTrue(
+            $item->linkTag('button')->hasOwnLinkTag(),
+            'A chosen link tag must be reported.',
+        );
+        self::assertTrue(
+            $item->listItemTag(false)->hasOwnListItemTag(),
+            'A chosen list-item tag must be reported.',
         );
     }
 
@@ -942,6 +977,21 @@ final class ItemTest extends TestCase
                 ->listItemTag(false)
                 ->render(),
             "'false' list item tag must drop the wrapper.",
+        );
+    }
+
+    public function testNonAnchorTagWrapsTheContentWithoutALink(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <button type="button">
+            Newest
+            </button>
+            </li>
+            HTML,
+            Item::tag()->label('Newest')->linkAttributes(['type' => 'button'])->linkTag('button')->render(),
+            'A button entry needs no target to wrap its content.',
         );
     }
 

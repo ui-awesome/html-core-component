@@ -26,13 +26,6 @@ trait HasFirstLinkClass
     /**
      * Sets the CSS class applied to the first menu-item link.
      *
-     * Usage example:
-     * ```php
-     * $menu->firstLinkClass('first-link');
-     * $menu->firstLinkClass(['first-link', 'highlight']);
-     * $menu->firstLinkClass(Theme::PRIMARY);
-     * ```
-     *
      * @param array<string|Stringable|UnitEnum>|string|Stringable|UnitEnum $value CSS class applied to the first link.
      *
      * @return static New instance with the updated `firstLinkClass` value.
