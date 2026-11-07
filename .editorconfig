@@ -10,21 +10,6 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 
-[*.js]
-indent_size = 2
-
-[*.scss]
-indent_size = 2
-
-[*.css]
-indent_size = 2
-
-[package.json]
-indent_size = 2
-
-[package-lock.json]
-indent_size = 2
-
 [src/assets/dist/**]
 indent_size = unset
 indent_style = unset
@@ -33,7 +18,7 @@ trim_trailing_whitespace = unset
 charset = unset
 
 [*.md]
-indent_size = 2
+indent_size = unset
 trim_trailing_whitespace = false
 
 [*.php]
