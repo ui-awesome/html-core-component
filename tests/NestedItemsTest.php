@@ -325,7 +325,8 @@ final class NestedItemsTest extends TestCase
                 ->items(
                     Item::tag()
                         ->label('Child')
-                        ->items(Item::tag()->label('Grandchild')))
+                        ->items(Item::tag()->label('Grandchild'))
+                )
                 ->render(),
             'An invisible parent must suppress all descendants.',
         );
