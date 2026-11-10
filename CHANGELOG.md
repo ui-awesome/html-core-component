@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix(item): render nested children inside their parent while preserving each child's configuration.
 - fix(components): close streaming tags without replaying complete rendering and preserve toggle opening defaults.
 - docs: align `README.md` base imports, navbar menu and toggle composition, and divider usage with the current API.
+- fix: integrate current core and SVG development dependencies while preserving component output and sensitive text.
 
 ## 0.4.1 September 14, 2026
 

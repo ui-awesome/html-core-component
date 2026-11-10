@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace UIAwesome\Html\Core\Component\Tests;
 
 use InvalidArgumentException;
+use PHPForge\Support\LineEndingNormalizer;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\Tests\Support\Theme;
 use UIAwesome\Html\Core\Component\Toggle;
 use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
+use UIAwesome\Html\Svg\{Circle, Rect};
 
 /**
  * Unit tests for the {@see Toggle} component rendering and immutable configuration.
@@ -386,6 +388,23 @@ final class ToggleTest extends TestCase
         );
     }
 
+    public function testIconFileEncodesTitleText(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <button type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" aria-hidden="true" fill="none" viewBox="0 0 17 14"><title>A &lt; B &amp; &amp;amp;</title><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/></svg>
+            </button>
+            HTML,
+            Toggle::tag()
+                ->iconTag('svg')
+                ->iconAttributes(['title' => 'A < B & &amp;'])
+                ->iconFilePath(__DIR__ . '/Support/svg/toggle.svg')
+                ->render(),
+            'File-backed component icons must encode title data exactly once.',
+        );
+    }
+
     public function testIconFilePath(): void
     {
         self::assertSame(
@@ -399,6 +418,30 @@ final class ToggleTest extends TestCase
                 ->iconTag('svg')
                 ->render(),
             'SVG file content must be inlined inside the wrapper.',
+        );
+    }
+
+    public function testIconInlineEncodesTitleAndClosesSiblingPrimitives(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <button type="button">
+            <svg>
+            <title>
+            A &lt; B &amp; &amp;amp;
+            </title>
+            <circle/><rect/>
+            </svg>
+            </button>
+            HTML,
+            LineEndingNormalizer::normalize(
+                Toggle::tag()
+                    ->iconTag('svg')
+                    ->iconAttributes(['title' => 'A < B & &amp;'])
+                    ->iconContent(Circle::tag(), Rect::tag())
+                    ->render(),
+            ),
+            'The component icon path must preserve title encoding and SVG closing syntax.',
         );
     }
 
