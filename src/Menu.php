@@ -40,6 +40,7 @@ use UIAwesome\Html\Helper\Template;
 use UIAwesome\Html\Interop\{Block, Inline, Lists};
 use UIAwesome\Html\Mixin\{HasPrefixCollection, HasSuffixCollection, HasTemplate};
 
+use function array_filter;
 use function array_values;
 use function count;
 use function implode;
@@ -358,7 +359,7 @@ class Menu extends BaseBlock implements RenderableInterface
             }
         }
 
-        $content = implode("\n", $lines);
+        $content = implode("\n", array_filter($lines, static fn(string $line): bool => $line !== ''));
 
         return $this->renderTag($this->listAttributes, $content, $this->listType);
     }

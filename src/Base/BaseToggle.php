@@ -213,8 +213,6 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
             ],
         );
 
-        $content = $content !== '' ? "\n{$content}\n" : '';
-
         return Html::element($this->getTag(), $content, $attributes);
     }
 
