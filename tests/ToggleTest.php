@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace UIAwesome\Html\Core\Component\Tests;
 
 use InvalidArgumentException;
+use PHPForge\Support\LineEndingNormalizer;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\Tests\Support\Theme;
@@ -433,11 +434,13 @@ final class ToggleTest extends TestCase
             </svg>
             </button>
             HTML,
-            Toggle::tag()
-                ->iconTag('svg')
-                ->iconAttributes(['title' => 'A < B & &amp;'])
-                ->iconContent(Circle::tag(), Rect::tag())
-                ->render(),
+            LineEndingNormalizer::normalize(
+                Toggle::tag()
+                    ->iconTag('svg')
+                    ->iconAttributes(['title' => 'A < B & &amp;'])
+                    ->iconContent(Circle::tag(), Rect::tag())
+                    ->render(),
+            ),
             'The component icon path must preserve title encoding and SVG closing syntax.',
         );
     }
