@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix(menu): preserve generic renderable items in menus, breadcrumbs, and dropdowns.
 - fix(item): render nested children inside their parent while preserving each child's configuration.
 - fix(components): close streaming tags without replaying complete rendering and preserve toggle opening defaults.
+- docs: align `README.md` base imports, navbar menu and toggle composition, and divider usage with the current API.
 
 ## 0.4.1 September 14, 2026
 
