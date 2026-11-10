@@ -89,6 +89,8 @@ echo Dropdown::tag()
 
 #### Custom navbar with toggle
 
+This example renders markup only. Connect the button to a menu target and provide the required client-side behavior.
+
 ```php
 use UIAwesome\Html\Core\Component\Base\{BaseNavBar, BaseToggle};
 use UIAwesome\Html\Core\Component\{Item, Menu};
