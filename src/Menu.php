@@ -146,6 +146,10 @@ class Menu extends BaseBlock implements RenderableInterface
      * Generic renderables supply HTML and use the configured list-item wrapper and attributes. Items and dropdowns
      * retain their specialized rendering.
      *
+     * When the list-item wrapper is enabled, generic renderables must not emit their own `<li>`. Set
+     * `listItemTag(false)` for renderables supplying complete list items. This also disables the menu-provided entry
+     * wrapper for Items and dropdowns; Items with an explicit list-item tag retain it.
+     *
      * @param Item|RenderableInterface ...$values Items to render in order inside the menu.
      *
      * @return static New instance with the updated `items` value.
