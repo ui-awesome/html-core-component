@@ -2274,6 +2274,20 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testRenderReturnsEmptyWhenAllItemsAreInvisible(): void
+    {
+        self::assertSame(
+            '',
+            Menu::tag()
+                ->items(
+                    Item::tag()->label('Profile')->visible(false),
+                    Item::tag()->label('Administration')->visible(false),
+                )
+                ->render(),
+            'A menu with no visible items must not create empty wrappers.',
+        );
+    }
+
     public function testRenderToggleRemainsProtectedForSubclassOverride(): void
     {
         self::assertInstanceOf(
