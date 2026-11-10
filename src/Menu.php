@@ -465,7 +465,7 @@ class Menu extends BaseBlock implements RenderableInterface
         Item $item,
         bool $isActive,
         bool $isDisabledd,
-        bool $hasOwnLinkTag = false,
+        bool $hasOwnLinkTag,
     ): Item {
         if ($isDisabledd) {
             return $item
