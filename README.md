@@ -54,7 +54,8 @@ The exposed abstractions are:
 #### Custom breadcrumb
 
 ```php
-use UIAwesome\Html\Core\Component\{BaseBreadcrumb, Item};
+use UIAwesome\Html\Core\Component\Base\BaseBreadcrumb;
+use UIAwesome\Html\Core\Component\Item;
 
 final class Breadcrumb extends BaseBreadcrumb {}
 
@@ -71,7 +72,8 @@ echo Breadcrumb::tag()
 #### Custom dropdown
 
 ```php
-use UIAwesome\Html\Core\Component\{BaseDropdown, Item};
+use UIAwesome\Html\Core\Component\Base\BaseDropdown;
+use UIAwesome\Html\Core\Component\Item;
 
 final class Dropdown extends BaseDropdown {}
 
@@ -79,7 +81,7 @@ echo Dropdown::tag()
     ->items(
         Item::tag()->label('Profile')->link('/profile'),
         Item::tag()->label('Settings')->link('/settings'),
-        Item::tag()->divider('<hr>'),
+        Item::tag()->divider(),
         Item::tag()->label('Sign out')->link('/logout'),
     )
     ->render();
@@ -87,8 +89,11 @@ echo Dropdown::tag()
 
 #### Custom navbar with toggle
 
+This example renders markup only. Connect the button to a menu target and provide the required client-side behavior.
+
 ```php
-use UIAwesome\Html\Core\Component\{BaseNavBar, BaseToggle, Item};
+use UIAwesome\Html\Core\Component\Base\{BaseNavBar, BaseToggle};
+use UIAwesome\Html\Core\Component\{Item, Menu};
 
 final class NavBar extends BaseNavBar {}
 final class Toggle extends BaseToggle {}
@@ -96,9 +101,12 @@ final class Toggle extends BaseToggle {}
 echo NavBar::tag()
     ->brandText('My App')
     ->brandLink('/')
+    ->brandToggle(Toggle::tag()->content('Menu'))
     ->menu(
-        Item::tag()->label('Home')->link('/'),
-        Item::tag()->label('About')->link('/about'),
+        Menu::tag()->items(
+            Item::tag()->label('Home')->link('/'),
+            Item::tag()->label('About')->link('/about'),
+        ),
     )
     ->render();
 ```
