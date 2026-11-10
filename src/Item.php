@@ -21,6 +21,8 @@ use UIAwesome\Html\Helper\{Encode, Template};
 use UIAwesome\Html\Interop\{Block, Inline, Lists, Voids};
 use UIAwesome\Html\Mixin\{HasContent, HasTemplate};
 
+use function implode;
+
 /**
  * Represents an individual menu item rendered inside a {@see Menu}.
  *
@@ -170,6 +172,10 @@ class Item extends BaseBlock implements RenderableInterface
     /**
      * Sets the nested items.
      *
+     * Children render in an unadorned `<ul>` after this item's link container, inside its list-item wrapper when
+     * enabled. Each child retains its own configuration; parent and Menu attributes or defaults are not inherited.
+     * Empty child output is omitted, and an invisible parent suppresses its entire subtree.
+     *
      * @param self ...$values Child items to render below the current one.
      *
      * @return static New instance with the updated `items` value.
@@ -299,11 +305,45 @@ class Item extends BaseBlock implements RenderableInterface
             ],
         );
 
+        if ($content !== '' && $this->listItemTag !== false) {
+            $content = $this->renderLinkContainer($content);
+        }
+
+        $content = Template::render(
+            '{content}\n{items}',
+            [
+                '{content}' => $content,
+                '{items}' => $this->renderItems(),
+            ],
+        );
+
         if ($content === '' || $this->listItemTag === false) {
             return $content;
         }
 
-        return Html::element($this->getTag(), $this->renderLinkContainer($content), $this->listItemAttributes);
+        return Html::element($this->getTag(), $content, $this->listItemAttributes);
+    }
+
+    /**
+     * Renders nonempty child items once in order, without copying parent configuration.
+     *
+     * @return string Nested list HTML, or an empty string when no child produces output.
+     */
+    private function renderItems(): string
+    {
+        $lines = [];
+
+        foreach ($this->items as $item) {
+            $content = $item->render();
+
+            if ($content !== '') {
+                $lines[] = $content;
+            }
+        }
+
+        $content = implode("\n", $lines);
+
+        return $content === '' ? '' : Html::element(Lists::UL, $content);
     }
 
     /**

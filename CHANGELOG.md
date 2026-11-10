@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - chore: remove obsolete scaffold tooling and align package maintenance checks with PHP Forge conventions.
 - fix(menu): preserve generic renderable items in menus, breadcrumbs, and dropdowns.
+- fix(item): render nested children inside their parent while preserving each child's configuration.
 
 ## 0.4.1 September 14, 2026
 
