@@ -20,6 +20,9 @@ use UnitEnum;
  * Extend this class to render dismissible alerts with a prefix area, content area, suffix area, and an optional toggle
  * element. Subclasses inherit attribute, class, content, container, prefix, suffix, and template handling from
  * {@see BaseBlock} and the mixin traits.
+ *
+ * The inherited `begin()`/`end()` pair emits only the primary tag and its attributes, without complete-render
+ * content, auxiliary wrappers, or decorations.
  */
 abstract class BaseAlert extends BaseBlock implements RenderableInterface
 {
@@ -60,6 +63,10 @@ abstract class BaseAlert extends BaseBlock implements RenderableInterface
      */
     protected function run(): string
     {
+        if ($this->isBeginExecuted()) {
+            return parent::run();
+        }
+
         if ($this->getContent() === '') {
             return '';
         }

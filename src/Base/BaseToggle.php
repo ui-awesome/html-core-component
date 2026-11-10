@@ -26,6 +26,9 @@ use function is_string;
  * Extend this class to render button or link toggles. Toggles render as `<button type="button">` by default and can be
  * switched to `<a>` via {@see link()}. Use {@see BaseBlock::addDataAttribute()} for Bootstrap, Flowbite, and Tailwind
  * UI data hooks (`data-bs-toggle`, `data-collapse-toggle`, `data-drawer-target`, and friends).
+ *
+ * The inherited `begin()`/`end()` pair emits only the primary tag and its attributes, without complete-render
+ * content, auxiliary wrappers, or decorations.
  */
 abstract class BaseToggle extends BaseBlock implements ToggleInterface
 {
@@ -195,11 +198,11 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
      */
     protected function run(): string
     {
-        $attributes = $this->getAttributes();
-
-        if ($this->isLink === false && isset($attributes['type']) === false) {
-            $attributes['type'] = 'button';
+        if ($this->isBeginExecuted()) {
+            return parent::run();
         }
+
+        $attributes = $this->getTagAttributes();
 
         $content = Template::render(
             $this->template,
@@ -213,6 +216,32 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
         $content = $content !== '' ? "\n{$content}\n" : '';
 
         return Html::element($this->getTag(), $content, $attributes);
+    }
+
+    /**
+     * Opens the primary toggle tag with the same button defaults as complete rendering.
+     *
+     * @return string Opening toggle tag.
+     */
+    protected function runBegin(): string
+    {
+        return Html::begin($this->getTag(), $this->getTagAttributes());
+    }
+
+    /**
+     * Resolves toggle attributes without mutating the configured values.
+     *
+     * @return mixed[] Attributes including the default button type when needed.
+     */
+    private function getTagAttributes(): array
+    {
+        $attributes = $this->getAttributes();
+
+        if ($this->isLink === false && isset($attributes['type']) === false) {
+            $attributes['type'] = 'button';
+        }
+
+        return $attributes;
     }
 
     /**

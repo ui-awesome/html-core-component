@@ -40,6 +40,9 @@ use UIAwesome\Html\Mixin\{HasContainerCollection, HasPrefixCollection, HasSuffix
  *
  * Extend this class to render dropdown menus with toggles, dividers, and active-link wiring. The wrapper tag defaults
  * to `<div>` and can be customized by overriding {@see getTag()}.
+ *
+ * The inherited `begin()`/`end()` pair emits only the primary tag and its attributes, without complete-render
+ * content, auxiliary wrappers, or decorations.
  */
 abstract class BaseDropdown extends BaseBlock implements RenderableInterface
 {
@@ -143,6 +146,10 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
      */
     protected function run(): string
     {
+        if ($this->isBeginExecuted()) {
+            return parent::run();
+        }
+
         $contentMenu = Menu::tag()
             ->activateItems($this->activateItems)
             ->ariaCurrent($this->ariaCurrent)

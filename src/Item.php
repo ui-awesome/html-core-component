@@ -28,6 +28,9 @@ use function implode;
  *
  * Items can carry a link, icon, label, divider, separator, child items, and active/disabled state. They are typically
  * composed via {@see Menu::items()} but can be rendered standalone.
+ *
+ * The inherited `begin()`/`end()` pair emits only the primary tag and its attributes, without complete-render
+ * content, auxiliary wrappers, or decorations.
  */
 class Item extends BaseBlock implements RenderableInterface
 {
@@ -289,6 +292,10 @@ class Item extends BaseBlock implements RenderableInterface
      */
     protected function run(): string
     {
+        if ($this->isBeginExecuted()) {
+            return parent::run();
+        }
+
         if ($this->visible === false) {
             return '';
         }
