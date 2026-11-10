@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 0.4.2 Under development
 
 - chore: remove obsolete scaffold tooling and align package maintenance checks with PHP Forge conventions.
+- fix(menu): preserve generic renderable items in menus, breadcrumbs, and dropdowns.
 
 ## 0.4.1 September 14, 2026
 

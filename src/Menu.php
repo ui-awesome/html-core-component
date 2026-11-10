@@ -143,6 +143,9 @@ class Menu extends BaseBlock implements RenderableInterface
     /**
      * Sets the menu items.
      *
+     * Generic renderables supply HTML and use the configured list-item wrapper and attributes. Items and dropdowns
+     * retain their specialized rendering.
+     *
      * @param Item|RenderableInterface ...$values Items to render in order inside the menu.
      *
      * @return static New instance with the updated `items` value.
@@ -335,6 +338,12 @@ class Menu extends BaseBlock implements RenderableInterface
                 $item = $this->setLinkContainerTag($item);
 
                 $lines[] = $item->render();
+            } else {
+                $lines[] = $this->renderTag(
+                    $this->listItemAttributes,
+                    $item->render(),
+                    $this->listItemTag,
+                );
             }
         }
 
