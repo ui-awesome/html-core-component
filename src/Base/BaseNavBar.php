@@ -22,6 +22,9 @@ use function implode;
  *
  * Extend this class to render navigation bars with brand, menu, and collapsible toggle elements. The wrapper tag
  * defaults to `<nav>` and supports brand, container, prefix, and suffix sections.
+ *
+ * The inherited `begin()`/`end()` pair emits only the primary tag and its attributes, without complete-render
+ * content, auxiliary wrappers, or decorations.
  */
 abstract class BaseNavBar extends BaseBlock implements RenderableInterface
 {
@@ -362,6 +365,10 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
      */
     protected function run(): string
     {
+        if ($this->isBeginExecuted()) {
+            return parent::run();
+        }
+
         return $this->renderTag(
             $this->containerAttributes,
             $this->renderTag(

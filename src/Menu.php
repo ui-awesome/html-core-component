@@ -50,6 +50,9 @@ use function is_string;
  *
  * Drives breadcrumb, dropdown, and navigation menu rendering with active-path matching, dividers, prefix/suffix items,
  * and link wrappers.
+ *
+ * The inherited `begin()`/`end()` pair emits only the primary tag and its attributes, without complete-render
+ * content, auxiliary wrappers, or decorations.
  */
 class Menu extends BaseBlock implements RenderableInterface
 {
@@ -266,6 +269,10 @@ class Menu extends BaseBlock implements RenderableInterface
      */
     protected function run(): string
     {
+        if ($this->isBeginExecuted()) {
+            return parent::run();
+        }
+
         if ($this->items === []) {
             return '';
         }

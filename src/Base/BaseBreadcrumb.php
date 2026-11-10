@@ -42,6 +42,9 @@ use UIAwesome\Html\Mixin\{HasPrefixCollection, HasSuffixCollection};
  *
  * Extend this class to render accessible breadcrumb navigation with active-path detection. The wrapper defaults to
  * `<nav>` and the inner list to `<ol>`.
+ *
+ * The inherited `begin()`/`end()` pair emits only the primary tag and its attributes, without complete-render
+ * content, auxiliary wrappers, or decorations.
  */
 abstract class BaseBreadcrumb extends BaseBlock implements RenderableInterface
 {
@@ -173,6 +176,10 @@ abstract class BaseBreadcrumb extends BaseBlock implements RenderableInterface
      */
     protected function run(): string
     {
+        if ($this->isBeginExecuted()) {
+            return parent::run();
+        }
+
         return Menu::tag()
             ->activateItems($this->activateItems)
             ->ariaCurrent($this->ariaCurrent)
