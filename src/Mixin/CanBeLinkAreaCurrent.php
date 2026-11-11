@@ -24,8 +24,7 @@ trait CanBeLinkAreaCurrent
      * Returns whether the component chose its own `aria-current` emission flag.
      *
      * A parent component applies its default flag only to children that did not, so an explicit choice is never
-     * replaced by a theme default. Components whose class defaults call {@see linkAriaCurrent()}, such as dropdowns,
-     * always report `true`.
+     * replaced by a theme default.
      *
      * @return bool `true` when {@see linkAriaCurrent()} was called; `false` otherwise.
      */

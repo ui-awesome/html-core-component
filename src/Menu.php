@@ -344,17 +344,18 @@ class Menu extends BaseBlock implements RenderableInterface
 
         foreach ($this->items as $i => $item) {
             if ($item instanceof BaseDropdown) {
-                // A dropdown keeps the values it chose; the remaining defaults still apply. `linkAriaCurrent` is not
-                // consulted because the dropdown class defaults always set it.
+                // A dropdown keeps the values it chose; the remaining defaults still apply.
                 $defaults = array_diff_key(
                     $this->dropdownDefaultDefinitions,
                     array_filter(
                         [
                             'linkActiveClass' => $item->hasOwnLinkActiveClass(),
+                            'linkAriaCurrent' => $item->hasOwnLinkAriaCurrent(),
                             'linkDisabledClass' => $item->hasOwnLinkDisabledClass(),
                             'linkTag' => $item->hasOwnLinkTag(),
                             'listItemTag' => $item->hasOwnListItemTag(),
                             'toggle' => $item->hasOwnToggle(),
+                            'toggleLabel' => $item->hasOwnToggleLabel(),
                         ],
                     ),
                 );

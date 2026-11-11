@@ -34,6 +34,10 @@ trait HasToggle
      * Whether {@see toggle()} was called, so a parent component keeps the chosen toggle.
      */
     private bool $ownToggle = false;
+    /**
+     * Whether {@see toggleLabel()} was called, so a parent component keeps the chosen label.
+     */
+    private bool $ownToggleLabel = false;
 
     /**
      * Returns the value of a single HTML attribute.
@@ -61,6 +65,19 @@ trait HasToggle
     }
 
     /**
+     * Returns whether the component chose its own toggle label.
+     *
+     * A parent component applies its default label only to children that did not, so an explicit label, including an
+     * empty one that keeps the toggle content, is never replaced by a theme default.
+     *
+     * @return bool `true` when {@see toggleLabel()} was called; `false` otherwise.
+     */
+    public function hasOwnToggleLabel(): bool
+    {
+        return $this->ownToggleLabel;
+    }
+
+    /**
      * Sets the toggle element.
      *
      * @param string|ToggleInterface $value Raw markup or a {@see ToggleInterface} instance.
@@ -79,8 +96,9 @@ trait HasToggle
     /**
      * Sets the label replacing the content of the applied toggle, keeping its markup and styling.
      *
-     * The toggle itself is not chosen, so a parent component still applies its default toggle. The label is encoded
-     * like any other content.
+     * Only the toggle content is replaced: the decoration set through {@see BaseToggle::toggleContent()} and the icons
+     * are kept as they are. The toggle itself is not chosen, so a parent component still applies its default toggle.
+     * The label is encoded like any other content.
      *
      * @param string $value Label text, or an empty string to keep the toggle content.
      *
@@ -90,6 +108,7 @@ trait HasToggle
     {
         $new = clone $this;
         $new->toggleLabel = $value;
+        $new->ownToggleLabel = true;
 
         return $new;
     }

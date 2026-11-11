@@ -479,9 +479,25 @@ final class DropdownTest extends TestCase
             $instance->hasOwnLinkDisabledClass(),
             'A fresh dropdown chose no disabled link class.',
         );
-        self::assertTrue(
+        self::assertFalse(
             $instance->hasOwnLinkAriaCurrent(),
-            'Class defaults choose the `aria-current` flag.',
+            'A fresh dropdown chose no `aria-current` flag.',
+        );
+        self::assertTrue(
+            $instance->isLinkAriaCurrent(),
+            'A fresh dropdown must emit `aria-current` by default.',
+        );
+        self::assertTrue(
+            $instance->linkAriaCurrent(false)->hasOwnLinkAriaCurrent(),
+            'A chosen `aria-current` flag must be reported.',
+        );
+        self::assertFalse(
+            $instance->linkAriaCurrent(false)->isLinkAriaCurrent(),
+            'A chosen `false` flag must be returned.',
+        );
+        self::assertFalse(
+            $instance->hasOwnLinkAriaCurrent(),
+            'Choosing an `aria-current` flag must not mutate the original instance.',
         );
         self::assertTrue(
             $instance->linkActiveClass('active')->hasOwnLinkActiveClass(),
@@ -520,6 +536,28 @@ final class DropdownTest extends TestCase
         self::assertTrue(
             $instance->listItemTag('li')->hasOwnListItemTag(),
             'A chosen list-item tag must be reported.',
+        );
+    }
+
+    public function testHasOwnToggleLabelReportsWhetherTheLabelWasChosen(): void
+    {
+        $instance = Dropdown::tag();
+
+        self::assertFalse(
+            $instance->hasOwnToggleLabel(),
+            'A fresh dropdown chose no toggle label.',
+        );
+        self::assertTrue(
+            $instance->toggleLabel('Docs')->hasOwnToggleLabel(),
+            'A chosen toggle label must be reported.',
+        );
+        self::assertTrue(
+            $instance->toggleLabel('')->hasOwnToggleLabel(),
+            'A chosen empty toggle label must be reported.',
+        );
+        self::assertFalse(
+            $instance->hasOwnToggleLabel(),
+            'Choosing a toggle label must not mutate the original instance.',
         );
     }
 
@@ -2417,6 +2455,39 @@ final class DropdownTest extends TestCase
                 ->toggleLabel('<b>Docs</b>')
                 ->render(),
             'Label must be HTML-encoded.',
+        );
+    }
+
+    public function testToggleLabelKeepsToggleDecoration(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div id="dropdown">
+            <button type="button">
+            <i class="caret"></i>
+            Docs
+            </button>
+            <ul>
+            <li>
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::tag()
+                ->id('dropdown')
+                ->items(Item::tag()->label('Action')->link('/action'))
+                ->toggle(
+                    Toggle::tag()
+                        ->content('Dropdown')
+                        ->toggleContent('<i class="caret"></i>')
+                        ->toggleTag(false),
+                )
+                ->toggleLabel('Docs')
+                ->render(),
+            'Decoration must be kept while the label replaces the content.',
         );
     }
 

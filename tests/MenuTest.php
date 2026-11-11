@@ -355,6 +355,37 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testDropdownDefaultDefinitionsApplyLinkAriaCurrentWhenUnset(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <ul>
+            <li>
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->dropdownDefaultDefinitions(['linkAriaCurrent' => false])
+                ->items(
+                    Dropdown::tag()
+                        ->containerTag(false)
+                        ->id(null)
+                        ->items(Item::tag()->label('Action')->link('/action')->active()),
+                )
+                ->render(),
+            'Default `aria-current` flag must apply when the dropdown chose none.',
+        );
+    }
+
     public function testDropdownDefaultDefinitionsApplyLinkStateClassesWhenUnset(): void
     {
         self::assertSame(
@@ -428,6 +459,45 @@ final class MenuTest extends TestCase
         );
     }
 
+    public function testDropdownDefaultDefinitionsApplyToggleLabelWhenUnset(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <button class="dropdown-trigger" type="button">
+            Default label
+            </button>
+            <ul>
+            <li>
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->dropdownDefaultDefinitions(
+                    [
+                        'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                        'toggleLabel' => 'Default label',
+                    ],
+                )
+                ->items(
+                    Dropdown::tag()
+                        ->containerTag(false)
+                        ->id(null)
+                        ->items(Item::tag()->label('Action')->link('/action')),
+                )
+                ->render(),
+            'Default label must apply when the dropdown chose none.',
+        );
+    }
+
     public function testDropdownDefaultDefinitionsConfigureNestedDropdown(): void
     {
         self::assertSame(
@@ -466,6 +536,110 @@ final class MenuTest extends TestCase
                 ->listDropdownItemClass('menu-item has-dropdown')
                 ->render(),
             'Nested dropdown must inherit the configured definitions.',
+        );
+    }
+
+    public function testDropdownDefaultDefinitionsKeepExplicitEmptyToggleLabel(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <button class="dropdown-trigger" type="button">
+            Dropdown
+            </button>
+            <ul>
+            <li>
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->dropdownDefaultDefinitions(
+                    [
+                        'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                        'toggleLabel' => 'Default label',
+                    ],
+                )
+                ->items(
+                    Dropdown::tag()
+                        ->containerTag(false)
+                        ->id(null)
+                        ->items(Item::tag()->label('Action')->link('/action'))
+                        ->toggleLabel(''),
+                )
+                ->render(),
+            'Explicit empty label must keep the default toggle content.',
+        );
+    }
+
+    public function testDropdownDefaultDefinitionsKeepExplicitLinkAriaCurrentFalse(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <ul>
+            <li>
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->dropdownDefaultDefinitions(['linkAriaCurrent' => []])
+                ->items(
+                    Dropdown::tag()
+                        ->containerTag(false)
+                        ->id(null)
+                        ->items(Item::tag()->label('Action')->link('/action')->active())
+                        ->linkAriaCurrent(false),
+                )
+                ->render(),
+            'Explicit `false` flag must win over the default.',
+        );
+    }
+
+    public function testDropdownDefaultDefinitionsKeepExplicitLinkAriaCurrentTrue(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <ul>
+            <li>
+            <a href="/action" aria-current="true">
+            Action
+            </a>
+            </li>
+            </ul>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->dropdownDefaultDefinitions(['linkAriaCurrent' => false])
+                ->items(
+                    Dropdown::tag()
+                        ->containerTag(false)
+                        ->id(null)
+                        ->items(Item::tag()->label('Action')->link('/action')->active())
+                        ->linkAriaCurrent(),
+                )
+                ->render(),
+            'Explicit `true` flag must win over the default.',
         );
     }
 
@@ -627,6 +801,46 @@ final class MenuTest extends TestCase
                 ->listDropdownItemClass('menu-item has-dropdown')
                 ->render(),
             'Explicit toggle instance must win while the other defaults still apply.',
+        );
+    }
+
+    public function testDropdownDefaultDefinitionsKeepExplicitToggleLabel(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul>
+            <li>
+            <button class="dropdown-trigger" type="button">
+            Docs
+            </button>
+            <ul>
+            <li>
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->dropdownDefaultDefinitions(
+                    [
+                        'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                        'toggleLabel' => 'Default label',
+                    ],
+                )
+                ->items(
+                    Dropdown::tag()
+                        ->containerTag(false)
+                        ->id(null)
+                        ->items(Item::tag()->label('Action')->link('/action'))
+                        ->toggleLabel('Docs'),
+                )
+                ->render(),
+            'Explicit label must win over the default.',
         );
     }
 
