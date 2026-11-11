@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace UIAwesome\Html\Core\Component\Tests;
 
+use InvalidArgumentException;
 use PHPForge\Support\Stub\Unit;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\{Dropdown, Item, Toggle};
-use UIAwesome\Html\Core\Component\Tests\Support\{Theme, VariantTheme};
+use UIAwesome\Html\Core\Component\Tests\Support\{PlainToggle, Theme, VariantTheme};
 use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 use UIAwesome\Html\Interop\{Block, Inline};
 
@@ -463,6 +464,122 @@ final class DropdownTest extends TestCase
             'dropdown-',
             Dropdown::tag()->items(Item::tag()->label('Home')->link('/'))->render(),
             "Auto-generated id must use the 'dropdown-' prefix.",
+        );
+    }
+
+    public function testHasOwnLinkStateValuesReportsWhetherTheDropdownChoseThem(): void
+    {
+        $instance = Dropdown::tag();
+
+        self::assertFalse(
+            $instance->hasOwnLinkActiveClass(),
+            'A fresh dropdown chose no active link class.',
+        );
+        self::assertFalse(
+            $instance->hasOwnLinkDisabledClass(),
+            'A fresh dropdown chose no disabled link class.',
+        );
+        self::assertFalse(
+            $instance->hasOwnLinkAriaCurrent(),
+            'A fresh dropdown chose no `aria-current` flag.',
+        );
+        self::assertTrue(
+            $instance->isLinkAriaCurrent(),
+            'A fresh dropdown must emit `aria-current` by default.',
+        );
+        self::assertTrue(
+            $instance->linkAriaCurrent(false)->hasOwnLinkAriaCurrent(),
+            'A chosen `aria-current` flag must be reported.',
+        );
+        self::assertFalse(
+            $instance->linkAriaCurrent(false)->isLinkAriaCurrent(),
+            'A chosen `false` flag must be returned.',
+        );
+        self::assertFalse(
+            $instance->hasOwnLinkAriaCurrent(),
+            'Choosing an `aria-current` flag must not mutate the original instance.',
+        );
+        self::assertTrue(
+            $instance->linkActiveClass('active')->hasOwnLinkActiveClass(),
+            'A chosen active link class must be reported.',
+        );
+        self::assertTrue(
+            $instance->linkDisabledClass('disabled')->hasOwnLinkDisabledClass(),
+            'A chosen disabled link class must be reported.',
+        );
+        self::assertFalse(
+            $instance->hasOwnLinkActiveClass(),
+            'Choosing an active link class must not mutate the original instance.',
+        );
+        self::assertFalse(
+            $instance->hasOwnLinkDisabledClass(),
+            'Choosing a disabled link class must not mutate the original instance.',
+        );
+    }
+
+    public function testHasOwnTagsReportsWhetherTheDropdownChoseThem(): void
+    {
+        $instance = Dropdown::tag();
+
+        self::assertFalse(
+            $instance->hasOwnLinkTag(),
+            'A fresh dropdown chose no link tag.',
+        );
+        self::assertFalse(
+            $instance->hasOwnListItemTag(),
+            'A fresh dropdown chose no list-item tag.',
+        );
+        self::assertTrue(
+            $instance->linkTag('a')->hasOwnLinkTag(),
+            'A chosen link tag must be reported.',
+        );
+        self::assertTrue(
+            $instance->listItemTag('li')->hasOwnListItemTag(),
+            'A chosen list-item tag must be reported.',
+        );
+    }
+
+    public function testHasOwnToggleLabelReportsWhetherTheLabelWasChosen(): void
+    {
+        $instance = Dropdown::tag();
+
+        self::assertFalse(
+            $instance->hasOwnToggleLabel(),
+            'A fresh dropdown chose no toggle label.',
+        );
+        self::assertTrue(
+            $instance->toggleLabel('Docs')->hasOwnToggleLabel(),
+            'A chosen toggle label must be reported.',
+        );
+        self::assertTrue(
+            $instance->toggleLabel('')->hasOwnToggleLabel(),
+            'A chosen empty toggle label must be reported.',
+        );
+        self::assertFalse(
+            $instance->hasOwnToggleLabel(),
+            'Choosing a toggle label must not mutate the original instance.',
+        );
+    }
+
+    public function testHasOwnToggleReportsWhetherTheToggleWasChosen(): void
+    {
+        $instance = Dropdown::tag();
+
+        self::assertFalse(
+            $instance->hasOwnToggle(),
+            'A fresh dropdown chose no toggle.',
+        );
+        self::assertTrue(
+            $instance->toggle('toggle')->hasOwnToggle(),
+            'A chosen string toggle must be reported.',
+        );
+        self::assertTrue(
+            $instance->toggle(Toggle::tag())->hasOwnToggle(),
+            'A chosen toggle instance must be reported.',
+        );
+        self::assertFalse(
+            $instance->hasOwnToggle(),
+            'Choosing a toggle must not mutate the original instance.',
         );
     }
 
@@ -2220,6 +2337,47 @@ final class DropdownTest extends TestCase
         );
     }
 
+    public function testThrowInvalidArgumentExceptionWhenToggleLabelHasNonBaseToggle(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            "Toggle label 'Docs' requires a `BaseToggle` toggle, `" . PlainToggle::class . '` given.',
+        );
+
+        Dropdown::tag()
+            ->items(Item::tag()->label('Action')->link('/action'))
+            ->toggle(new PlainToggle())
+            ->toggleLabel('Docs')
+            ->render();
+    }
+
+    public function testThrowInvalidArgumentExceptionWhenToggleLabelHasNoToggle(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            "Toggle label 'Docs' requires a `BaseToggle` toggle, `string` given.",
+        );
+
+        Dropdown::tag()
+            ->items(Item::tag()->label('Action')->link('/action'))
+            ->toggleLabel('Docs')
+            ->render();
+    }
+
+    public function testThrowInvalidArgumentExceptionWhenToggleLabelHasStringToggle(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            "Toggle label 'Docs' requires a `BaseToggle` toggle, `string` given.",
+        );
+
+        Dropdown::tag()
+            ->items(Item::tag()->label('Action')->link('/action'))
+            ->toggle('<button type="button">Toggle</button>')
+            ->toggleLabel('Docs')
+            ->render();
+    }
+
     public function testToggle(): void
     {
         self::assertSame(
@@ -2255,6 +2413,135 @@ final class DropdownTest extends TestCase
                 )
                 ->render(),
             'Toggle must render before the inner wrapper.',
+        );
+    }
+
+    public function testToggleLabelDoesNotChooseToggle(): void
+    {
+        $instance = Dropdown::tag();
+
+        self::assertNotSame(
+            $instance,
+            $instance->toggleLabel('Docs'),
+            'New instance must be returned (immutability).',
+        );
+        self::assertFalse(
+            $instance->toggleLabel('Docs')->hasOwnToggle(),
+            'A toggle label must not choose the toggle.',
+        );
+    }
+
+    public function testToggleLabelEncodesLabel(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div id="dropdown">
+            <button class="trigger" type="button">
+            &lt;b&gt;Docs&lt;/b&gt;
+            </button>
+            <ul>
+            <li>
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::tag()
+                ->id('dropdown')
+                ->items(Item::tag()->label('Action')->link('/action'))
+                ->toggle(Toggle::tag()->class('trigger')->content('Dropdown'))
+                ->toggleLabel('<b>Docs</b>')
+                ->render(),
+            'Label must be HTML-encoded.',
+        );
+    }
+
+    public function testToggleLabelKeepsToggleDecoration(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div id="dropdown">
+            <button type="button">
+            <i class="caret"></i>
+            Docs
+            </button>
+            <ul>
+            <li>
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::tag()
+                ->id('dropdown')
+                ->items(Item::tag()->label('Action')->link('/action'))
+                ->toggle(
+                    Toggle::tag()
+                        ->content('Dropdown')
+                        ->toggleContent('<i class="caret"></i>')
+                        ->toggleTag(false),
+                )
+                ->toggleLabel('Docs')
+                ->render(),
+            'Decoration must be kept while the label replaces the content.',
+        );
+    }
+
+    public function testToggleLabelReplacesOwnToggleContent(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div id="dropdown">
+            <button class="trigger" type="button">
+            Docs
+            </button>
+            <ul>
+            <li>
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::tag()
+                ->id('dropdown')
+                ->items(Item::tag()->label('Action')->link('/action'))
+                ->toggle(Toggle::tag()->class('trigger')->content('Dropdown'))
+                ->toggleLabel('Docs')
+                ->render(),
+            'Label must replace the toggle content while keeping its markup.',
+        );
+    }
+
+    public function testToggleLabelWithEmptyValueKeepsToggleContent(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div id="dropdown">
+            <button class="trigger" type="button">
+            Dropdown
+            </button>
+            <ul>
+            <li>
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::tag()
+                ->id('dropdown')
+                ->items(Item::tag()->label('Action')->link('/action'))
+                ->toggle(Toggle::tag()->class('trigger')->content('Dropdown'))
+                ->toggleLabel('')
+                ->render(),
+            'Empty label must keep the toggle content.',
         );
     }
 }

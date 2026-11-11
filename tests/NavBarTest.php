@@ -1402,6 +1402,74 @@ final class NavBarTest extends TestCase
         );
     }
 
+    public function testMenuDefaultDefinitionsApplyLinkStateDefaultsWhenUnset(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav>
+            <div id="nav">
+            <ul>
+            <li>
+            <a class="default-active" href="/" aria-current="page">
+            Home
+            </a>
+            </li>
+            <li>
+            <a class="default-disabled" href="/disabled">
+            Disabled
+            </a>
+            </li>
+            </ul>
+            </div>
+            </nav>
+            HTML,
+            NavBar::tag()
+                ->menuDefaultDefinitions(
+                    [
+                        'linkActiveClass' => 'default-active',
+                        'linkAriaCurrent' => [],
+                        'linkDisabledClass' => 'default-disabled',
+                    ],
+                )
+                ->menu(
+                    Menu::tag()
+                        ->id('nav')
+                        ->items(
+                            Item::tag()->label('Home')->link('/')->active(),
+                            Item::tag()->label('Disabled')->link('/disabled')->disabled(),
+                        ),
+                )
+                ->render(),
+            'Default link state values must apply when the menu chose none.',
+        );
+    }
+
+    public function testMenuDefaultDefinitionsApplyTagsWhenUnset(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav>
+            <div id="nav">
+            <ul>
+            <span>
+            Home
+            </span>
+            </ul>
+            </div>
+            </nav>
+            HTML,
+            NavBar::tag()
+                ->menuDefaultDefinitions(['linkTag' => 'span', 'listItemTag' => false])
+                ->menu(
+                    Menu::tag()
+                        ->id('nav')
+                        ->items(Item::tag()->label('Home')->link('/')),
+                )
+                ->render(),
+            'Default tags must apply when the menu chose none.',
+        );
+    }
+
     public function testMenuDefaultDefinitionsConfigureNestedMenuAndDropdown(): void
     {
         self::assertSame(
@@ -1460,6 +1528,209 @@ final class NavBarTest extends TestCase
                 )
                 ->render(),
             'Nested menu and dropdown must inherit the configured definitions.',
+        );
+    }
+
+    public function testMenuDefaultDefinitionsKeepExplicitMenuValues(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav>
+            <div class="menu-shell" id="nav">
+            <ul>
+            <li>
+            <a class="own-active" href="/">
+            Home
+            </a>
+            </li>
+            <li>
+            <a class="own-disabled" href="/disabled">
+            Disabled
+            </a>
+            </li>
+            <li class="own-dropdown-item">
+            <ul class="own-dropdown-list">
+            <li>
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </li>
+            </ul>
+            </div>
+            </nav>
+            HTML,
+            NavBar::tag()
+                ->menuDefaultDefinitions(
+                    [
+                        'class' => 'menu-shell',
+                        'dropdownDefaultDefinitions' => [
+                            [
+                                'linkClass' => 'default-entry',
+                                'listClass' => 'default-dropdown-list',
+                            ],
+                        ],
+                        'linkActiveClass' => 'default-active',
+                        'linkAriaCurrent' => [],
+                        'linkDisabledClass' => 'default-disabled',
+                        'listDropdownItemClass' => 'default-dropdown-item',
+                    ],
+                )
+                ->menu(
+                    Menu::tag()
+                        ->dropdownDefaultDefinitions(['listClass' => 'own-dropdown-list'])
+                        ->id('nav')
+                        ->items(
+                            Item::tag()->label('Home')->link('/')->active(),
+                            Item::tag()->label('Disabled')->link('/disabled')->disabled(),
+                            Dropdown::tag()
+                                ->containerTag(false)
+                                ->id(null)
+                                ->items(Item::tag()->label('Action')->link('/action')),
+                        )
+                        ->linkActiveClass('own-active')
+                        ->linkAriaCurrent(false)
+                        ->linkDisabledClass('own-disabled')
+                        ->listDropdownItemClass('own-dropdown-item'),
+                )
+                ->render(),
+            'Explicit menu values must win while the other defaults still apply.',
+        );
+    }
+
+    public function testMenuDefaultDefinitionsKeepExplicitTags(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav>
+            <div id="nav">
+            <ul>
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            </nav>
+            HTML,
+            NavBar::tag()
+                ->menuDefaultDefinitions(['linkTag' => 'span', 'listItemTag' => false])
+                ->menu(
+                    Menu::tag()
+                        ->id('nav')
+                        ->items(Item::tag()->label('Home')->link('/'))
+                        ->linkTag('a')
+                        ->listItemTag('li'),
+                )
+                ->render(),
+            'Explicit tags must win over the defaults.',
+        );
+    }
+
+    public function testMenuDefaultDefinitionsKeepExplicitToggleOfNestedDropdown(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav>
+            <div class="menu-shell" id="nav">
+            <ul class="menu-list">
+            <li class="menu-item has-dropdown">
+            <button class="custom-trigger" type="button">
+            Docs
+            </button>
+            <ul class="dropdown-list">
+            <li>
+            <a class="dropdown-entry" href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </li>
+            </ul>
+            </div>
+            </nav>
+            HTML,
+            NavBar::tag()
+                ->menuDefaultDefinitions(
+                    [
+                        'class' => 'menu-shell',
+                        'dropdownDefaultDefinitions' => [
+                            [
+                                'linkClass' => 'dropdown-entry',
+                                'listClass' => 'dropdown-list',
+                                'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                            ],
+                        ],
+                        'listClass' => 'menu-list',
+                        'listDropdownItemClass' => 'menu-item has-dropdown',
+                    ],
+                )
+                ->menu(
+                    Menu::tag()
+                        ->id('nav')
+                        ->items(
+                            Dropdown::tag()
+                                ->containerTag(false)
+                                ->id(null)
+                                ->items(Item::tag()->label('Action')->link('/action'))
+                                ->toggle(Toggle::tag()->class('custom-trigger')->content('Docs')),
+                        ),
+                )
+                ->render(),
+            'Explicit toggle of the nested dropdown must win while the other defaults still apply.',
+        );
+    }
+
+    public function testMenuDefaultDefinitionsToggleLabelReplacesDefaultToggleContent(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav>
+            <div id="nav">
+            <ul>
+            <li class="menu-item has-dropdown">
+            <button class="dropdown-trigger" type="button">
+            Docs
+            </button>
+            <ul class="dropdown-list">
+            <li>
+            <a href="/action">
+            Action
+            </a>
+            </li>
+            </ul>
+            </li>
+            </ul>
+            </div>
+            </nav>
+            HTML,
+            NavBar::tag()
+                ->menuDefaultDefinitions(
+                    [
+                        'dropdownDefaultDefinitions' => [
+                            [
+                                'listClass' => 'dropdown-list',
+                                'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                            ],
+                        ],
+                        'listDropdownItemClass' => 'menu-item has-dropdown',
+                    ],
+                )
+                ->menu(
+                    Menu::tag()
+                        ->id('nav')
+                        ->items(
+                            Dropdown::tag()
+                                ->containerTag(false)
+                                ->id(null)
+                                ->items(Item::tag()->label('Action')->link('/action'))
+                                ->toggleLabel('Docs'),
+                        ),
+                )
+                ->render(),
+            'Label must replace the content of the navbar default toggle.',
         );
     }
 

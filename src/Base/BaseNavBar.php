@@ -15,6 +15,8 @@ use UIAwesome\Html\Helper\{CSSClass, Template};
 use UIAwesome\Html\Interop\{Block, Inline};
 use UIAwesome\Html\Mixin\{HasContainerCollection, HasPrefixCollection, HasSuffixCollection, HasTemplate};
 
+use function array_diff_key;
+use function array_filter;
 use function implode;
 
 /**
@@ -303,7 +305,9 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
      * Sets the menu instance rendered inside the navbar body.
      *
      * The instance is configured with {@see $menuDefaultDefinitions} via {@see SimpleFactory::configure()} before being
-     * cast to its rendered string form.
+     * cast to its rendered string form. Definitions for `dropdownDefaultDefinitions`, `linkActiveClass`,
+     * `linkAriaCurrent`, `linkDisabledClass`, `linkTag`, `listDropdownItemClass`, and `listItemTag` are skipped when
+     * the menu already chose its own value.
      *
      * @param Menu $value Menu instance to render inside the navbar body.
      *
@@ -311,7 +315,22 @@ abstract class BaseNavBar extends BaseBlock implements RenderableInterface
      */
     public function menu(Menu $value): static
     {
-        $value = SimpleFactory::configure($value, $this->menuDefaultDefinitions);
+        $defaults = array_diff_key(
+            $this->menuDefaultDefinitions,
+            array_filter(
+                [
+                    'dropdownDefaultDefinitions' => $value->hasOwnDropdownDefaultDefinitions(),
+                    'linkActiveClass' => $value->hasOwnLinkActiveClass(),
+                    'linkAriaCurrent' => $value->hasOwnLinkAriaCurrent(),
+                    'linkDisabledClass' => $value->hasOwnLinkDisabledClass(),
+                    'linkTag' => $value->hasOwnLinkTag(),
+                    'listDropdownItemClass' => $value->hasOwnListDropdownItemClass(),
+                    'listItemTag' => $value->hasOwnListItemTag(),
+                ],
+            ),
+        );
+
+        $value = SimpleFactory::configure($value, $defaults);
 
         $new = clone $this;
         $new->menu = (string) $value;

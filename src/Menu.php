@@ -40,6 +40,7 @@ use UIAwesome\Html\Helper\Template;
 use UIAwesome\Html\Interop\{Block, Inline, Lists};
 use UIAwesome\Html\Mixin\{HasPrefixCollection, HasSuffixCollection, HasTemplate};
 
+use function array_diff_key;
 use function array_filter;
 use function array_values;
 use function count;
@@ -111,6 +112,14 @@ class Menu extends BaseBlock implements RenderableInterface
      * Menu type controlling the wrapper tag (`menu`, `breadcrumb`, `dropdown`, `nav`, ...).
      */
     protected string $type = '';
+    /**
+     * Whether {@see dropdownDefaultDefinitions()} was called, so a parent component keeps the chosen definitions.
+     */
+    private bool $ownDropdownDefaultDefinitions = false;
+    /**
+     * Whether {@see listDropdownItemClass()} was called, so a parent component keeps the chosen class.
+     */
+    private bool $ownListDropdownItemClass = false;
 
     /**
      * Sets the `aria-current` attribute applied to the active item.
@@ -140,8 +149,35 @@ class Menu extends BaseBlock implements RenderableInterface
         $new = clone $this;
 
         $new->dropdownDefaultDefinitions = $values;
+        $new->ownDropdownDefaultDefinitions = true;
 
         return $new;
+    }
+
+    /**
+     * Returns whether the menu chose its own nested dropdown default definitions.
+     *
+     * A parent component applies its default definitions only to menus that did not, so explicit definitions replace
+     * the theme default as a whole.
+     *
+     * @return bool `true` when {@see dropdownDefaultDefinitions()} was called; `false` otherwise.
+     */
+    public function hasOwnDropdownDefaultDefinitions(): bool
+    {
+        return $this->ownDropdownDefaultDefinitions;
+    }
+
+    /**
+     * Returns whether the menu chose its own dropdown list-item class.
+     *
+     * A parent component applies its default class only to menus that did not, so an explicit class is never replaced
+     * by a theme default.
+     *
+     * @return bool `true` when {@see listDropdownItemClass()} was called; `false` otherwise.
+     */
+    public function hasOwnListDropdownItemClass(): bool
+    {
+        return $this->ownListDropdownItemClass;
     }
 
     /**
@@ -179,6 +215,7 @@ class Menu extends BaseBlock implements RenderableInterface
         $new = clone $this;
 
         $new->listDropdownItemClass = $value;
+        $new->ownListDropdownItemClass = true;
 
         return $new;
     }
@@ -255,7 +292,6 @@ class Menu extends BaseBlock implements RenderableInterface
         return [
             'linkActiveTag' => 'a',
             'linkContainerTag' => false,
-            'linkTag' => 'a',
             'template' => '{toggle}\n{prefix}\n{menu}\n{suffix}',
             'templateItem' => '{prefixItems}\n{items}\n{suffixItems}',
             'templateLinkItem' => '{icon}\n{label}\n{content}',
@@ -308,7 +344,23 @@ class Menu extends BaseBlock implements RenderableInterface
 
         foreach ($this->items as $i => $item) {
             if ($item instanceof BaseDropdown) {
-                $item = SimpleFactory::configure($item, $this->dropdownDefaultDefinitions);
+                // A dropdown keeps the values it chose; the remaining defaults still apply.
+                $defaults = array_diff_key(
+                    $this->dropdownDefaultDefinitions,
+                    array_filter(
+                        [
+                            'linkActiveClass' => $item->hasOwnLinkActiveClass(),
+                            'linkAriaCurrent' => $item->hasOwnLinkAriaCurrent(),
+                            'linkDisabledClass' => $item->hasOwnLinkDisabledClass(),
+                            'linkTag' => $item->hasOwnLinkTag(),
+                            'listItemTag' => $item->hasOwnListItemTag(),
+                            'toggle' => $item->hasOwnToggle(),
+                            'toggleLabel' => $item->hasOwnToggleLabel(),
+                        ],
+                    ),
+                );
+
+                $item = SimpleFactory::configure($item, $defaults);
 
                 $lines[] = $this->renderTag(
                     ['class' => $this->listDropdownItemClass],

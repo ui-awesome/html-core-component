@@ -93,6 +93,18 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
     }
 
     /**
+     * Returns `true` when the active link emits the `aria-current` attribute.
+     *
+     * Dropdowns emit it by default, so the result stays `true` until {@see linkAriaCurrent()} chooses a value.
+     *
+     * @return bool Chosen `linkAriaCurrent` flag, or `true` when none was chosen.
+     */
+    public function isLinkAriaCurrent(): bool
+    {
+        return $this->hasOwnLinkAriaCurrent() ? $this->linkAriaCurrent : true;
+    }
+
+    /**
      * Sets the dropdown items.
      *
      * @param Item|RenderableInterface ...$values Items to render in order inside the dropdown menu.
@@ -127,9 +139,7 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
         return [
             'containerTag' => Block::DIV,
             'id' => Naming::generateId('dropdown-'),
-            'linkAriaCurrent' => true,
             'linkContainerTag' => false,
-            'linkTag' => 'a',
             'template' => '{toggle}\n{prefix}\n{menu}\n{suffix}',
             'templateLinkItem' => '{icon}\n{label}\n{content}',
         ];
@@ -159,7 +169,7 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
             ->lastItemClass($this->lastItemClass)
             ->lastLinkClass($this->lastLinkClass)
             ->linkActiveClass($this->linkActiveClass)
-            ->linkAriaCurrent($this->linkAriaCurrent)
+            ->linkAriaCurrent($this->isLinkAriaCurrent())
             ->linkAttributes($this->linkAttributes)
             ->linkContainerAttributes($this->linkContainerAttributes)
             ->linkContainerTag($this->linkContainerTag)
