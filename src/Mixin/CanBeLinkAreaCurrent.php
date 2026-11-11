@@ -15,6 +15,24 @@ trait CanBeLinkAreaCurrent
      * Whether the `aria-current` attribute is emitted on the active link.
      */
     protected bool $linkAriaCurrent = false;
+    /**
+     * Whether {@see linkAriaCurrent()} was called, so a parent component keeps the chosen flag.
+     */
+    private bool $ownLinkAriaCurrent = false;
+
+    /**
+     * Returns whether the component chose its own `aria-current` emission flag.
+     *
+     * A parent component applies its default flag only to children that did not, so an explicit choice is never
+     * replaced by a theme default. Components whose class defaults call {@see linkAriaCurrent()}, such as dropdowns,
+     * always report `true`.
+     *
+     * @return bool `true` when {@see linkAriaCurrent()} was called; `false` otherwise.
+     */
+    public function hasOwnLinkAriaCurrent(): bool
+    {
+        return $this->ownLinkAriaCurrent;
+    }
 
     /**
      * Returns `true` when the active link emits the `aria-current` attribute.
@@ -37,6 +55,7 @@ trait CanBeLinkAreaCurrent
     {
         $new = clone $this;
         $new->linkAriaCurrent = $value;
+        $new->ownLinkAriaCurrent = true;
 
         return $new;
     }

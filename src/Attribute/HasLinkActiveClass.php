@@ -22,6 +22,23 @@ trait HasLinkActiveClass
      * link.
      */
     protected array|string|Stringable|UnitEnum $linkActiveClass = '';
+    /**
+     * Whether {@see linkActiveClass()} was called, so a parent component keeps the chosen class.
+     */
+    private bool $ownLinkActiveClass = false;
+
+    /**
+     * Returns whether the component chose its own active link class.
+     *
+     * A parent component applies its default active link class only to children that did not, so an explicit class is
+     * never replaced by a theme default.
+     *
+     * @return bool `true` when {@see linkActiveClass()} was called; `false` otherwise.
+     */
+    public function hasOwnLinkActiveClass(): bool
+    {
+        return $this->ownLinkActiveClass;
+    }
 
     /**
      * Sets the CSS class applied to the active link.
@@ -35,6 +52,7 @@ trait HasLinkActiveClass
         $new = clone $this;
 
         $new->linkActiveClass = $value;
+        $new->ownLinkActiveClass = true;
 
         return $new;
     }

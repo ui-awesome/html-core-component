@@ -129,7 +129,6 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
             'id' => Naming::generateId('dropdown-'),
             'linkAriaCurrent' => true,
             'linkContainerTag' => false,
-            'linkTag' => 'a',
             'template' => '{toggle}\n{prefix}\n{menu}\n{suffix}',
             'templateLinkItem' => '{icon}\n{label}\n{content}',
         ];

@@ -22,6 +22,23 @@ trait HasLinkDisabledClass
      * link.
      */
     protected array|string|Stringable|UnitEnum $linkDisabledClass = '';
+    /**
+     * Whether {@see linkDisabledClass()} was called, so a parent component keeps the chosen class.
+     */
+    private bool $ownLinkDisabledClass = false;
+
+    /**
+     * Returns whether the component chose its own disabled link class.
+     *
+     * A parent component applies its default disabled link class only to children that did not, so an explicit class
+     * is never replaced by a theme default.
+     *
+     * @return bool `true` when {@see linkDisabledClass()} was called; `false` otherwise.
+     */
+    public function hasOwnLinkDisabledClass(): bool
+    {
+        return $this->ownLinkDisabledClass;
+    }
 
     /**
      * Sets the CSS class applied to a disabled link.
@@ -34,6 +51,7 @@ trait HasLinkDisabledClass
     {
         $new = clone $this;
         $new->linkDisabledClass = $value;
+        $new->ownLinkDisabledClass = true;
 
         return $new;
     }
