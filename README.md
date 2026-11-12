@@ -186,6 +186,42 @@ use UIAwesome\Html\Core\Component\Alert;
 echo Alert::tag(['class' => 'alert alert-danger'])->content('Watch out!')->render();
 ```
 
+#### Component context names
+
+The component names, structural variants, and states this package defines are string-backed enums under
+`UIAwesome\Html\Core\Component\Values`, so callers and themes reference a symbol that static analysis can check
+instead of repeating string literals.
+
+| Enum              | Cases                                                                                   |
+| ----------------- | --------------------------------------------------------------------------------------- |
+| `ComponentName`   | `ALERT`, `BREADCRUMB`, `DROPDOWN`, `ITEM`, `MENU`, `NAVBAR`, `TOGGLE`                   |
+| `ToggleVariant`   | `MENU` (`menu`), `MENU_DROPDOWN` (`menu-dropdown`), `SELECTOR_THEME` (`selector-theme`) |
+| `NavBarVariant`   | `ALIGN_RIGHT` (`align-right`)                                                           |
+| `DropdownVariant` | `LANGUAGE` (`language`)                                                                 |
+| `ComponentState`  | `DISMISSIBLE` (`dismissible`)                                                           |
+
+Pass the backing value to `ComponentContext`, and compare against it in a theme:
+
+```php
+use UIAwesome\Html\Core\Component\Toggle;
+use UIAwesome\Html\Core\Component\Values\{ComponentName, ToggleVariant};
+use UIAwesome\Html\Core\Config\ComponentContext;
+
+echo Toggle::tag()
+    ->config($config, new ComponentContext(ComponentName::TOGGLE->value, variant: ToggleVariant::MENU->value))
+    ->content('Menu')
+    ->render();
+
+// Inside ThemeInterface::getRecipes()
+if ($context->component === ComponentName::TOGGLE->value && $context->variant === ToggleVariant::MENU->value) {
+    // ...
+}
+```
+
+Passing the enum cases directly to `ComponentContext` requires an `ui-awesome/html-core` version whose
+`ComponentContext` accepts `BackedEnum` values. Alert color variants (`danger`, `success`, ...), sizes, and schemes
+remain plain strings defined by each theme.
+
 > [!NOTE]
 > The `Bootstrap5` and `Flowbite` cookbooks were removed in `0.3.0`. Flowbite is discontinued, and the Bootstrap 5
 > presets are being republished as standalone theme packages. See the [Upgrade Guide](UPGRADE.md) for the migration.

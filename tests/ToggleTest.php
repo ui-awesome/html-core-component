@@ -8,8 +8,10 @@ use InvalidArgumentException;
 use PHPForge\Support\LineEndingNormalizer;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
-use UIAwesome\Html\Core\Component\Tests\Support\Theme;
+use UIAwesome\Html\Core\Component\Exception\Message;
+use UIAwesome\Html\Core\Component\Tests\Support\{ComponentTheme, Theme};
 use UIAwesome\Html\Core\Component\Toggle;
+use UIAwesome\Html\Core\Component\Values\{ComponentName, ToggleVariant};
 use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 use UIAwesome\Html\Svg\{Circle, Rect};
 
@@ -114,7 +116,10 @@ final class ToggleTest extends TestCase
             </button>
             HTML,
             Toggle::tag()
-                ->config($config, new ComponentContext('toggle'))
+                ->config(
+                    $config,
+                    new ComponentContext('toggle'),
+                )
                 ->render(),
             'Recipe must emit the wrapper, aria, data, and decoration markup.',
         );
@@ -142,11 +147,120 @@ final class ToggleTest extends TestCase
             </button>
             HTML,
             Toggle::tag()
-                ->config($config, new ComponentContext('toggle'))
+                ->config(
+                    $config,
+                    new ComponentContext('toggle'),
+                )
                 ->content('label')
                 ->id('id-user')
                 ->render(),
             'Local call must win over the recipe value.',
+        );
+    }
+
+    public function testConfigRendersIdenticallyForEnumAndStringContext(): void
+    {
+        $config = new Config(new ComponentTheme());
+
+        $fromStrings = Toggle::tag()
+            ->config(
+                $config,
+                new ComponentContext('toggle', 'menu-dropdown'),
+            )
+            ->content('Dropdown')
+            ->render();
+
+        self::assertSame(
+            <<<HTML
+            <button class="nav-link dropdown-toggle" type="button">
+            Dropdown
+            </button>
+            HTML,
+            $fromStrings,
+            'String context must resolve the menu dropdown recipe.',
+        );
+        self::assertSame(
+            $fromStrings,
+            Toggle::tag()
+                ->config(
+                    $config,
+                    new ComponentContext(ComponentName::TOGGLE, ToggleVariant::MENU_DROPDOWN),
+                )
+                ->content('Dropdown')
+                ->render(),
+            'Enum context must render the same markup as the string context.',
+        );
+    }
+
+    public function testConfigResolvesMenuDropdownVariantRecipe(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <button class="nav-link dropdown-toggle" type="button">
+            Dropdown
+            </button>
+            HTML,
+            Toggle::tag()
+                ->config(
+                    new Config(new ComponentTheme()),
+                    new ComponentContext(ComponentName::TOGGLE, ToggleVariant::MENU_DROPDOWN),
+                )
+                ->content('Dropdown')
+                ->render(),
+            'Menu dropdown recipe must carry the dropdown toggle classes.',
+        );
+    }
+
+    public function testConfigResolvesMenuVariantRecipe(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
+            </button>
+            HTML,
+            Toggle::tag()
+                ->config(
+                    new Config(new ComponentTheme()),
+                    new ComponentContext(ComponentName::TOGGLE, ToggleVariant::MENU),
+                )
+                ->render(),
+            'Menu recipe must carry the navbar toggler class and label.',
+        );
+    }
+
+    public function testConfigResolvesRecipeFromComponentName(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <button class="toggle" type="button">
+            Toggle
+            </button>
+            HTML,
+            Toggle::tag()
+                ->config(
+                    new Config(new ComponentTheme()),
+                    new ComponentContext(ComponentName::TOGGLE),
+                )
+                ->content('Toggle')
+                ->render(),
+            'Base recipe must apply when the context has no variant.',
+        );
+    }
+
+    public function testConfigResolvesSelectorThemeVariantRecipe(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <button class="theme-selector" type="button" aria-label="Toggle theme">
+            </button>
+            HTML,
+            Toggle::tag()
+                ->config(
+                    new Config(new ComponentTheme()),
+                    new ComponentContext(ComponentName::TOGGLE, ToggleVariant::SELECTOR_THEME),
+                )
+                ->render(),
+            'Selector theme recipe must carry the theme selector class and label.',
         );
     }
 
@@ -694,7 +808,7 @@ final class ToggleTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            "Toggle tag 'my-icon' must resolve to an `Inline` or `Block` enum case.",
+            Message::TAG_MUST_RESOLVE_TO_INLINE_OR_BLOCK->getMessage('Toggle', 'my-icon'),
         );
 
         Toggle::tag()->toggleTag('my-icon');
@@ -704,7 +818,7 @@ final class ToggleTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            "Toggle tag '' must resolve to an `Inline` or `Block` enum case.",
+            Message::TAG_MUST_RESOLVE_TO_INLINE_OR_BLOCK->getMessage('Toggle', ''),
         );
 
         Toggle::tag()->toggleTag('')->render();

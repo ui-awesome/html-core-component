@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: integrate current core and SVG development dependencies while preserving component output and sensitive text.
 - chore(deps): update HTML-related dependencies to their latest development versions.
 - feat(menu): keep explicit dropdown and menu values over parent defaults, and add `toggleLabel()` to relabel the applied toggle.
+- feat: add string-backed enums for component context names.
 
 ## 0.4.1 September 14, 2026
 

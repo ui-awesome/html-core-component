@@ -7,6 +7,7 @@ namespace UIAwesome\Html\Core\Component\Attribute;
 use BackedEnum;
 use InvalidArgumentException;
 use Stringable;
+use UIAwesome\Html\Core\Component\Exception\Message;
 use UIAwesome\Html\Core\Html;
 use UIAwesome\Html\Helper\{AttributeBag, CSSClass};
 use UIAwesome\Html\Interop\{Block, Inline};
@@ -185,7 +186,7 @@ trait HasLabelCollection
         }
 
         throw new InvalidArgumentException(
-            "Label tag '{$name}' must resolve to an `Inline` or `Block` enum case.",
+            Message::TAG_MUST_RESOLVE_TO_INLINE_OR_BLOCK->getMessage('Label', $name),
         );
     }
 }
