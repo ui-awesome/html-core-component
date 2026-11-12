@@ -7,6 +7,7 @@ namespace UIAwesome\Html\Core\Component\Attribute;
 use BackedEnum;
 use InvalidArgumentException;
 use Stringable;
+use UIAwesome\Html\Core\Component\Exception\Message;
 use UIAwesome\Html\Helper\{AttributeBag, CSSClass, Validator};
 use UIAwesome\Html\Interop\Lists;
 use UnitEnum;
@@ -124,12 +125,18 @@ trait HasListCollection
      *
      * @param BackedEnum|false|string $value `ul`, `ol`, or `false` to skip the list wrapper.
      *
-     * @throws InvalidArgumentException When the value is neither `ul`, `ol`, nor `false`.
+     * @throws InvalidArgumentException When the value is empty, or neither `ul`, `ol`, nor `false`.
      *
      * @return static New instance with the updated `listType`.
      */
     public function listType(string|false|BackedEnum $value): static
     {
+        if ($value === '') {
+            throw new InvalidArgumentException(
+                Message::TAG_CANNOT_BE_EMPTY->getMessage('listType'),
+            );
+        }
+
         if ($value !== false) {
             Validator::oneOf($value, [Lists::OL, Lists::UL], 'listType');
         }

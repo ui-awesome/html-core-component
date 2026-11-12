@@ -163,7 +163,6 @@ abstract class BaseBreadcrumb extends BaseBlock implements RenderableInterface
             'ariaLabel' => 'breadcrumb',
             'id' => Naming::generateId('breadcrumb-'),
             'linkContainerTag' => false,
-            'linkTag' => 'a',
             'listType' => 'ol',
             'templateLinkItem' => '{icon}\n{label}\n{content}',
         ];

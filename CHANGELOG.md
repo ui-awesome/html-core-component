@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 0.4.2 Under development
+## 0.5.0 Under development
 
 - chore: remove obsolete scaffold tooling and align package maintenance checks with PHP Forge conventions.
 - fix(menu): preserve generic renderable items in menus, breadcrumbs, and dropdowns.
@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - chore(deps): update HTML-related dependencies to their latest development versions.
 - feat(menu): keep explicit dropdown and menu values over parent defaults, and add `toggleLabel()` to relabel the applied toggle.
 - feat: add string-backed enums for component context names.
+- fix(menu): reject empty `listType()` and `listItemTag()` values, set the version to `0.5.0`, and document nested defaults and upgrade notes.
 
 ## 0.4.1 September 14, 2026
 

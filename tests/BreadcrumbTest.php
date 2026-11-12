@@ -514,6 +514,24 @@ final class BreadcrumbTest extends TestCase
         );
     }
 
+    public function testHasOwnLinkTagReportsWhetherTheBreadcrumbChoseIt(): void
+    {
+        $instance = Breadcrumb::tag();
+
+        self::assertFalse(
+            $instance->hasOwnLinkTag(),
+            'A fresh breadcrumb chose no link tag.',
+        );
+        self::assertTrue(
+            $instance->linkTag('a')->hasOwnLinkTag(),
+            'A chosen link tag must be reported.',
+        );
+        self::assertFalse(
+            $instance->hasOwnLinkTag(),
+            'Choosing a link tag must not mutate the original instance.',
+        );
+    }
+
     public function testId(): void
     {
         self::assertSame(

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace UIAwesome\Html\Core\Component\Base;
 
 use BackedEnum;
+use Stringable;
 use UIAwesome\Html\Attribute\HasType;
 use UIAwesome\Html\Contracts\RenderableInterface;
 use UIAwesome\Html\Core\Component\Attribute\{
@@ -34,6 +35,7 @@ use UIAwesome\Html\Helper\CSSClass;
 use UIAwesome\Html\Helper\Naming;
 use UIAwesome\Html\Interop\Block;
 use UIAwesome\Html\Mixin\{HasContainerCollection, HasPrefixCollection, HasSuffixCollection, HasTemplate};
+use UnitEnum;
 
 /**
  * Provides the base implementation for dropdown components.
@@ -201,7 +203,7 @@ abstract class BaseDropdown extends BaseBlock implements RenderableInterface
             return $contentMenu;
         }
 
-        /** @var array<mixed>|string|\Stringable|\UnitEnum|null $containerClass */
+        /** @var array<mixed>|string|Stringable|UnitEnum|null $containerClass */
         $containerClass = $this->getContainerAttribute('class');
         $attributes = [...$this->containerAttributes, ...$this->getAttributes()];
 

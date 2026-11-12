@@ -41,7 +41,9 @@ composer require ui-awesome/html-core-component:^0.4
 
 ### Quick start
 
-This package ships both abstract base classes (for subclassing) and ready-to-use concrete classes (`Alert`, `Breadcrumb`, `Dropdown`, `NavBar`, `Toggle`, `Item`, `Menu`). The concrete classes can be used directly via `::tag()` without any subclassing.
+This package ships both abstract base classes (for subclassing) and ready-to-use concrete classes (`Alert`, `Breadcrumb`,
+`Dropdown`, `NavBar`, `Toggle`, `Item`, `Menu`). The concrete classes can be used directly via `::tag()` without any
+subclassing.
 
 The exposed abstractions are:
 
@@ -111,9 +113,56 @@ echo NavBar::tag()
     ->render();
 ```
 
+#### Nested defaults and toggle labels
+
+`NavBar::menuDefaultDefinitions()` configures the menu passed to `menu()`, and `Menu::dropdownDefaultDefinitions()`
+configures each nested dropdown, so a theme can supply a shared dropdown toggle and list classes.
+
+A value the child sets itself wins over the default. A dropdown keeps its own `toggle`, `toggleLabel`, `linkTag`,
+`listItemTag`, `linkActiveClass`, `linkDisabledClass`, and `linkAriaCurrent`. A menu keeps the same link and list-item
+values plus its own `listDropdownItemClass` and `dropdownDefaultDefinitions`, which then replace the navbar definitions
+as a whole. The `hasOwn*()` methods, such as `hasOwnToggle()` and `hasOwnLinkTag()`, report these choices; the remaining
+defaults still apply.
+
+`toggleLabel()` replaces only the content of the toggle that applies, whether the default or the dropdown's own, and
+keeps its markup, classes, `toggleContent()` decoration, and icons. A non-empty label requires a `BaseToggle`; rendering
+throws `InvalidArgumentException` when the toggle is raw markup or missing.
+
+```php
+use UIAwesome\Html\Core\Component\{Dropdown, Item, Menu, NavBar, Toggle};
+
+echo NavBar::tag()
+    ->menuDefaultDefinitions(
+        [
+            'dropdownDefaultDefinitions' => [
+                [
+                    'listClass' => 'dropdown-menu',
+                    'toggle' => Toggle::tag()->class('dropdown-toggle')->content('Menu'),
+                ],
+            ],
+        ],
+    )
+    ->menu(
+        Menu::tag()->items(
+            Dropdown::tag()
+                ->id('account')
+                ->items(Item::tag()->label('Profile')->link('/profile'))
+                ->toggleLabel('Account'),
+            Dropdown::tag()
+                ->id('help')
+                ->items(Item::tag()->label('Docs')->link('/docs'))
+                ->toggle(Toggle::tag()->class('help-toggle')->content('Help')),
+        ),
+    )
+    ->render();
+```
+
+The first dropdown relabels the default toggle; the second keeps its own toggle and still receives the list class:
+
 #### Menu with wrapped labels
 
-Each item label can be wrapped in its own element (for styling or truncation) via `labelTag`/`labelClass`. Without `labelTag`, the label renders as plain text.
+Each item label can be wrapped in its own element (for styling or truncation) via `labelTag`/`labelClass`. Without
+`labelTag`, the label renders as plain text.
 
 ```php
 use UIAwesome\Html\Core\Component\{Item, Menu};

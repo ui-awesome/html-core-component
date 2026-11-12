@@ -33,8 +33,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -54,8 +54,8 @@ final class DropdownTest extends TestCase
                         ->link('/action')
                         ->active(),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -78,8 +78,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -99,8 +99,8 @@ final class DropdownTest extends TestCase
                         ->link('/action')
                         ->active(),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -123,8 +123,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -143,8 +143,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -166,8 +166,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -186,8 +186,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -393,8 +393,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -413,8 +413,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -436,8 +436,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -456,8 +456,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -479,8 +479,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -499,8 +499,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -522,8 +522,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li class="base">
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             </ul>
@@ -537,8 +537,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                 )
                 ->listItemClass('base')
                 ->render(),
@@ -558,8 +558,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -578,8 +578,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -732,8 +732,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -751,8 +751,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -774,8 +774,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li class="value">
@@ -793,8 +793,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -817,8 +817,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -836,8 +836,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -860,8 +860,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -879,8 +879,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action')->active(),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -903,8 +903,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a class="base" href="/another-actionc">
-            Another actionc
+            <a class="base" href="/another-action">
+            Another action
             </a>
             </li>
             </ul>
@@ -918,8 +918,8 @@ final class DropdownTest extends TestCase
                         ->link('/action')
                         ->active(),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                 )
                 ->linkActiveClass('active-only')
                 ->linkClass('base')
@@ -940,8 +940,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc" aria-current="true">
-            Another actionc
+            <a href="/another-action" aria-current="true">
+            Another action
             </a>
             </li>
             <li>
@@ -959,8 +959,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action')->active(),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc')
+                        ->label('Another action')
+                        ->link('/another-action')
                         ->active(),
                     Item::tag()
                         ->label('Something else here')
@@ -984,8 +984,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -1004,8 +1004,8 @@ final class DropdownTest extends TestCase
                         ->link('/action')
                         ->active(),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc')
+                        ->label('Another action')
+                        ->link('/another-action')
                         ->active(),
                     Item::tag()
                         ->label('Something else here')
@@ -1029,8 +1029,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a class="value" href="/another-actionc">
-            Another actionc
+            <a class="value" href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -1048,8 +1048,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1072,8 +1072,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a class="value" href="/another-actionc">
-            Another actionc
+            <a class="value" href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -1091,8 +1091,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1118,8 +1118,8 @@ final class DropdownTest extends TestCase
             </li>
             <li>
             <div class="value">
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </div>
             </li>
@@ -1140,8 +1140,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1168,8 +1168,8 @@ final class DropdownTest extends TestCase
             </li>
             <li>
             <div class="value">
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </div>
             </li>
@@ -1190,8 +1190,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1218,8 +1218,8 @@ final class DropdownTest extends TestCase
             </li>
             <li>
             <div>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </div>
             </li>
@@ -1240,8 +1240,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1264,8 +1264,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -1283,8 +1283,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1310,8 +1310,8 @@ final class DropdownTest extends TestCase
             </li>
             <li>
             <span>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </span>
             </li>
@@ -1332,8 +1332,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1356,8 +1356,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -1375,8 +1375,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here')
@@ -1400,8 +1400,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -1419,8 +1419,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1441,7 +1441,7 @@ final class DropdownTest extends TestCase
             Action
             </li>
             <li>
-            Another actionc
+            Another action
             </li>
             <li>
             Something else here
@@ -1456,8 +1456,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1481,7 +1481,7 @@ final class DropdownTest extends TestCase
             </li>
             <li>
             <span>
-            Another actionc
+            Another action
             </span>
             </li>
             <li>
@@ -1499,8 +1499,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1523,8 +1523,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -1542,8 +1542,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1566,8 +1566,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -1585,8 +1585,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1609,8 +1609,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li class="value">
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li class="value">
@@ -1628,8 +1628,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1652,8 +1652,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li class="value">
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li class="value">
@@ -1671,8 +1671,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1695,8 +1695,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -1714,8 +1714,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1733,7 +1733,7 @@ final class DropdownTest extends TestCase
             <div id="dropdown">
             <ul>
             Action
-            Another actionc
+            Another action
             Something else here
             </ul>
             </div>
@@ -1742,7 +1742,7 @@ final class DropdownTest extends TestCase
                 ->id('dropdown')
                 ->items(
                     Item::tag()->label('Action'),
-                    Item::tag()->label('Another actionc'),
+                    Item::tag()->label('Another action'),
                     Item::tag()->label('Something else here'),
                 )
                 ->listItemTag(false)
@@ -1761,7 +1761,7 @@ final class DropdownTest extends TestCase
             Action
             </li>
             <li>
-            Another actionc
+            Another action
             </li>
             <li>
             Something else here
@@ -1773,7 +1773,7 @@ final class DropdownTest extends TestCase
                 ->id('dropdown')
                 ->items(
                     Item::tag()->label('Action'),
-                    Item::tag()->label('Another actionc'),
+                    Item::tag()->label('Another action'),
                     Item::tag()->label('Something else here'),
                 )
                 ->listType('ol')
@@ -1795,8 +1795,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -1814,8 +1814,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1839,8 +1839,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -1858,8 +1858,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1885,8 +1885,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -1904,8 +1904,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1932,8 +1932,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -1951,8 +1951,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -1977,8 +1977,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -1996,8 +1996,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -2020,7 +2020,7 @@ final class DropdownTest extends TestCase
             Action
             </li>
             <li>
-            Another actionc
+            Another action
             </li>
             <li>
             Something else here
@@ -2032,7 +2032,7 @@ final class DropdownTest extends TestCase
                 ->id('dropdown')
                 ->items(
                     Item::tag()->label('Action'),
-                    Item::tag()->label('Another actionc'),
+                    Item::tag()->label('Another action'),
                     Item::tag()->label('Something else here'),
                 )
                 ->prefix('prefix')
@@ -2057,8 +2057,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -2076,8 +2076,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -2376,8 +2376,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             <li>
@@ -2395,8 +2395,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                     Item::tag()
                         ->label('Something else here')
                         ->link('/something-else-here'),
@@ -2419,8 +2419,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             </ul>
@@ -2431,7 +2431,7 @@ final class DropdownTest extends TestCase
                 ->id('dropdown')
                 ->items(
                     Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
+                    Item::tag()->label('Another action')->link('/another-action'),
                 )
                 ->suffix('suffix')
                 ->render(),
@@ -2451,8 +2451,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             </ul>
@@ -2463,7 +2463,7 @@ final class DropdownTest extends TestCase
                 ->id('dropdown')
                 ->items(
                     Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
+                    Item::tag()->label('Another action')->link('/another-action'),
                 )
                 ->suffix('suffix')
                 ->suffixAttributes(['class' => 'value'])
@@ -2485,8 +2485,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             </ul>
@@ -2497,7 +2497,7 @@ final class DropdownTest extends TestCase
                 ->id('dropdown')
                 ->items(
                     Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
+                    Item::tag()->label('Another action')->link('/another-action'),
                 )
                 ->suffix('suffix')
                 ->suffixClass('value')
@@ -2519,8 +2519,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             </ul>
@@ -2532,7 +2532,7 @@ final class DropdownTest extends TestCase
                 ->id('dropdown')
                 ->items(
                     Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
+                    Item::tag()->label('Another action')->link('/another-action'),
                 )
                 ->suffix('suffix')
                 ->suffixItems('suffix-items')
@@ -2551,7 +2551,7 @@ final class DropdownTest extends TestCase
             Action
             </li>
             <li>
-            Another actionc
+            Another action
             </li>
             </ul>
             suffix
@@ -2561,7 +2561,7 @@ final class DropdownTest extends TestCase
                 ->id('dropdown')
                 ->items(
                     Item::tag()->label('Action'),
-                    Item::tag()->label('Another actionc'),
+                    Item::tag()->label('Another action'),
                 )
                 ->suffix('suffix')
                 ->suffixTag()
@@ -2580,7 +2580,7 @@ final class DropdownTest extends TestCase
             Action
             </li>
             <li>
-            Another actionc
+            Another action
             </li>
             </ul>
             suffix
@@ -2590,7 +2590,7 @@ final class DropdownTest extends TestCase
                 ->id('dropdown')
                 ->items(
                     Item::tag()->label('Action'),
-                    Item::tag()->label('Another actionc'),
+                    Item::tag()->label('Another action'),
                 )
                 ->suffix('suffix')
                 ->suffixTag(false)
@@ -2609,7 +2609,7 @@ final class DropdownTest extends TestCase
             Action
             </li>
             <li>
-            Another actionc
+            Another action
             </li>
             </ul>
             <span>
@@ -2621,7 +2621,7 @@ final class DropdownTest extends TestCase
                 ->id('dropdown')
                 ->items(
                     Item::tag()->label('Action'),
-                    Item::tag()->label('Another actionc'),
+                    Item::tag()->label('Another action'),
                 )
                 ->suffix('suffix')
                 ->suffixTag(Inline::SPAN)
@@ -2642,8 +2642,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            contentAnother actionc
+            <a href="/another-action">
+            contentAnother action
             </a>
             </li>
             <li>
@@ -2660,8 +2660,8 @@ final class DropdownTest extends TestCase
                     Item::tag()->label('Action')->link('/action'),
                     Item::tag()
                         ->content('content')
-                        ->label('Another actionc')
-                        ->link('/another-actionc')
+                        ->label('Another action')
+                        ->link('/another-action')
                         ->iconClass('icon'),
                     Item::tag()->label('Something else here')->link('/something-else-here'),
                 )
@@ -2735,8 +2735,8 @@ final class DropdownTest extends TestCase
             </a>
             </li>
             <li>
-            <a href="/another-actionc">
-            Another actionc
+            <a href="/another-action">
+            Another action
             </a>
             </li>
             </ul>
@@ -2749,8 +2749,8 @@ final class DropdownTest extends TestCase
                         ->label('Action')
                         ->link('/action'),
                     Item::tag()
-                        ->label('Another actionc')
-                        ->link('/another-actionc'),
+                        ->label('Another action')
+                        ->link('/another-action'),
                 )
                 ->toggle(
                     Toggle::tag()
