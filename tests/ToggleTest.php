@@ -433,6 +433,21 @@ final class ToggleTest extends TestCase
         );
     }
 
+    public function testGetToggleAttributesReturnsTheConfiguredMap(): void
+    {
+        self::assertSame(
+            [
+                'class' => 'decoration',
+                'data-x' => 'value',
+            ],
+            Toggle::tag()
+                ->toggleAttributes(['class' => 'decoration'])
+                ->toggleAttributes(['data-x' => 'value'])
+                ->getToggleAttributes(),
+            'Merged decoration attributes must be returned.',
+        );
+    }
+
     public function testIconAttributes(): void
     {
         self::assertSame(
@@ -910,6 +925,24 @@ final class ToggleTest extends TestCase
                 ->toggleTag('span')
                 ->render(),
             'Custom tag must wrap the toggle decoration content.',
+        );
+    }
+
+    public function testToggleTagWithBlockTagName(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <button type="button">
+            <div>
+            content
+            </div>
+            </button>
+            HTML,
+            Toggle::tag()
+                ->toggleContent('content')
+                ->toggleTag('div')
+                ->render(),
+            "Block tag name 'div' must wrap the toggle decoration content.",
         );
     }
 

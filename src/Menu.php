@@ -37,7 +37,7 @@ use UIAwesome\Html\Core\Element\BaseBlock;
 use UIAwesome\Html\Core\Factory\SimpleFactory;
 use UIAwesome\Html\Core\Html;
 use UIAwesome\Html\Helper\Template;
-use UIAwesome\Html\Interop\{Block, Inline, Lists};
+use UIAwesome\Html\Interop\{Block, Lists};
 use UIAwesome\Html\Mixin\{HasPrefixCollection, HasSuffixCollection, HasTemplate};
 
 use function array_diff_key;
@@ -393,10 +393,10 @@ class Menu extends BaseBlock implements RenderableInterface
                     $item = $item->separator($this->separator);
                 }
 
-                $isDisabledd = $item->isDisabled();
-                $isActive = $isDisabledd === false && $item->isActive();
+                $isDisabled = $item->isDisabled();
+                $isActive = $isDisabled === false && $item->isActive();
 
-                $item = $this->setActiveAndDisableClass($item, $isActive, $isDisabledd, $hasOwnLinkTag);
+                $item = $this->setActiveAndDisableClass($item, $isActive, $isDisabled, $hasOwnLinkTag);
                 $item = $this->setAriaCurrent($item, $isActive);
                 $item = $this->setFirstAndLastClass($item, $i, $n);
                 $item = $this->setLinkContainerTag($item);
@@ -457,8 +457,7 @@ class Menu extends BaseBlock implements RenderableInterface
 
     /**
      * Wraps content with the resolved tag, or returns it unwrapped when the tag is `false` or the content is empty.
-     * String tags are resolved against {@see Lists}, {@see Inline}, and {@see Block} enums, falling back to
-     * {@see Block::DIV}.
+     * String tags are resolved against the {@see Lists} enum, falling back to {@see Block::DIV}.
      *
      * @param mixed[] $attributes HTML attributes for the wrapping tag.
      * @param string $content Content to wrap.
@@ -481,8 +480,10 @@ class Menu extends BaseBlock implements RenderableInterface
     }
 
     /**
-     * Resolves a string tag name against {@see Lists}, {@see Inline}, and {@see Block} enums in order, falling back to
-     * {@see Block::DIV} when no enum recognizes the value.
+     * Resolves a string tag name against the {@see Lists} enum, falling back to {@see Block::DIV} when it does not
+     * recognize the value.
+     *
+     * Only the validated `listType` (`ul`, `ol`) and `listItemTag` (`li`) values reach this method as strings.
      *
      * @param string $name Tag name to resolve.
      *
@@ -491,18 +492,6 @@ class Menu extends BaseBlock implements RenderableInterface
     private static function resolveTag(string $name): BackedEnum
     {
         $tag = Lists::tryFrom($name);
-
-        if ($tag !== null) {
-            return $tag;
-        }
-
-        $tag = Inline::tryFrom($name);
-
-        if ($tag !== null) {
-            return $tag;
-        }
-
-        $tag = Block::tryFrom($name);
 
         if ($tag !== null) {
             return $tag;
@@ -517,17 +506,18 @@ class Menu extends BaseBlock implements RenderableInterface
      *
      * @param Item $item Item to decorate.
      * @param bool $isActive Whether the item is active.
-     * @param bool $isDisabledd Whether the item is disabled.
+     * @param bool $isDisabled Whether the item is disabled.
+     * @param bool $hasOwnLinkTag Whether the item chose its own link tag, which an active item then keeps.
      *
      * @return Item Decorated item with the active or disabled classes when applicable.
      */
     private function setActiveAndDisableClass(
         Item $item,
         bool $isActive,
-        bool $isDisabledd,
+        bool $isDisabled,
         bool $hasOwnLinkTag,
     ): Item {
-        if ($isDisabledd) {
+        if ($isDisabled) {
             return $item
                 ->linkClass($this->linkDisabledClass, true)
                 ->listItemClass($this->listItemDisabledClass, true);

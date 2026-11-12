@@ -12,7 +12,7 @@ use UIAwesome\Html\Core\Component\Exception\Message;
 use UIAwesome\Html\Core\Component\Tests\Support\{ComponentTheme, RenderToggleOverride, StringableValue, Theme};
 use UIAwesome\Html\Core\Component\Values\ComponentName;
 use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
-use UIAwesome\Html\Interop\Inline;
+use UIAwesome\Html\Interop\{Inline, Lists};
 
 /**
  * Unit tests for the {@see Menu} component rendering and immutable configuration.
@@ -1287,6 +1287,22 @@ final class MenuTest extends TestCase
                 ->linkAttributes(['class' => 'base'])
                 ->render(),
             "Default 'firstLinkClass' override must replace the base link class.",
+        );
+    }
+
+    public function testGetListAttributeReturnsTheConfiguredValueOrTheDefault(): void
+    {
+        $instance = Menu::tag()->listAttributes(['class' => 'list']);
+
+        self::assertSame(
+            'list',
+            $instance->getListAttribute('class'),
+            'List class must be returned.',
+        );
+        self::assertSame(
+            'none',
+            $instance->getListAttribute('id', 'none'),
+            'Missing attribute must fall back to the default.',
         );
     }
 
@@ -2604,7 +2620,7 @@ final class MenuTest extends TestCase
             </li>
             <li>
             <a href="#">
-            Another actionc
+            Another action
             </a>
             </li>
             <li>
@@ -2627,7 +2643,7 @@ final class MenuTest extends TestCase
                                 ->label('Action')
                                 ->link('#'),
                             Item::tag()
-                                ->label('Another actionc')
+                                ->label('Another action')
                                 ->link('#'),
                             Item::tag()
                                 ->label('Something else here')
@@ -2980,7 +2996,7 @@ final class MenuTest extends TestCase
                         ->label('Home')
                         ->link('/'),
                 )
-                ->listItemTag(\UIAwesome\Html\Interop\Lists::LI)
+                ->listItemTag(Lists::LI)
                 ->render(),
             "'BackedEnum' value must normalize to its scalar before validating against 'li'.",
         );
@@ -3137,7 +3153,7 @@ final class MenuTest extends TestCase
                         ->label('Home')
                         ->link('/'),
                 )
-                ->listType(\UIAwesome\Html\Interop\Lists::OL)
+                ->listType(Lists::OL)
                 ->render(),
             "'BackedEnum' value must normalize to its scalar before validating against 'ol'/'ul'.",
         );
@@ -4251,6 +4267,16 @@ final class MenuTest extends TestCase
         Menu::tag()->linkActiveTag('');
     }
 
+    public function testThrowInvalidArgumentExceptionWhenListItemTagIsEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            Message::TAG_CANNOT_BE_EMPTY->getMessage('listItemTag'),
+        );
+
+        Menu::tag()->listItemTag('');
+    }
+
     public function testThrowInvalidArgumentExceptionWhenListItemTagIsNotAllowed(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -4272,6 +4298,16 @@ final class MenuTest extends TestCase
             )
             ->listItemTag('span')
             ->render();
+    }
+
+    public function testThrowInvalidArgumentExceptionWhenListTypeIsEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            Message::TAG_CANNOT_BE_EMPTY->getMessage('listType'),
+        );
+
+        Menu::tag()->listType('');
     }
 
     public function testThrowInvalidArgumentExceptionWhenListTypeIsNotAllowed(): void

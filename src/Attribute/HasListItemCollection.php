@@ -7,6 +7,7 @@ namespace UIAwesome\Html\Core\Component\Attribute;
 use BackedEnum;
 use InvalidArgumentException;
 use Stringable;
+use UIAwesome\Html\Core\Component\Exception\Message;
 use UIAwesome\Html\Helper\{AttributeBag, CSSClass, Validator};
 use UIAwesome\Html\Interop\Lists;
 use UnitEnum;
@@ -140,12 +141,18 @@ trait HasListItemCollection
      *
      * @param BackedEnum|false|string $value Currently must be `li`, or `false` to skip the wrapper.
      *
-     * @throws InvalidArgumentException When the value is not `li` or `false`.
+     * @throws InvalidArgumentException When the value is empty, or neither `li` nor `false`.
      *
      * @return static New instance with the updated `listItemTag`.
      */
     public function listItemTag(false|string|BackedEnum $value = 'li'): static
     {
+        if ($value === '') {
+            throw new InvalidArgumentException(
+                Message::TAG_CANNOT_BE_EMPTY->getMessage('listItemTag'),
+            );
+        }
+
         if ($value !== false) {
             Validator::oneOf($value, [Lists::LI], 'listItemTag');
         }

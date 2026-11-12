@@ -22,6 +22,13 @@ enum Message: string
         . 'empty.';
 
     /**
+     * Error when a list or list-item tag is an empty string instead of a tag name or `false`.
+     *
+     * Format: "The '%s' value cannot be empty; use 'false' to skip the wrapper."
+     */
+    case TAG_CANNOT_BE_EMPTY = "The '%s' value cannot be empty; use 'false' to skip the wrapper.";
+
+    /**
      * Error when a component tag name does not resolve to an `Inline` or `Block` enum case.
      *
      * Format: "%s tag '%s' must resolve to an 'Inline' or 'Block' enum case."

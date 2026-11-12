@@ -194,6 +194,34 @@ final class ItemTest extends TestCase
         );
     }
 
+    public function testDividerWithBlockTag(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div class="divider">
+            </div>
+            HTML,
+            Item::tag()
+                ->divider('div', ['class' => 'divider'])
+                ->render(),
+            "Block tag 'div' must render as an empty element.",
+        );
+    }
+
+    public function testDividerWithInlineTag(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <span class="divider">
+            </span>
+            HTML,
+            Item::tag()
+                ->divider('span', ['class' => 'divider'])
+                ->render(),
+            "Inline tag 'span' must render as an empty element.",
+        );
+    }
+
     public function testDividerWithVoidsTag(): void
     {
         self::assertSame(
@@ -202,6 +230,67 @@ final class ItemTest extends TestCase
                 ->divider('br')
                 ->render(),
             "Voids tag 'br' must resolve to 'Voids::BR' and render as a self-closing element.",
+        );
+    }
+
+    public function testGetAttributeGettersReturnTheConfiguredValues(): void
+    {
+        $item = Item::tag()
+            ->iconAttributes(['class' => 'icon'])
+            ->labelAttributes(['class' => 'label'])
+            ->linkAttributes(['class' => 'link'])
+            ->linkContainerAttributes(['class' => 'link-container'])
+            ->listItemAttributes(['class' => 'list-item']);
+
+        self::assertSame(
+            ['class' => 'icon'],
+            $item->getIconAttributes(),
+            'Icon attribute map must be returned as configured.',
+        );
+        self::assertSame(
+            'icon',
+            $item->getIconAttribute('class'),
+            'Icon class must be returned.',
+        );
+        self::assertSame(
+            ['class' => 'label'],
+            $item->getLabelAttributes(),
+            'Label attribute map must be returned as configured.',
+        );
+        self::assertSame(
+            'label',
+            $item->getLabelAttribute('class'),
+            'Label class must be returned.',
+        );
+        self::assertSame(
+            ['class' => 'link'],
+            $item->getLinkAttributes(),
+            'Link attribute map must be returned as configured.',
+        );
+        self::assertSame(
+            'link',
+            $item->getLinkAttribute('class'),
+            'Link class must be returned.',
+        );
+        self::assertSame(
+            ['class' => 'link-container'],
+            $item->getLinkContainerAttributes(),
+            'Link container attribute map must be returned as configured.',
+        );
+        self::assertSame(
+            'link-container',
+            $item->getLinkContainerAttribute('class'),
+            'Link container class must be returned.',
+        );
+        self::assertSame(
+            'list-item',
+            $item->getListItemAttribute('class'),
+            'List-item class must be returned.',
+        );
+        self::assertSame(
+            'none',
+            $item->getLinkAttribute('id', 'none'),
+            'Missing attribute must fall back to the default.',
         );
     }
 
@@ -467,11 +556,39 @@ final class ItemTest extends TestCase
         );
     }
 
+    public function testIsActivateItemsReportsTheConfiguredFlag(): void
+    {
+        $item = Item::tag();
+
+        self::assertTrue(
+            $item->isActivateItems(),
+            'Activation must be enabled by default.',
+        );
+        self::assertFalse(
+            $item->activateItems(false)->isActivateItems(),
+            "Activation must be disabled after choosing 'false'.",
+        );
+    }
+
     public function testIsActiveWithEmptyLink(): void
     {
         self::assertFalse(
             Item::tag()->active()->isActive(),
             'Active flag without a link must not report active.',
+        );
+    }
+
+    public function testIsVisibleReportsTheConfiguredFlag(): void
+    {
+        $item = Item::tag();
+
+        self::assertTrue(
+            $item->isVisible(),
+            'Items must be visible by default.',
+        );
+        self::assertFalse(
+            $item->visible(false)->isVisible(),
+            "Item must be hidden after choosing 'false'.",
         );
     }
 
@@ -665,6 +782,27 @@ final class ItemTest extends TestCase
                 ->link('/')
                 ->render(),
             "'false' label tag must render the label as plain text.",
+        );
+    }
+
+    public function testLabelTagWithInlineTagName(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <a href="/">
+            <strong>
+            value
+            </strong>
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('value')
+                ->labelTag('strong')
+                ->link('/')
+                ->render(),
+            "Inline tag name 'strong' must wrap the label.",
         );
     }
 
@@ -866,6 +1004,25 @@ final class ItemTest extends TestCase
                 ->linkTag()
                 ->render(),
             "Default link tag must be '<a>'.",
+        );
+    }
+
+    public function testLinkTagWithBlockTagName(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li>
+            <div>
+            value
+            </div>
+            </li>
+            HTML,
+            Item::tag()
+                ->label('value')
+                ->link('/')
+                ->linkTag('div')
+                ->render(),
+            "Block tag name 'div' must wrap the label.",
         );
     }
 
@@ -1374,6 +1531,16 @@ final class ItemTest extends TestCase
         );
 
         Item::tag()->linkTag('my-link');
+    }
+
+    public function testThrowInvalidArgumentExceptionWhenListItemTagIsEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            Message::TAG_CANNOT_BE_EMPTY->getMessage('listItemTag'),
+        );
+
+        Item::tag()->listItemTag('');
     }
 
     public function testThrowInvalidArgumentExceptionWhenListItemTagIsNotAllowed(): void

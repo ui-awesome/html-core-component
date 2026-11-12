@@ -1,5 +1,30 @@
 # Upgrade Guide
 
+## 0.5.0
+
+### Explicit values win over parent defaults
+
+`NavBar::menuDefaultDefinitions()` and `Menu::dropdownDefaultDefinitions()` no longer overwrite values the nested menu
+or dropdown set itself. A dropdown keeps its own `toggle`, `toggleLabel`, `linkTag`, `listItemTag`, `linkActiveClass`,
+`linkDisabledClass`, and `linkAriaCurrent`. A menu keeps the same link and list-item values plus its own
+`listDropdownItemClass` and `dropdownDefaultDefinitions`. The remaining defaults still apply. To take a parent default,
+do not set that value on the child.
+
+### Own link tag on a fresh instance
+
+`hasOwnLinkTag()` now returns `false` on a fresh `Menu`, `Dropdown`, or `Breadcrumb`, and `true` only after
+`linkTag()` is called. The rendered link tag is unchanged and still defaults to `<a>`.
+
+### Exception messages
+
+Exception messages quote names and values with single quotes instead of backticks, for example
+`Link tag 'x' must resolve to an 'Inline' or 'Block' enum case.` Update any code that matches the previous text.
+
+### Empty list tags
+
+`listType('')` and `listItemTag('')` now throw `InvalidArgumentException`. Previously the empty string passed
+validation and could render a `<div>` in place of the list or list-item element. Use `false` to skip the wrapper.
+
 ## 0.3.0
 
 ### Application-scoped configuration
