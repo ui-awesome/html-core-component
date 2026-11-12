@@ -10,6 +10,7 @@ use Stringable;
 use UIAwesome\Html\Attribute\HasName;
 use UIAwesome\Html\Contracts\RenderableInterface;
 use UIAwesome\Html\Core\Component\Attribute\HasIconCollection;
+use UIAwesome\Html\Core\Component\Exception\Message;
 use UIAwesome\Html\Core\Component\ToggleInterface;
 use UIAwesome\Html\Core\Element\BaseBlock;
 use UIAwesome\Html\Core\Html;
@@ -282,7 +283,7 @@ abstract class BaseToggle extends BaseBlock implements ToggleInterface
         }
 
         throw new InvalidArgumentException(
-            "Toggle tag '{$name}' must resolve to an `Inline` or `Block` enum case.",
+            Message::TAG_MUST_RESOLVE_TO_INLINE_OR_BLOCK->getMessage('Toggle', $name),
         );
     }
 }

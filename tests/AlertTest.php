@@ -9,7 +9,8 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Attribute\Values\{Data, Role};
 use UIAwesome\Html\Core\Component\{Alert, Toggle};
-use UIAwesome\Html\Core\Component\Tests\Support\{Theme, VariantTheme};
+use UIAwesome\Html\Core\Component\Tests\Support\{ComponentTheme, Theme, VariantTheme};
+use UIAwesome\Html\Core\Component\Values\{ComponentName, ComponentState};
 use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 use UIAwesome\Html\Interop\Block;
 
@@ -19,6 +20,28 @@ use UIAwesome\Html\Interop\Block;
 #[Group('alert')]
 final class AlertTest extends TestCase
 {
+    public function testConfigAppliesDismissibleRecipeWhenContextHasDismissibleState(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div class="alert alert-dismissible" id="alert" role="alert">
+            Watch out!
+            <button class="alert-close" type="button" aria-label="Close">
+            </button>
+            </div>
+            HTML,
+            Alert::tag()
+                ->config(
+                    new Config(new ComponentTheme()),
+                    new ComponentContext(ComponentName::ALERT, states: [ComponentState::DISMISSIBLE]),
+                )
+                ->content('Watch out!')
+                ->id('alert')
+                ->render(),
+            'Dismissible recipe must add its class and close toggle.',
+        );
+    }
+
     public function testConfigEmbedsToggleSuppliedByRecipe(): void
     {
         $toggle = Toggle::tag()
@@ -49,7 +72,10 @@ final class AlertTest extends TestCase
             </div>
             HTML,
             Alert::tag()
-                ->config($config, new ComponentContext('alert'))
+                ->config(
+                    $config,
+                    new ComponentContext('alert'),
+                )
                 ->content('Watch the bus!')
                 ->id('alert')
                 ->render(),
@@ -87,6 +113,64 @@ final class AlertTest extends TestCase
         );
     }
 
+    public function testConfigOmitsDismissibleRecipeWhenContextLacksDismissibleState(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div class="alert" id="alert" role="alert">
+            Watch out!
+            </div>
+            HTML,
+            Alert::tag()
+                ->config(
+                    new Config(new ComponentTheme()),
+                    new ComponentContext(ComponentName::ALERT),
+                )
+                ->content('Watch out!')
+                ->id('alert')
+                ->render(),
+            'Base recipe must apply without the dismissible class or toggle.',
+        );
+    }
+
+    public function testConfigRendersIdenticallyForEnumAndStringContext(): void
+    {
+        $config = new Config(new ComponentTheme());
+
+        $fromStrings = Alert::tag()
+            ->config(
+                $config,
+                new ComponentContext('alert', states: ['dismissible']),
+            )
+            ->content('Watch out!')
+            ->id('alert')
+            ->render();
+
+        self::assertSame(
+            <<<HTML
+            <div class="alert alert-dismissible" id="alert" role="alert">
+            Watch out!
+            <button class="alert-close" type="button" aria-label="Close">
+            </button>
+            </div>
+            HTML,
+            $fromStrings,
+            'String context must resolve the dismissible recipe.',
+        );
+        self::assertSame(
+            $fromStrings,
+            Alert::tag()
+                ->config(
+                    $config,
+                    new ComponentContext(ComponentName::ALERT, states: [ComponentState::DISMISSIBLE]),
+                )
+                ->content('Watch out!')
+                ->id('alert')
+                ->render(),
+            'Enum context must render the same markup as the string context.',
+        );
+    }
+
     public function testConfigResolvesVariantFromContext(): void
     {
         $config = new Config(
@@ -104,7 +188,10 @@ final class AlertTest extends TestCase
             </div>
             HTML,
             Alert::tag()
-                ->config($config, new ComponentContext('alert', variant: 'danger'))
+                ->config(
+                    $config,
+                    new ComponentContext('alert', variant: 'danger'),
+                )
                 ->content('Watch out!')
                 ->id('alert')
                 ->render(),
@@ -129,7 +216,10 @@ final class AlertTest extends TestCase
             </div>
             HTML,
             Alert::tag()
-                ->config($config, new ComponentContext('alert', variant: 'unmapped'))
+                ->config(
+                    $config,
+                    new ComponentContext('alert', variant: 'unmapped'),
+                )
                 ->content('Watch out!')
                 ->id('alert')
                 ->render(),

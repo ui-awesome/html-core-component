@@ -7,7 +7,8 @@ namespace UIAwesome\Html\Core\Component\Tests;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\{Breadcrumb, Item};
-use UIAwesome\Html\Core\Component\Tests\Support\{StringableValue, Theme};
+use UIAwesome\Html\Core\Component\Tests\Support\{ComponentTheme, StringableValue, Theme};
+use UIAwesome\Html\Core\Component\Values\ComponentName;
 use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 use UIAwesome\Html\Interop\Inline;
 
@@ -43,9 +44,15 @@ final class BreadcrumbTest extends TestCase
                 ->currentPath('/data')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->listItemActiveClass('active')
                 ->listItemAriaCurrent(true)
@@ -83,9 +90,15 @@ final class BreadcrumbTest extends TestCase
                 ->currentPath('/data')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->listItemActiveClass('active')
                 ->render(),
@@ -121,9 +134,15 @@ final class BreadcrumbTest extends TestCase
                 ->ariaLabel('value')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->render(),
             "'aria-label' must be applied to the wrapper.",
@@ -158,9 +177,15 @@ final class BreadcrumbTest extends TestCase
                 ->attributes(['class' => 'value'])
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->render(),
             'Attribute map must be applied.',
@@ -195,9 +220,15 @@ final class BreadcrumbTest extends TestCase
                 ->class('value')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->render(),
             'CSS class must be applied to the wrapper.',
@@ -237,12 +268,19 @@ final class BreadcrumbTest extends TestCase
             </nav>
             HTML,
             Breadcrumb::tag()
-                ->config($config, new ComponentContext('breadcrumb'))
+                ->config(
+                    $config,
+                    new ComponentContext('breadcrumb'),
+                )
                 ->currentPath('/reports')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Reports')->link('/reports'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Reports')
+                        ->link('/reports'),
                 )
                 ->render(),
             'Recipe list classes must reach the inner menu.',
@@ -283,15 +321,52 @@ final class BreadcrumbTest extends TestCase
             </nav>
             HTML,
             Breadcrumb::tag()
-                ->config($config, new ComponentContext('breadcrumb'))
+                ->config(
+                    $config,
+                    new ComponentContext('breadcrumb'),
+                )
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
                 )
                 ->separator('/')
                 ->render(),
             'Local separator must win over the recipe value.',
+        );
+    }
+
+    public function testConfigResolvesRecipeFromComponentName(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav id="breadcrumb" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ol>
+            </nav>
+            HTML,
+            Breadcrumb::tag()
+                ->config(
+                    new Config(new ComponentTheme()),
+                    new ComponentContext(ComponentName::BREADCRUMB),
+                )
+                ->id('breadcrumb')
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
+                ->render(),
+            'Breadcrumb recipe must reach the inner list.',
         );
     }
 
@@ -321,9 +396,15 @@ final class BreadcrumbTest extends TestCase
                 ->currentPath('/data')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->listItemActiveClass('active')
                 ->listItemAriaCurrent(true)
@@ -360,9 +441,15 @@ final class BreadcrumbTest extends TestCase
                 ->firstItemClass('value')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->render(),
             'First item must carry the configured class.',
@@ -397,9 +484,15 @@ final class BreadcrumbTest extends TestCase
                 ->firstLinkClass('value')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->render(),
             'First link must carry the configured class.',
@@ -411,7 +504,11 @@ final class BreadcrumbTest extends TestCase
         self::assertStringContainsString(
             'breadcrumb-',
             Breadcrumb::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->render(),
             "Auto-generated id must use the 'breadcrumb-' prefix.",
         );
@@ -444,9 +541,15 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('value')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->render(),
             'Explicit id must override the generated id.',
@@ -480,9 +583,15 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->lastItemClass('value')
                 ->render(),
@@ -517,9 +626,15 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->lastLinkClass('value')
                 ->render(),
@@ -555,9 +670,15 @@ final class BreadcrumbTest extends TestCase
                 ->currentPath('/library')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->linkActiveClass('value')
                 ->linkActiveTag('a')
@@ -595,9 +716,15 @@ final class BreadcrumbTest extends TestCase
                 ->currentPath('/library')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->linkActiveTag('span')
                 ->linkAriaCurrent(true)
@@ -634,9 +761,15 @@ final class BreadcrumbTest extends TestCase
                 ->currentPath('/library')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->linkAriaCurrent(true)
                 ->linkActiveTag('a')
@@ -673,9 +806,15 @@ final class BreadcrumbTest extends TestCase
                 ->currentPath('/library')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->linkAriaCurrent(false)
                 ->linkActiveTag('a')
@@ -711,9 +850,15 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->linkAttributes(['class' => 'value'])
                 ->render(),
@@ -748,9 +893,14 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->linkClass('value')
                 ->render(),
@@ -791,9 +941,14 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->linkContainerAttributes(['class' => 'value'])
                 ->linkContainerTag()
@@ -835,9 +990,14 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->linkContainerClass('value')
                 ->linkContainerTag()
@@ -879,9 +1039,14 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->linkContainerTag()
                 ->render(),
@@ -916,9 +1081,16 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data')->disabled(),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data')
+                        ->disabled(),
                 )
                 ->linkDisabledClass('value')
                 ->render(),
@@ -953,9 +1125,15 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->linkTag()
                 ->render(),
@@ -984,9 +1162,14 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->linkTag(false)
                 ->render(),
@@ -1021,9 +1204,15 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->linkTag('span')
                 ->render(),
@@ -1058,9 +1247,14 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->listAttributes(['class' => 'value'])
                 ->render(),
@@ -1095,9 +1289,15 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->listClass('value')
                 ->render(),
@@ -1131,9 +1331,15 @@ final class BreadcrumbTest extends TestCase
                 ->currentPath('/data')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->listItemActiveClass('value')
                 ->listItemAriaCurrent(true)
@@ -1169,9 +1375,15 @@ final class BreadcrumbTest extends TestCase
                 ->currentPath('/data')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->listItemActiveClass('active')
                 ->listItemAriaCurrent(true)
@@ -1207,9 +1419,15 @@ final class BreadcrumbTest extends TestCase
                 ->currentPath('/data')
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->listItemActiveClass('active')
                 ->listItemAriaCurrent(false)
@@ -1245,9 +1463,15 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->listItemAttributes(['class' => 'value'])
                 ->render(),
@@ -1282,9 +1506,15 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->listItemClass('value')
                 ->render(),
@@ -1319,9 +1549,16 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/')->disabled(),
-                    Item::tag()->label('Library')->link('/library')->disabled(),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/')->disabled(),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library')
+                        ->disabled(),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->listItemDisabledClass('value')
                 ->render(),
@@ -1412,9 +1649,14 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->listType('ul')
                 ->render(),
@@ -1450,9 +1692,15 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->prefix('prefix')
                 ->render(),
@@ -1488,9 +1736,15 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->prefixAttributes(['class' => 'value'])
                 ->prefix('prefix')
@@ -1528,9 +1782,15 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->prefixClass('value')
                 ->prefix('prefix')
@@ -1946,7 +2206,7 @@ final class BreadcrumbTest extends TestCase
                 )
                 ->separator(new StringableValue('>'))
                 ->render(),
-            'Stringable separator must be cast to `string`.',
+            "Stringable separator must be cast to 'string'.",
         );
     }
 
@@ -2041,9 +2301,15 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->suffixAttributes(['class' => 'value'])
                 ->suffix('suffix')
@@ -2081,9 +2347,15 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('Library')->link('/library'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('Library')
+                        ->link('/library'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->suffixClass('value')
                 ->suffix('suffix')
@@ -2255,9 +2527,17 @@ final class BreadcrumbTest extends TestCase
             Breadcrumb::tag()
                 ->id('breadcrumb')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->content('content')->label('Library')->link('/library')->iconClass('icon'),
-                    Item::tag()->label('Data')->link('/data'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->content('content')
+                        ->label('Library')
+                        ->link('/library')
+                        ->iconClass('icon'),
+                    Item::tag()
+                        ->label('Data')
+                        ->link('/data'),
                 )
                 ->templateLinkItem('{content}{icon}{label}')
                 ->render(),

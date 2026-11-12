@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace UIAwesome\Html\Core\Component\Mixin;
 
 use InvalidArgumentException;
+use UIAwesome\Html\Core\Component\Exception\Message;
 
 /**
  * Provides an immutable API for the HTML tag used to render the active link of a menu item.
@@ -32,7 +33,7 @@ trait HasLinkActiveTag
     {
         if ($value === '') {
             throw new InvalidArgumentException(
-                'The tag name for the link container element for active links cannot be empty.',
+                Message::LINK_ACTIVE_TAG_CANNOT_BE_EMPTY->getMessage(),
             );
         }
 

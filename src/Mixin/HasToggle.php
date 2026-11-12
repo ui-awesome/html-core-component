@@ -6,6 +6,7 @@ namespace UIAwesome\Html\Core\Component\Mixin;
 
 use InvalidArgumentException;
 use UIAwesome\Html\Core\Component\Base\BaseToggle;
+use UIAwesome\Html\Core\Component\Exception\Message;
 use UIAwesome\Html\Core\Component\ToggleInterface;
 use UnitEnum;
 
@@ -129,7 +130,7 @@ trait HasToggle
                 $type = get_debug_type($toggle);
 
                 throw new InvalidArgumentException(
-                    "Toggle label '{$this->toggleLabel}' requires a `BaseToggle` toggle, `{$type}` given.",
+                    Message::TOGGLE_LABEL_REQUIRES_BASE_TOGGLE->getMessage($this->toggleLabel, $type),
                 );
             }
 

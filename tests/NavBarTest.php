@@ -7,7 +7,8 @@ namespace UIAwesome\Html\Core\Component\Tests;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\{Dropdown, Item, Menu, NavBar, Toggle};
-use UIAwesome\Html\Core\Component\Tests\Support\Theme;
+use UIAwesome\Html\Core\Component\Tests\Support\{ComponentTheme, Theme};
+use UIAwesome\Html\Core\Component\Values\{ComponentName, NavBarVariant};
 use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 use UIAwesome\Html\Interop\{Block, Inline};
 
@@ -49,9 +50,15 @@ final class NavBarTest extends TestCase
                     Menu::tag()
                         ->attributes(['class' => 'value'])
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -95,9 +102,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -142,9 +155,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -189,9 +208,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -233,9 +258,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -280,9 +311,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -328,9 +365,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -377,9 +420,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -426,9 +475,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -474,9 +529,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -520,9 +581,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -568,9 +635,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -616,9 +689,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -658,9 +737,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -700,9 +785,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -741,9 +832,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -788,10 +885,20 @@ final class NavBarTest extends TestCase
             </nav>
             HTML,
             NavBar::tag()
-                ->config($config, new ComponentContext('navbar'))
+                ->config(
+                    $config,
+                    new ComponentContext('navbar'),
+                )
                 ->brandLink('/')
                 ->brandText('My App')
-                ->menu(Menu::tag()->items(Item::tag()->label('Home')->link('/')))
+                ->menu(
+                    Menu::tag()
+                        ->items(
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/')
+                        ),
+                )
                 ->render(),
             'Recipe must apply the wrapper, container, and brand classes.',
         );
@@ -828,11 +935,89 @@ final class NavBarTest extends TestCase
             </nav>
             HTML,
             NavBar::tag()
-                ->config($config, new ComponentContext('navbar'))
+                ->config(
+                    $config,
+                    new ComponentContext('navbar'),
+                )
                 ->brandText('User App')
-                ->menu(Menu::tag()->items(Item::tag()->label('Home')->link('/')))
+                ->menu(
+                    Menu::tag()
+                            ->items(
+                                Item::tag()
+                                    ->label('Home')
+                                    ->link('/'),
+                            ),
+                )
                 ->render(),
             'Local brand text must win over the recipe value.',
+        );
+    }
+
+    public function testConfigResolvesAlignRightVariantRecipe(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav class="navbar">
+            <div>
+            <ul class="navbar-nav ms-auto">
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            </nav>
+            HTML,
+            NavBar::tag()
+                ->config(
+                    new Config(new ComponentTheme()),
+                    new ComponentContext(ComponentName::NAVBAR, NavBarVariant::ALIGN_RIGHT),
+                )
+                ->menu(
+                    Menu::tag()
+                        ->items(
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                        ),
+                )
+                ->render(),
+            'Align-right recipe must push the nested menu list to the end.',
+        );
+    }
+
+    public function testConfigResolvesRecipeFromComponentName(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <nav class="navbar">
+            <div>
+            <ul class="navbar-nav">
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            </nav>
+            HTML,
+            NavBar::tag()
+                ->config(
+                    new Config(new ComponentTheme()),
+                    new ComponentContext(ComponentName::NAVBAR),
+                )
+                ->menu(
+                    Menu::tag()
+                        ->items(
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                        ),
+                )
+                ->render(),
+            'Navbar recipe must reach the wrapper and the nested menu list.',
         );
     }
 
@@ -870,9 +1055,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -915,9 +1106,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -960,9 +1157,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -1004,9 +1207,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -1049,9 +1258,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -1094,9 +1309,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -1138,9 +1359,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -1180,9 +1407,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -1224,9 +1457,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -1267,9 +1506,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -1308,9 +1553,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -1351,9 +1602,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -1392,9 +1649,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->render(),
@@ -1435,8 +1698,14 @@ final class NavBarTest extends TestCase
                     Menu::tag()
                         ->id('nav')
                         ->items(
-                            Item::tag()->label('Home')->link('/')->active(),
-                            Item::tag()->label('Disabled')->link('/disabled')->disabled(),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/')
+                                ->active(),
+                            Item::tag()
+                                ->label('Disabled')
+                                ->link('/disabled')
+                                ->disabled(),
                         ),
                 )
                 ->render(),
@@ -1463,7 +1732,11 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->id('nav')
-                        ->items(Item::tag()->label('Home')->link('/')),
+                        ->items(
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                        ),
                 )
                 ->render(),
             'Default tags must apply when the menu chose none.',
@@ -1506,7 +1779,9 @@ final class NavBarTest extends TestCase
                             [
                                 'linkClass' => 'dropdown-entry',
                                 'listClass' => 'dropdown-list',
-                                'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                                'toggle' => Toggle::tag()
+                                    ->class('dropdown-trigger')
+                                    ->content('Dropdown'),
                             ],
                         ],
                         'linkClass' => 'menu-link',
@@ -1519,11 +1794,17 @@ final class NavBarTest extends TestCase
                     Menu::tag()
                         ->id('nav')
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
                             Dropdown::tag()
                                 ->containerTag(false)
                                 ->id(null)
-                                ->items(Item::tag()->label('Action')->link('/action')),
+                                ->items(
+                                    Item::tag()
+                                    ->label('Action')
+                                    ->link('/action'),
+                                ),
                         ),
                 )
                 ->render(),
@@ -1582,12 +1863,22 @@ final class NavBarTest extends TestCase
                         ->dropdownDefaultDefinitions(['listClass' => 'own-dropdown-list'])
                         ->id('nav')
                         ->items(
-                            Item::tag()->label('Home')->link('/')->active(),
-                            Item::tag()->label('Disabled')->link('/disabled')->disabled(),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/')
+                                ->active(),
+                            Item::tag()
+                                ->label('Disabled')
+                                ->link('/disabled')
+                                ->disabled(),
                             Dropdown::tag()
                                 ->containerTag(false)
                                 ->id(null)
-                                ->items(Item::tag()->label('Action')->link('/action')),
+                                ->items(
+                                    Item::tag()
+                                    ->label('Action')
+                                    ->link('/action'),
+                                ),
                         )
                         ->linkActiveClass('own-active')
                         ->linkAriaCurrent(false)
@@ -1620,7 +1911,11 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->id('nav')
-                        ->items(Item::tag()->label('Home')->link('/'))
+                        ->items(
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                        )
                         ->linkTag('a')
                         ->listItemTag('li'),
                 )
@@ -1660,7 +1955,9 @@ final class NavBarTest extends TestCase
                             [
                                 'linkClass' => 'dropdown-entry',
                                 'listClass' => 'dropdown-list',
-                                'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                                'toggle' => Toggle::tag()
+                                    ->class('dropdown-trigger')
+                                    ->content('Dropdown'),
                             ],
                         ],
                         'listClass' => 'menu-list',
@@ -1674,8 +1971,16 @@ final class NavBarTest extends TestCase
                             Dropdown::tag()
                                 ->containerTag(false)
                                 ->id(null)
-                                ->items(Item::tag()->label('Action')->link('/action'))
-                                ->toggle(Toggle::tag()->class('custom-trigger')->content('Docs')),
+                                ->items(
+                                    Item::tag()
+                                    ->label('Action')
+                                    ->link('/action'),
+                                )
+                                ->toggle(
+                                    Toggle::tag()
+                                        ->class('custom-trigger')
+                                        ->content('Docs'),
+                                ),
                         ),
                 )
                 ->render(),
@@ -1712,7 +2017,9 @@ final class NavBarTest extends TestCase
                         'dropdownDefaultDefinitions' => [
                             [
                                 'listClass' => 'dropdown-list',
-                                'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                                'toggle' => Toggle::tag()
+                                    ->class('dropdown-trigger')
+                                    ->content('Dropdown'),
                             ],
                         ],
                         'listDropdownItemClass' => 'menu-item has-dropdown',
@@ -1725,7 +2032,11 @@ final class NavBarTest extends TestCase
                             Dropdown::tag()
                                 ->containerTag(false)
                                 ->id(null)
-                                ->items(Item::tag()->label('Action')->link('/action'))
+                                ->items(
+                                    Item::tag()
+                                        ->label('Action')
+                                        ->link('/action'),
+                                )
                                 ->toggleLabel('Docs'),
                         ),
                 )
@@ -1765,9 +2076,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->prefix('prefix')
@@ -1807,9 +2124,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->prefix('prefix')
@@ -1851,9 +2174,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->prefix('prefix')
@@ -1895,9 +2224,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->prefix('prefix')
@@ -1938,9 +2273,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->prefix('prefix')
@@ -1983,9 +2324,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->prefix('prefix')
@@ -2006,7 +2353,10 @@ final class NavBarTest extends TestCase
     public function testRenderReturnsEmptyEvenWithBrandWhenMenuIsEmpty(): void
     {
         self::assertEmpty(
-            NavBar::tag()->brandText('My App')->brandLink('/')->render(),
+            NavBar::tag()
+                ->brandText('My App')
+                ->brandLink('/')
+                ->render(),
             "Empty 'menu' must short-circuit before rendering brand or other slots.",
         );
     }
@@ -2128,9 +2478,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->suffix('suffix')
@@ -2170,9 +2526,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->suffix('suffix')
@@ -2214,9 +2576,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->suffix('suffix')
@@ -2258,9 +2626,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->suffix('suffix')
@@ -2301,9 +2675,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->suffix('suffix')
@@ -2346,9 +2726,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->suffix('suffix')
@@ -2390,9 +2776,15 @@ final class NavBarTest extends TestCase
                 ->menu(
                     Menu::tag()
                         ->items(
-                            Item::tag()->label('Home')->link('/'),
-                            Item::tag()->label('About')->link('/about'),
-                            Item::tag()->label('Contact')->link('/contact'),
+                            Item::tag()
+                                ->label('Home')
+                                ->link('/'),
+                            Item::tag()
+                                ->label('About')
+                                ->link('/about'),
+                            Item::tag()
+                                ->label('Contact')
+                                ->link('/contact'),
                         ),
                 )
                 ->template('<article>\n{menu}\n</article>')

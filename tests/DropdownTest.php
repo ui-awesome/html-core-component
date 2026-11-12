@@ -9,7 +9,9 @@ use PHPForge\Support\Stub\Unit;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\{Dropdown, Item, Toggle};
-use UIAwesome\Html\Core\Component\Tests\Support\{PlainToggle, Theme, VariantTheme};
+use UIAwesome\Html\Core\Component\Exception\Message;
+use UIAwesome\Html\Core\Component\Tests\Support\{ComponentTheme, PlainToggle, Theme, VariantTheme};
+use UIAwesome\Html\Core\Component\Values\{ComponentName, DropdownVariant};
 use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 use UIAwesome\Html\Interop\{Block, Inline};
 
@@ -47,9 +49,16 @@ final class DropdownTest extends TestCase
                 ->activateItems(true)
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action')->active(),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action')
+                        ->active(),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkActiveClass('active')
                 ->render(),
@@ -85,9 +94,16 @@ final class DropdownTest extends TestCase
                 ->activateItems(false)
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action')->active(),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action')
+                        ->active(),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkActiveClass('active')
                 ->render(),
@@ -123,9 +139,15 @@ final class DropdownTest extends TestCase
                 ->attributes(['class' => 'value'])
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->render(),
             'Attribute map must be applied.',
@@ -160,9 +182,15 @@ final class DropdownTest extends TestCase
                 ->class('dropdown')
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->render(),
             'CSS class must be applied to the wrapper.',
@@ -209,7 +237,11 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->config($config, new ComponentContext('dropdown'))
                 ->id('dropdown')
-                ->items(Item::tag()->label('Profile')->link('/profile'))
+                ->items(
+                    Item::tag()
+                        ->label('Profile')
+                        ->link('/profile'),
+                )
                 ->render(),
             'Recipe must emit the container wrapper, the toggle, and the menu classes.',
         );
@@ -245,9 +277,73 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->config($config, new ComponentContext('dropdown'))
                 ->id('id-user')
-                ->items(Item::tag()->label('Profile')->link('/profile'))
+                ->items(
+                    Item::tag()
+                        ->label('Profile')
+                        ->link('/profile'),
+                )
                 ->render(),
             'Local call must win over the recipe value.',
+        );
+    }
+
+    public function testConfigResolvesLanguageVariantRecipe(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div class="dropdown dropdown-language" id="dropdown">
+            <ul>
+            <li>
+            <a href="/en">
+            English
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::tag()
+                ->config(
+                    new Config(new ComponentTheme()),
+                    new ComponentContext(ComponentName::DROPDOWN, DropdownVariant::LANGUAGE),
+                )
+                ->id('dropdown')
+                ->items(
+                    Item::tag()
+                        ->label('English')
+                        ->link('/en'),
+                )
+                ->render(),
+            'Language recipe must carry the language class.',
+        );
+    }
+
+    public function testConfigResolvesRecipeFromComponentName(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div class="dropdown" id="dropdown">
+            <ul>
+            <li>
+            <a href="/profile">
+            Profile
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Dropdown::tag()
+                ->config(
+                    new Config(new ComponentTheme()),
+                    new ComponentContext(ComponentName::DROPDOWN),
+                )
+                ->id('dropdown')
+                ->items(
+                    Item::tag()
+                        ->label('Profile')
+                        ->link('/profile'),
+                )
+                ->render(),
+            'Base recipe must apply without the language class.',
         );
     }
 
@@ -270,9 +366,16 @@ final class DropdownTest extends TestCase
             </div>
             HTML,
             Dropdown::tag()
-                ->config($config, new ComponentContext('dropdown', variant: 'info'))
+                ->config(
+                    $config,
+                    new ComponentContext('dropdown', variant: 'info'),
+                )
                 ->id('dropdown')
-                ->items(Item::tag()->label('Profile')->link('/profile'))
+                ->items(
+                    Item::tag()
+                        ->label('Profile')
+                        ->link('/profile'),
+                )
                 ->render(),
             'Menu wrapper class must carry the context variant.',
         );
@@ -306,9 +409,15 @@ final class DropdownTest extends TestCase
                 ->dataAttributes(['value' => 'value'])
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->render(),
             "Data attribute map must be applied as 'data-*'.",
@@ -343,9 +452,15 @@ final class DropdownTest extends TestCase
                 ->addDataAttribute('bs-toggle', 'value')
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->render(),
             "'data-bs-toggle' must be serialized.",
@@ -380,9 +495,15 @@ final class DropdownTest extends TestCase
                 ->firstItemClass('value')
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->render(),
             'First item must carry the configured class.',
@@ -412,8 +533,12 @@ final class DropdownTest extends TestCase
                 ->firstItemClass('first')
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
                 )
                 ->listItemClass('base')
                 ->render(),
@@ -449,9 +574,15 @@ final class DropdownTest extends TestCase
                 ->firstLinkClass('value')
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->render(),
             'First link must carry the configured class.',
@@ -462,7 +593,13 @@ final class DropdownTest extends TestCase
     {
         self::assertStringContainsString(
             'dropdown-',
-            Dropdown::tag()->items(Item::tag()->label('Home')->link('/'))->render(),
+            Dropdown::tag()
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/')
+                )
+                ->render(),
             "Auto-generated id must use the 'dropdown-' prefix.",
         );
     }
@@ -481,23 +618,23 @@ final class DropdownTest extends TestCase
         );
         self::assertFalse(
             $instance->hasOwnLinkAriaCurrent(),
-            'A fresh dropdown chose no `aria-current` flag.',
+            "A fresh dropdown chose no 'aria-current' flag.",
         );
         self::assertTrue(
             $instance->isLinkAriaCurrent(),
-            'A fresh dropdown must emit `aria-current` by default.',
+            "A fresh dropdown must emit 'aria-current' by default.",
         );
         self::assertTrue(
             $instance->linkAriaCurrent(false)->hasOwnLinkAriaCurrent(),
-            'A chosen `aria-current` flag must be reported.',
+            "A chosen 'aria-current' flag must be reported.",
         );
         self::assertFalse(
             $instance->linkAriaCurrent(false)->isLinkAriaCurrent(),
-            'A chosen `false` flag must be returned.',
+            "A chosen 'false' flag must be returned.",
         );
         self::assertFalse(
             $instance->hasOwnLinkAriaCurrent(),
-            'Choosing an `aria-current` flag must not mutate the original instance.',
+            "Choosing an 'aria-current' flag must not mutate the original instance.",
         );
         self::assertTrue(
             $instance->linkActiveClass('active')->hasOwnLinkActiveClass(),
@@ -610,9 +747,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('value')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->render(),
             'Explicit id must override the generated id.',
@@ -646,9 +789,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->lastItemClass('value')
                 ->render(),
@@ -683,9 +832,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->lastLinkClass('value')
                 ->render(),
@@ -720,9 +875,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action')->active(),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action')->active(),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkActiveClass('value')
                 ->render(),
@@ -752,8 +913,13 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action')->active(),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action')
+                        ->active(),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
                 )
                 ->linkActiveClass('active-only')
                 ->linkClass('base')
@@ -789,9 +955,16 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action')->active(),
-                    Item::tag()->label('Another actionc')->link('/another-actionc')->active(),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action')->active(),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc')
+                        ->active(),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkAriaCurrent(true)
                 ->render(),
@@ -826,9 +999,17 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action')->active(),
-                    Item::tag()->label('Another actionc')->link('/another-actionc')->active(),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action')
+                        ->active(),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc')
+                        ->active(),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkAriaCurrent(false)
                 ->render(),
@@ -863,9 +1044,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkAttributes(['class' => 'value'])
                 ->render(),
@@ -900,9 +1087,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkClass('value')
                 ->render(),
@@ -943,9 +1136,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkContainerAttributes(['class' => 'value'])
                 ->linkContainerTag()
@@ -987,9 +1186,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkContainerClass('value')
                 ->linkContainerTag()
@@ -1031,9 +1236,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkContainerTag()
                 ->render(),
@@ -1068,9 +1279,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkContainerTag(false)
                 ->render(),
@@ -1111,9 +1328,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkContainerTag('span')
                 ->render(),
@@ -1148,9 +1371,16 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here')->disabled(),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here')
+                        ->disabled(),
                 )
                 ->linkDisabledClass('value')
                 ->render(),
@@ -1185,9 +1415,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkTag()
                 ->render(),
@@ -1216,9 +1452,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkTag(false)
                 ->render(),
@@ -1253,9 +1495,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->linkTag('span')
                 ->render(),
@@ -1290,9 +1538,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->listAttributes(['class' => 'value'])
                 ->render(),
@@ -1327,9 +1581,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->listClass('value')
                 ->render(),
@@ -1364,9 +1624,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->listItemAttributes(['class' => 'value'])
                 ->render(),
@@ -1401,9 +1667,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->listItemClass('value')
                 ->render(),
@@ -1438,9 +1710,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->listItemTag('li')
                 ->render(),
@@ -1532,9 +1810,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->prefix('prefix')
                 ->render(),
@@ -1570,9 +1854,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->prefix('prefix')
                 ->prefixAttributes(['class' => 'value'])
@@ -1610,9 +1900,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->prefix('prefix')
                 ->prefixClass('value')
@@ -1651,9 +1947,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->prefix('prefix')
                 ->prefixItems('prefix-items')
@@ -1690,9 +1992,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->prefix('prefix')
                 ->prefixTag()
@@ -1764,9 +2072,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->prefix('prefix')
                 ->prefixTag(Inline::SPAN)
@@ -1800,7 +2114,11 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->containerAttributes(['data-controller' => 'dropdown'])
                 ->id('dropdown')
-                ->items(Item::tag()->label('Action')->link('/action'))
+                ->items(
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                )
                 ->render(),
             'Both attribute maps must reach the container.',
         );
@@ -1824,7 +2142,11 @@ final class DropdownTest extends TestCase
                 ->class('mine')
                 ->containerClass('dropdown')
                 ->id('dropdown')
-                ->items(Item::tag()->label('Action')->link('/action'))
+                ->items(
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                )
                 ->listClass('dropdown-menu')
                 ->render(),
             'No wrapper may sit between the container and the list.',
@@ -1834,8 +2156,10 @@ final class DropdownTest extends TestCase
     public function testRenderReturnsEmptyEvenWithContainerTagWhenItemsAreEmpty(): void
     {
         self::assertEmpty(
-            Dropdown::tag()->containerTag(Block::DIV)->render(),
-            'Empty `items` list must short-circuit before wrapping with the container tag.',
+            Dropdown::tag()
+                ->containerTag(Block::DIV)
+                ->render(),
+            "Empty 'items' list must short-circuit before wrapping with the container tag.",
         );
     }
 
@@ -1854,7 +2178,11 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->containerTag(Unit::value)
                 ->id('dropdown')
-                ->items(Item::tag()->label('Profile')->link('/profile'))
+                ->items(
+                    Item::tag()
+                        ->label('Profile')
+                        ->link('/profile'),
+                )
                 ->render(),
             'A tag without a backing value must leave the menu unwrapped.',
         );
@@ -2063,9 +2391,15 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
-                    Item::tag()->label('Something else here')->link('/something-else-here'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Something else here')
+                        ->link('/something-else-here'),
                 )
                 ->style('value')
                 ->render(),
@@ -2341,7 +2675,7 @@ final class DropdownTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            "Toggle label 'Docs' requires a `BaseToggle` toggle, `" . PlainToggle::class . '` given.',
+            Message::TOGGLE_LABEL_REQUIRES_BASE_TOGGLE->getMessage('Docs', PlainToggle::class),
         );
 
         Dropdown::tag()
@@ -2355,11 +2689,15 @@ final class DropdownTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            "Toggle label 'Docs' requires a `BaseToggle` toggle, `string` given.",
+            Message::TOGGLE_LABEL_REQUIRES_BASE_TOGGLE->getMessage('Docs', 'string'),
         );
 
         Dropdown::tag()
-            ->items(Item::tag()->label('Action')->link('/action'))
+            ->items(
+                Item::tag()
+                    ->label('Action')
+                    ->link('/action'),
+            )
             ->toggleLabel('Docs')
             ->render();
     }
@@ -2368,11 +2706,15 @@ final class DropdownTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            "Toggle label 'Docs' requires a `BaseToggle` toggle, `string` given.",
+            Message::TOGGLE_LABEL_REQUIRES_BASE_TOGGLE->getMessage('Docs', 'string'),
         );
 
         Dropdown::tag()
-            ->items(Item::tag()->label('Action')->link('/action'))
+            ->items(
+                Item::tag()
+                    ->label('Action')
+                    ->link('/action'),
+            )
             ->toggle('<button type="button">Toggle</button>')
             ->toggleLabel('Docs')
             ->render();
@@ -2403,8 +2745,12 @@ final class DropdownTest extends TestCase
             Dropdown::tag()
                 ->id('dropdown')
                 ->items(
-                    Item::tag()->label('Action')->link('/action'),
-                    Item::tag()->label('Another actionc')->link('/another-actionc'),
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                    Item::tag()
+                        ->label('Another actionc')
+                        ->link('/another-actionc'),
                 )
                 ->toggle(
                     Toggle::tag()
@@ -2450,8 +2796,16 @@ final class DropdownTest extends TestCase
             HTML,
             Dropdown::tag()
                 ->id('dropdown')
-                ->items(Item::tag()->label('Action')->link('/action'))
-                ->toggle(Toggle::tag()->class('trigger')->content('Dropdown'))
+                ->items(
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                )
+                ->toggle(
+                    Toggle::tag()
+                        ->class('trigger')
+                        ->content('Dropdown'),
+                )
                 ->toggleLabel('<b>Docs</b>')
                 ->render(),
             'Label must be HTML-encoded.',
@@ -2510,8 +2864,16 @@ final class DropdownTest extends TestCase
             HTML,
             Dropdown::tag()
                 ->id('dropdown')
-                ->items(Item::tag()->label('Action')->link('/action'))
-                ->toggle(Toggle::tag()->class('trigger')->content('Dropdown'))
+                ->items(
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                )
+                ->toggle(
+                    Toggle::tag()
+                        ->class('trigger')
+                        ->content('Dropdown'),
+                )
                 ->toggleLabel('Docs')
                 ->render(),
             'Label must replace the toggle content while keeping its markup.',
@@ -2537,8 +2899,16 @@ final class DropdownTest extends TestCase
             HTML,
             Dropdown::tag()
                 ->id('dropdown')
-                ->items(Item::tag()->label('Action')->link('/action'))
-                ->toggle(Toggle::tag()->class('trigger')->content('Dropdown'))
+                ->items(
+                    Item::tag()
+                        ->label('Action')
+                        ->link('/action'),
+                )
+                ->toggle(
+                    Toggle::tag()
+                        ->class('trigger')
+                        ->content('Dropdown'),
+                )
                 ->toggleLabel('')
                 ->render(),
             'Empty label must keep the toggle content.',

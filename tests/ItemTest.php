@@ -7,14 +7,17 @@ namespace UIAwesome\Html\Core\Component\Tests;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use UIAwesome\Html\Core\Component\Exception\Message;
 use UIAwesome\Html\Core\Component\Item;
 use UIAwesome\Html\Core\Component\Tests\Support\{
+    ComponentTheme,
     ForeignTag,
     RenderIconOverride,
     RenderLabelOverride,
     StringableValue,
     Theme,
 };
+use UIAwesome\Html\Core\Component\Values\ComponentName;
 use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 
 /**
@@ -83,7 +86,10 @@ final class ItemTest extends TestCase
             </li>
             HTML,
             Item::tag()
-                ->config($config, new ComponentContext('item'))
+                ->config(
+                    $config,
+                    new ComponentContext('item'),
+                )
                 ->label('Home')
                 ->link('/')
                 ->render(),
@@ -115,11 +121,36 @@ final class ItemTest extends TestCase
             </li>
             HTML,
             Item::tag()
-                ->config($config, new ComponentContext('item'))
+                ->config(
+                    $config,
+                    new ComponentContext('item'),
+                )
                 ->label('User label')
                 ->link('/')
                 ->render(),
             'Local label must win over the recipe value.',
+        );
+    }
+
+    public function testConfigResolvesRecipeFromComponentName(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <li class="item">
+            <a href="/">
+            Home
+            </a>
+            </li>
+            HTML,
+            Item::tag()
+                ->config(
+                    new Config(new ComponentTheme()),
+                    new ComponentContext(ComponentName::ITEM),
+                )
+                ->label('Home')
+                ->link('/')
+                ->render(),
+            'Item recipe must reach the list item.',
         );
     }
 
@@ -167,7 +198,9 @@ final class ItemTest extends TestCase
     {
         self::assertSame(
             '<br>',
-            Item::tag()->divider('br')->render(),
+            Item::tag()
+                ->divider('br')
+                ->render(),
             "Voids tag 'br' must resolve to 'Voids::BR' and render as a self-closing element.",
         );
     }
@@ -868,7 +901,7 @@ final class ItemTest extends TestCase
                 ->link('/')
                 ->linkTag(ForeignTag::A)
                 ->render(),
-            'Any enum meaning `a` must keep the link.',
+            "Any enum meaning 'a' must keep the link.",
         );
     }
 
@@ -908,7 +941,7 @@ final class ItemTest extends TestCase
                 ->linkClass('value')
                 ->linkTag('span')
                 ->render(),
-            'Only `href` is dropped outside an anchor.',
+            "Only 'href' is dropped outside an anchor.",
         );
     }
 
@@ -990,7 +1023,11 @@ final class ItemTest extends TestCase
             </button>
             </li>
             HTML,
-            Item::tag()->label('Newest')->linkAttributes(['type' => 'button'])->linkTag('button')->render(),
+            Item::tag()
+                ->label('Newest')
+                ->linkAttributes(['type' => 'button'])
+                ->linkTag('button')
+                ->render(),
             'A button entry needs no target to wrap its content.',
         );
     }
@@ -1008,7 +1045,7 @@ final class ItemTest extends TestCase
         self::assertInstanceOf(
             Item::class,
             new RenderIconOverride(),
-            'Override subclass must be an `Item` instance.',
+            "Override subclass must be an 'Item' instance.",
         );
     }
 
@@ -1017,7 +1054,7 @@ final class ItemTest extends TestCase
         self::assertInstanceOf(
             Item::class,
             new RenderLabelOverride(),
-            'Override subclass must be an `Item` instance.',
+            "Override subclass must be an 'Item' instance.",
         );
     }
 
@@ -1253,7 +1290,7 @@ final class ItemTest extends TestCase
                 ->link('/')
                 ->separator(new StringableValue('>'))
                 ->render(),
-            'Stringable separator must be cast to `string`.',
+            "Stringable separator must be cast to 'string'.",
         );
     }
 
@@ -1313,7 +1350,7 @@ final class ItemTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            "Label tag 'my-label' must resolve to an `Inline` or `Block` enum case.",
+            Message::TAG_MUST_RESOLVE_TO_INLINE_OR_BLOCK->getMessage('Label', 'my-label'),
         );
 
         Item::tag()->labelTag('my-label');
@@ -1323,7 +1360,7 @@ final class ItemTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            "Link container tag 'my-wrapper' must resolve to an `Inline` or `Block` enum case.",
+            Message::TAG_MUST_RESOLVE_TO_INLINE_OR_BLOCK->getMessage('Link container', 'my-wrapper'),
         );
 
         Item::tag()->linkContainerTag('my-wrapper');
@@ -1333,7 +1370,7 @@ final class ItemTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            "Link tag 'my-link' must resolve to an `Inline` or `Block` enum case.",
+            Message::TAG_MUST_RESOLVE_TO_INLINE_OR_BLOCK->getMessage('Link', 'my-link'),
         );
 
         Item::tag()->linkTag('my-link');

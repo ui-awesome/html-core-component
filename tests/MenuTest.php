@@ -8,7 +8,9 @@ use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use UIAwesome\Html\Core\Component\{Dropdown, Item, Menu, Toggle};
-use UIAwesome\Html\Core\Component\Tests\Support\{RenderToggleOverride, StringableValue, Theme};
+use UIAwesome\Html\Core\Component\Exception\Message;
+use UIAwesome\Html\Core\Component\Tests\Support\{ComponentTheme, RenderToggleOverride, StringableValue, Theme};
+use UIAwesome\Html\Core\Component\Values\ComponentName;
 use UIAwesome\Html\Core\Config\{Call, ComponentContext, Config, Cookbook, Recipe};
 use UIAwesome\Html\Interop\Inline;
 
@@ -46,9 +48,15 @@ final class MenuTest extends TestCase
                 ->activateItems()
                 ->currentPath('/')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->linkActiveClass('active')
                 ->render(),
@@ -84,9 +92,15 @@ final class MenuTest extends TestCase
                 ->activateItems(false)
                 ->currentPath('/')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->linkActiveClass('active')
                 ->render(),
@@ -135,7 +149,12 @@ final class MenuTest extends TestCase
             Menu::tag()
                 ->listItemTag(false)
                 ->listType(false)
-                ->items(Item::tag()->label('Newest')->link('/newest')->active())
+                ->items(
+                    Item::tag()
+                        ->label('Newest')
+                        ->link('/newest')
+                        ->active(),
+                )
                 ->linkActiveClass('active')
                 ->linkActiveTag('span')
                 ->render(),
@@ -170,9 +189,15 @@ final class MenuTest extends TestCase
             Menu::tag()
                 ->attributes(['class' => 'value'])
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->render(),
             'Attribute map must be applied.',
@@ -206,9 +231,15 @@ final class MenuTest extends TestCase
             Menu::tag()
                 ->class('value')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->render(),
             'CSS class must be applied to the wrapper.',
@@ -244,8 +275,15 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->config($config, new ComponentContext('menu'))
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->config(
+                    $config,
+                    new ComponentContext('menu'),
+                )
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->render(),
             'Recipe classes must reach the list, the item, and the link.',
         );
@@ -279,11 +317,47 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->config($config, new ComponentContext('menu'))
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->config(
+                    $config,
+                    new ComponentContext('menu'),
+                )
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->listType('ol')
                 ->render(),
             'Local list type must win over the recipe value.',
+        );
+    }
+
+    public function testConfigResolvesRecipeFromComponentName(): void
+    {
+        self::assertSame(
+            <<<HTML
+            <div>
+            <ul class="menu">
+            <li>
+            <a href="/">
+            Home
+            </a>
+            </li>
+            </ul>
+            </div>
+            HTML,
+            Menu::tag()
+                ->config(
+                    new Config(new ComponentTheme()),
+                    new ComponentContext(ComponentName::MENU),
+                )
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
+                ->render(),
+            'Menu recipe must reach the list.',
         );
     }
 
@@ -314,9 +388,15 @@ final class MenuTest extends TestCase
             Menu::tag()
                 ->currentPath('/contact')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->linkActiveClass('active')
                 ->render(),
@@ -346,9 +426,14 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->divider(),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->divider(),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->render(),
             'Divider item must render as the configured separator element.',
@@ -379,10 +464,15 @@ final class MenuTest extends TestCase
                     Dropdown::tag()
                         ->containerTag(false)
                         ->id(null)
-                        ->items(Item::tag()->label('Action')->link('/action')->active()),
+                        ->items(
+                            Item::tag()
+                                ->label('Action')
+                                ->link('/action')
+                                ->active(),
+                        ),
                 )
                 ->render(),
-            'Default `aria-current` flag must apply when the dropdown chose none.',
+            "Default 'aria-current' flag must apply when the dropdown chose none.",
         );
     }
 
@@ -421,8 +511,14 @@ final class MenuTest extends TestCase
                         ->containerTag(false)
                         ->id(null)
                         ->items(
-                            Item::tag()->label('Action')->link('/action')->active(),
-                            Item::tag()->label('Disabled')->link('/disabled')->disabled(),
+                            Item::tag()
+                                ->label('Action')
+                                ->link('/action')
+                                ->active(),
+                            Item::tag()
+                                ->label('Disabled')
+                                ->link('/disabled')
+                                ->disabled(),
                         ),
                 )
                 ->render(),
@@ -452,7 +548,11 @@ final class MenuTest extends TestCase
                     Dropdown::tag()
                         ->containerTag(false)
                         ->id(null)
-                        ->items(Item::tag()->label('Action')->link('/action')),
+                        ->items(
+                            Item::tag()
+                                ->label('Action')
+                                ->link('/action'),
+                        ),
                 )
                 ->render(),
             'Default tags must apply when the dropdown chose none.',
@@ -483,7 +583,9 @@ final class MenuTest extends TestCase
             Menu::tag()
                 ->dropdownDefaultDefinitions(
                     [
-                        'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                        'toggle' => Toggle::tag()
+                            ->class('dropdown-trigger')
+                            ->content('Dropdown'),
                         'toggleLabel' => 'Default label',
                     ],
                 )
@@ -491,7 +593,11 @@ final class MenuTest extends TestCase
                     Dropdown::tag()
                         ->containerTag(false)
                         ->id(null)
-                        ->items(Item::tag()->label('Action')->link('/action')),
+                        ->items(
+                            Item::tag()
+                                ->label('Action')
+                                ->link('/action'),
+                        ),
                 )
                 ->render(),
             'Default label must apply when the dropdown chose none.',
@@ -524,14 +630,20 @@ final class MenuTest extends TestCase
                     [
                         'linkClass' => 'dropdown-entry',
                         'listClass' => 'dropdown-list',
-                        'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                        'toggle' => Toggle::tag()
+                            ->class('dropdown-trigger')
+                            ->content('Dropdown'),
                     ],
                 )
                 ->items(
                     Dropdown::tag()
                         ->containerTag(false)
                         ->id(null)
-                        ->items(Item::tag()->label('Action')->link('/action')),
+                        ->items(
+                            Item::tag()
+                                ->label('Action')
+                                ->link('/action'),
+                        ),
                 )
                 ->listDropdownItemClass('menu-item has-dropdown')
                 ->render(),
@@ -563,7 +675,9 @@ final class MenuTest extends TestCase
             Menu::tag()
                 ->dropdownDefaultDefinitions(
                     [
-                        'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                        'toggle' => Toggle::tag()
+                            ->class('dropdown-trigger')
+                            ->content('Dropdown'),
                         'toggleLabel' => 'Default label',
                     ],
                 )
@@ -571,7 +685,11 @@ final class MenuTest extends TestCase
                     Dropdown::tag()
                         ->containerTag(false)
                         ->id(null)
-                        ->items(Item::tag()->label('Action')->link('/action'))
+                        ->items(
+                            Item::tag()
+                                ->label('Action')
+                                ->link('/action'),
+                        )
                         ->toggleLabel(''),
                 )
                 ->render(),
@@ -603,11 +721,16 @@ final class MenuTest extends TestCase
                     Dropdown::tag()
                         ->containerTag(false)
                         ->id(null)
-                        ->items(Item::tag()->label('Action')->link('/action')->active())
+                        ->items(
+                            Item::tag()
+                                ->label('Action')
+                                ->link('/action')
+                                ->active(),
+                        )
                         ->linkAriaCurrent(false),
                 )
                 ->render(),
-            'Explicit `false` flag must win over the default.',
+            "Explicit 'false' flag must win over the default.",
         );
     }
 
@@ -635,11 +758,16 @@ final class MenuTest extends TestCase
                     Dropdown::tag()
                         ->containerTag(false)
                         ->id(null)
-                        ->items(Item::tag()->label('Action')->link('/action')->active())
+                        ->items(
+                            Item::tag()
+                                ->label('Action')
+                                ->link('/action')
+                                ->active(),
+                        )
                         ->linkAriaCurrent(),
                 )
                 ->render(),
-            'Explicit `true` flag must win over the default.',
+            "Explicit 'true' flag must win over the default.",
         );
     }
 
@@ -678,8 +806,14 @@ final class MenuTest extends TestCase
                         ->containerTag(false)
                         ->id(null)
                         ->items(
-                            Item::tag()->label('Action')->link('/action')->active(),
-                            Item::tag()->label('Disabled')->link('/disabled')->disabled(),
+                            Item::tag()
+                                ->label('Action')
+                                ->link('/action')
+                                ->active(),
+                            Item::tag()
+                                ->label('Disabled')
+                                ->link('/disabled')
+                                ->disabled(),
                         )
                         ->linkActiveClass('own-active')
                         ->linkDisabledClass('own-disabled'),
@@ -713,14 +847,20 @@ final class MenuTest extends TestCase
                     [
                         'linkClass' => 'dropdown-entry',
                         'listClass' => 'dropdown-list',
-                        'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                        'toggle' => Toggle::tag()
+                            ->class('dropdown-trigger')
+                            ->content('Dropdown'),
                     ],
                 )
                 ->items(
                     Dropdown::tag()
                         ->containerTag(false)
                         ->id(null)
-                        ->items(Item::tag()->label('Action')->link('/action'))
+                        ->items(
+                            Item::tag()
+                                ->label('Action')
+                                ->link('/action'),
+                        )
                         ->toggle('<span class="custom-trigger">Docs</span>'),
                 )
                 ->listDropdownItemClass('menu-item has-dropdown')
@@ -753,7 +893,11 @@ final class MenuTest extends TestCase
                     Dropdown::tag()
                         ->containerTag(false)
                         ->id(null)
-                        ->items(Item::tag()->label('Action')->link('/action'))
+                        ->items(
+                            Item::tag()
+                                ->label('Action')
+                                ->link('/action'),
+                        )
                         ->linkTag('a')
                         ->listItemTag('li'),
                 )
@@ -788,15 +932,25 @@ final class MenuTest extends TestCase
                     [
                         'linkClass' => 'dropdown-entry',
                         'listClass' => 'dropdown-list',
-                        'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                        'toggle' => Toggle::tag()
+                            ->class('dropdown-trigger')
+                            ->content('Dropdown'),
                     ],
                 )
                 ->items(
                     Dropdown::tag()
                         ->containerTag(false)
                         ->id(null)
-                        ->items(Item::tag()->label('Action')->link('/action'))
-                        ->toggle(Toggle::tag()->class('custom-trigger')->content('Docs')),
+                        ->items(
+                            Item::tag()
+                                ->label('Action')
+                                ->link('/action'),
+                        )
+                        ->toggle(
+                            Toggle::tag()
+                                ->class('custom-trigger')
+                                ->content('Docs'),
+                        ),
                 )
                 ->listDropdownItemClass('menu-item has-dropdown')
                 ->render(),
@@ -828,7 +982,9 @@ final class MenuTest extends TestCase
             Menu::tag()
                 ->dropdownDefaultDefinitions(
                     [
-                        'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                        'toggle' => Toggle::tag()
+                            ->class('dropdown-trigger')
+                            ->content('Dropdown'),
                         'toggleLabel' => 'Default label',
                     ],
                 )
@@ -836,7 +992,11 @@ final class MenuTest extends TestCase
                     Dropdown::tag()
                         ->containerTag(false)
                         ->id(null)
-                        ->items(Item::tag()->label('Action')->link('/action'))
+                        ->items(
+                            Item::tag()
+                                ->label('Action')
+                                ->link('/action'),
+                        )
                         ->toggleLabel('Docs'),
                 )
                 ->render(),
@@ -850,19 +1010,33 @@ final class MenuTest extends TestCase
             ->dropdownDefaultDefinitions(
                 [
                     'listClass' => 'dropdown-list',
-                    'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                    'toggle' => Toggle::tag()
+                        ->class('dropdown-trigger')
+                        ->content('Dropdown'),
                 ],
             )
             ->items(
                 Dropdown::tag()
                     ->containerTag(false)
                     ->id(null)
-                    ->items(Item::tag()->label('Action')->link('/action')),
+                    ->items(
+                        Item::tag()
+                            ->label('Action')
+                            ->link('/action'),
+                    ),
                 Dropdown::tag()
                     ->containerTag(false)
                     ->id(null)
-                    ->items(Item::tag()->label('Guide')->link('/guide'))
-                    ->toggle(Toggle::tag()->class('custom-trigger')->content('Docs')),
+                    ->items(
+                        Item::tag()
+                            ->label('Guide')
+                            ->link('/guide'),
+                    )
+                    ->toggle(
+                        Toggle::tag()
+                            ->class('custom-trigger')
+                            ->content('Docs'),
+                    ),
             );
 
         $expected = <<<HTML
@@ -914,14 +1088,20 @@ final class MenuTest extends TestCase
             ->dropdownDefaultDefinitions(
                 [
                     'listClass' => 'dropdown-list',
-                    'toggle' => Toggle::tag()->class('dropdown-trigger')->content('Dropdown'),
+                    'toggle' => Toggle::tag()
+                        ->class('dropdown-trigger')
+                        ->content('Dropdown'),
                 ],
             )
             ->items(
                 Dropdown::tag()
                     ->containerTag(false)
                     ->id(null)
-                    ->items(Item::tag()->label('Action')->link('/action'))
+                    ->items(
+                        Item::tag()
+                            ->label('Action')
+                            ->link('/action'),
+                    )
                     ->toggleLabel('Docs'),
             );
 
@@ -983,9 +1163,15 @@ final class MenuTest extends TestCase
             Menu::tag()
                 ->firstItemClass('value')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->render(),
             'First item must carry the configured class.',
@@ -1014,8 +1200,12 @@ final class MenuTest extends TestCase
             Menu::tag()
                 ->firstItemClass('value')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
                 )
                 ->listItemAttributes(['class' => 'base'])
                 ->render(),
@@ -1050,9 +1240,15 @@ final class MenuTest extends TestCase
             Menu::tag()
                 ->firstLinkClass('value')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->render(),
             'First link must carry the configured class.',
@@ -1081,8 +1277,12 @@ final class MenuTest extends TestCase
             Menu::tag()
                 ->firstLinkClass('value')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
                 )
                 ->linkAttributes(['class' => 'base'])
                 ->render(),
@@ -1104,7 +1304,7 @@ final class MenuTest extends TestCase
         );
         self::assertFalse(
             $instance->hasOwnLinkAriaCurrent(),
-            'A fresh menu chose no `aria-current` flag.',
+            "A fresh menu chose no 'aria-current' flag.",
         );
         self::assertFalse(
             $instance->hasOwnLinkDisabledClass(),
@@ -1124,7 +1324,7 @@ final class MenuTest extends TestCase
         );
         self::assertTrue(
             $instance->linkAriaCurrent(false)->hasOwnLinkAriaCurrent(),
-            'A chosen `aria-current` flag must be reported.',
+            "A chosen 'aria-current' flag must be reported.",
         );
         self::assertTrue(
             $instance->linkDisabledClass('disabled')->hasOwnLinkDisabledClass(),
@@ -1144,7 +1344,7 @@ final class MenuTest extends TestCase
         );
         self::assertFalse(
             $instance->hasOwnLinkAriaCurrent(),
-            'Choosing an `aria-current` flag must not mutate the original instance.',
+            "Choosing an 'aria-current' flag must not mutate the original instance.",
         );
         self::assertFalse(
             $instance->hasOwnLinkDisabledClass(),
@@ -1213,9 +1413,15 @@ final class MenuTest extends TestCase
             Menu::tag()
                 ->id('value')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->render(),
             'Explicit id must be applied to the wrapper.',
@@ -1225,7 +1431,9 @@ final class MenuTest extends TestCase
     public function testIsLinkAriaCurrent(): void
     {
         self::assertTrue(
-            Menu::tag()->linkAriaCurrent(true)->isLinkAriaCurrent(),
+            Menu::tag()
+                ->linkAriaCurrent(true)
+                ->isLinkAriaCurrent(),
             "Link 'aria-current' flag must be reflected by the accessor.",
         );
     }
@@ -1233,7 +1441,9 @@ final class MenuTest extends TestCase
     public function testIsListItemAriaCurrent(): void
     {
         self::assertTrue(
-            Menu::tag()->listItemAriaCurrent(true)->isListItemAriaCurrent(),
+            Menu::tag()
+                ->listItemAriaCurrent(true)
+                ->isListItemAriaCurrent(),
             "List item 'aria-current' flag must be reflected by the accessor.",
         );
     }
@@ -1259,9 +1469,17 @@ final class MenuTest extends TestCase
                 ->items(
                     Item::tag()
                         ->label('Newest')
-                        ->linkAttributes(['type' => 'button', 'disabled' => true])
+                        ->linkAttributes(
+                            [
+                                'type' => 'button',
+                                'disabled' => true,
+                            ],
+                        )
                         ->linkTag('button'),
-                    Item::tag()->label('Older')->link('/older')->linkAttributes(['title' => 'Older']),
+                    Item::tag()
+                        ->label('Older')
+                        ->link('/older')
+                        ->linkAttributes(['title' => 'Older']),
                 )
                 ->render(),
             'One menu must mix a button entry with an anchor entry.',
@@ -1290,8 +1508,12 @@ final class MenuTest extends TestCase
             Menu::tag(
                 [
                     'items' => [
-                        'home' => Item::tag()->label('Home')->link('/'),
-                        'about' => Item::tag()->label('About')->link('/about'),
+                        'home' => Item::tag()
+                            ->label('Home')
+                            ->link('/'),
+                        'about' => Item::tag()
+                            ->label('About')
+                            ->link('/about'),
                     ],
                 ],
             )
@@ -1315,7 +1537,13 @@ final class MenuTest extends TestCase
             </ul>
             </div>
             HTML,
-            Menu::tag()->items(Item::tag()->label('C')->link('/c'))->render(),
+            Menu::tag()
+                ->items(
+                    Item::tag()
+                        ->label('C')
+                        ->link('/c'),
+                )
+                ->render(),
             'Menu defaults must still reach an entry that chose no tag.',
         );
     }
@@ -1346,9 +1574,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->lastItemClass('value')
                 ->render(),
@@ -1377,8 +1611,12 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
                 )
                 ->lastItemClass('value')
                 ->listItemAttributes(['class' => 'base'])
@@ -1413,9 +1651,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->lastLinkClass('value')
                 ->render(),
@@ -1444,8 +1688,12 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
                 )
                 ->lastLinkClass('value')
                 ->linkAttributes(['class' => 'base'])
@@ -1480,9 +1728,16 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/')->active(),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/')
+                        ->active(),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->linkActiveClass('value')
                 ->render(),
@@ -1511,8 +1766,13 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/')->active(),
-                    Item::tag()->label('About')->link('/about'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/')
+                        ->active(),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
                 )
                 ->linkActiveClass('nav-link active')
                 ->linkClass('nav-link')
@@ -1536,7 +1796,12 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/')->active())
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/')
+                        ->active(),
+                )
                 ->linkAttributes(['class' => 'base'])
                 ->linkActiveClass('value')
                 ->render(),
@@ -1570,9 +1835,16 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about')->active(),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about')
+                        ->active(),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->linkActiveTag('span')
                 ->render(),
@@ -1606,9 +1878,16 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/')->active(),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/')
+                        ->active(),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->linkAriaCurrent()
                 ->render(),
@@ -1642,9 +1921,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->linkAttributes(['class' => 'value'])
                 ->render(),
@@ -1678,9 +1963,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->linkClass('value')
                 ->render(),
@@ -1703,7 +1994,11 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->linkAttributes(['class' => 'base'])
                 ->linkClass('value')
                 ->render(),
@@ -1743,9 +2038,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->linkContainerAttributes(['class' => 'value'])
                 ->linkContainerTag()
@@ -1771,7 +2072,11 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->linkContainerAttributes(['class' => 'first'])
                 ->linkContainerAttributes(['data-x' => 'value'])
                 ->linkContainerTag('span')
@@ -1812,9 +2117,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->linkContainerClass('value')
                 ->linkContainerTag()
@@ -1840,7 +2151,11 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->linkContainerAttributes(['class' => 'base'])
                 ->linkContainerClass('value')
                 ->linkContainerTag('span')
@@ -1866,7 +2181,11 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->linkContainerAttributes(['data-x' => 'value'])
                 ->linkContainerRemoveAttribute('data-x')
                 ->linkContainerTag('span')
@@ -1892,7 +2211,11 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->linkContainerSetAttribute('data-x', 'value')
                 ->linkContainerTag('span')
                 ->render(),
@@ -1932,9 +2255,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->linkContainerTag()
                 ->render(),
@@ -1974,9 +2303,16 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/')->linkContainerTag('span'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/')
+                        ->linkContainerTag('span'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->linkContainerTag()
                 ->render(),
@@ -2010,9 +2346,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->linkContainerTag(false)
                 ->render(),
@@ -2052,9 +2394,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->linkContainerTag('article')
                 ->render(),
@@ -2088,9 +2436,17 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/')->disabled(),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact')->disabled(),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/')
+                        ->disabled(),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact')
+                        ->disabled(),
                 )
                 ->linkDisabledClass('value')
                 ->render(),
@@ -2113,7 +2469,12 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/')->disabled())
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/')
+                        ->disabled(),
+                )
                 ->linkAttributes(['class' => 'base'])
                 ->linkDisabledClass('value')
                 ->render(),
@@ -2136,7 +2497,11 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->linkAttributes(['rel' => 'nofollow'])
                 ->linkRemoveAttribute('rel')
                 ->render(),
@@ -2159,7 +2524,11 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->linkSetAttribute('rel', 'nofollow')
                 ->render(),
             'Set link attribute must appear on the rendered link.',
@@ -2181,7 +2550,11 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->listAttributes(['class' => 'first'])
                 ->listAttributes(['data-x' => 'value'])
                 ->render(),
@@ -2204,7 +2577,11 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->listAttributes(['class' => 'base'])
                 ->listClass('value')
                 ->render(),
@@ -2246,9 +2623,15 @@ final class MenuTest extends TestCase
                         ->containerTag(false)
                         ->id(null)
                         ->items(
-                            Item::tag()->label('Action')->link('#'),
-                            Item::tag()->label('Another actionc')->link('#'),
-                            Item::tag()->label('Something else here')->link('#'),
+                            Item::tag()
+                                ->label('Action')
+                                ->link('#'),
+                            Item::tag()
+                                ->label('Another actionc')
+                                ->link('#'),
+                            Item::tag()
+                                ->label('Something else here')
+                                ->link('#'),
                         ),
                 )
                 ->listDropdownItemClass('value')
@@ -2283,9 +2666,16 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/')->active(),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/')
+                        ->active(),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->listItemActiveClass('value')
                 ->render(),
@@ -2319,9 +2709,16 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/')->active(),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/')
+                        ->active(),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->listItemAriaCurrent(true)
                 ->render(),
@@ -2355,9 +2752,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->listItemAttributes(['class' => 'value'])
                 ->render(),
@@ -2391,9 +2794,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->listItemClass('value')
                 ->render(),
@@ -2416,7 +2825,11 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->listItemAttributes(['class' => 'base'])
                 ->listItemClass('value')
                 ->render(),
@@ -2439,7 +2852,12 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/')->disabled())
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/')
+                        ->disabled(),
+                )
                 ->listItemAttributes(['class' => 'base'])
                 ->listItemDisabledClass('value')
                 ->render(),
@@ -2462,7 +2880,11 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->listItemAttributes(['data-x' => 'value'])
                 ->listItemRemoveAttribute('data-x')
                 ->render(),
@@ -2485,7 +2907,11 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->listItemSetAttribute('data-x', 'value')
                 ->render(),
             "Set list-item attribute must appear on the rendered '<li>'.",
@@ -2518,9 +2944,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->listItemTag()
                 ->render(),
@@ -2543,10 +2975,14 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->listItemTag(\UIAwesome\Html\Interop\Lists::LI)
                 ->render(),
-            "`BackedEnum` value must normalize to its scalar before validating against `'li'`.",
+            "'BackedEnum' value must normalize to its scalar before validating against 'li'.",
         );
     }
 
@@ -2570,9 +3006,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->listItemTag(false)
                 ->render(),
@@ -2595,7 +3037,11 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->listAttributes(['data-x' => 'value'])
                 ->listRemoveAttribute('data-x')
                 ->render(),
@@ -2618,7 +3064,11 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->listSetAttribute('data-x', 'value')
                 ->render(),
             "Set list attribute must appear on the rendered '<ul>'.",
@@ -2651,9 +3101,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->listType('ol')
                 ->render(),
@@ -2676,10 +3132,14 @@ final class MenuTest extends TestCase
             </div>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->listType(\UIAwesome\Html\Interop\Lists::OL)
                 ->render(),
-            "`BackedEnum` value must normalize to its scalar before validating against `'ol'`/`'ul'`.",
+            "'BackedEnum' value must normalize to its scalar before validating against 'ol'/'ul'.",
         );
     }
 
@@ -2710,9 +3170,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->prefix('prefix')
                 ->render(),
@@ -2747,9 +3213,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->prefix('prefix')
                 ->prefixAttributes(['class' => 'value'])
@@ -2786,9 +3258,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->prefix('prefix')
                 ->prefixClass('value')
@@ -2825,9 +3303,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->prefix('prefix')
                 ->prefixTag()
@@ -2863,9 +3347,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->prefix('prefix')
                 ->prefixTag(false)
@@ -2903,9 +3393,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->prefix('prefix')
                 ->prefixTag(Inline::SPAN)
@@ -2925,8 +3421,10 @@ final class MenuTest extends TestCase
     public function testRenderReturnsEmptyEvenWithToggleWhenItemsAreEmpty(): void
     {
         self::assertEmpty(
-            Menu::tag()->toggle(Toggle::tag()->content('toggle'))->render(),
-            'Empty `items` list must short-circuit before rendering the toggle.',
+            Menu::tag()
+                ->toggle(Toggle::tag()->content('toggle'))
+                ->render(),
+            "Empty 'items' list must short-circuit before rendering the toggle.",
         );
     }
 
@@ -2936,8 +3434,12 @@ final class MenuTest extends TestCase
             '',
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Profile')->visible(false),
-                    Item::tag()->label('Administration')->visible(false),
+                    Item::tag()
+                        ->label('Profile')
+                        ->visible(false),
+                    Item::tag()
+                        ->label('Administration')
+                        ->visible(false),
                 )
                 ->render(),
             'A menu with no visible items must not create empty wrappers.',
@@ -2949,7 +3451,7 @@ final class MenuTest extends TestCase
         self::assertInstanceOf(
             Menu::class,
             new RenderToggleOverride(),
-            'Override subclass must be a `Menu` instance.',
+            "Override subclass must be a 'Menu' instance.",
         );
     }
 
@@ -2968,7 +3470,11 @@ final class MenuTest extends TestCase
             </nav>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->type('navigation')
                 ->render(),
             "Type 'navigation' must wrap the menu in a '<nav>' element.",
@@ -2990,7 +3496,11 @@ final class MenuTest extends TestCase
             </nav>
             HTML,
             Menu::tag()
-                ->items(Item::tag()->label('Home')->link('/'))
+                ->items(
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                )
                 ->type('nav')
                 ->render(),
             "Type 'nav' must wrap the menu in a '<nav>' element.",
@@ -3251,9 +3761,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->separator('>')
                 ->type('breadcrumb')
@@ -3284,13 +3800,17 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
                 )
                 ->separator(new StringableValue('>'))
                 ->type('breadcrumb')
                 ->render(),
-            'Stringable separator must be cast to `string`.',
+            "Stringable separator must be cast to 'string'.",
         );
     }
 
@@ -3320,9 +3840,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->style('value')
                 ->render(),
@@ -3357,9 +3883,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->suffix('suffix')
                 ->render(),
@@ -3394,9 +3926,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->suffix('suffix')
                 ->suffixAttributes(['class' => 'value'])
@@ -3433,9 +3971,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->suffix('suffix')
                 ->suffixClass('value')
@@ -3472,9 +4016,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->suffix('suffix')
                 ->suffixTag()
@@ -3510,9 +4060,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->suffix('suffix')
                 ->suffixTag(false)
@@ -3550,9 +4106,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->suffix('suffix')
                 ->suffixTag(Inline::SPAN)
@@ -3621,9 +4183,15 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->templateItem('<article>\n{items}\n</article>')
                 ->render(),
@@ -3657,14 +4225,30 @@ final class MenuTest extends TestCase
             HTML,
             Menu::tag()
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->templateLinkItem('<span>{icon}{label}{content}</span>')
                 ->render(),
             'Custom link item template must control the link composition.',
         );
+    }
+
+    public function testThrowInvalidArgumentExceptionWhenLinkActiveTagIsEmpty(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            Message::LINK_ACTIVE_TAG_CANNOT_BE_EMPTY->getMessage(),
+        );
+
+        Menu::tag()->linkActiveTag('');
     }
 
     public function testThrowInvalidArgumentExceptionWhenListItemTagIsNotAllowed(): void
@@ -3676,9 +4260,15 @@ final class MenuTest extends TestCase
 
         Menu::tag()
             ->items(
-                Item::tag()->label('Home')->link('/'),
-                Item::tag()->label('About')->link('/about'),
-                Item::tag()->label('Contact')->link('/contact'),
+                Item::tag()
+                    ->label('Home')
+                    ->link('/'),
+                Item::tag()
+                    ->label('About')
+                    ->link('/about'),
+                Item::tag()
+                    ->label('Contact')
+                    ->link('/contact'),
             )
             ->listItemTag('span')
             ->render();
@@ -3724,9 +4314,15 @@ final class MenuTest extends TestCase
             Menu::tag()
                 ->id('menu-default')
                 ->items(
-                    Item::tag()->label('Home')->link('/'),
-                    Item::tag()->label('About')->link('/about'),
-                    Item::tag()->label('Contact')->link('/contact'),
+                    Item::tag()
+                        ->label('Home')
+                        ->link('/'),
+                    Item::tag()
+                        ->label('About')
+                        ->link('/about'),
+                    Item::tag()
+                        ->label('Contact')
+                        ->link('/contact'),
                 )
                 ->toggle(Toggle::tag()->content('toggle'))
                 ->render(),
